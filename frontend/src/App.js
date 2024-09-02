@@ -1,17 +1,20 @@
 import './App.css';
+import Navbar from './components/Navbar';
+import Album from './pages/Album';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
   return (
-    <div className="App">
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-    </div>
+    <>
+      <Navbar/>
+      <Router>
+        <div class="page-container">
+            <Routes>
+              <Route path="/album" element={<Album/>}/>
+            </Routes>
+        </div>
+      </Router>
+    </>
   );
 }
 
