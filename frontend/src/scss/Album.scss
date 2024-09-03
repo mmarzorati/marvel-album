@@ -1,0 +1,10 @@
+.album {
+    &-title {
+        color: var(--smoke-white);
+    }
+    &-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}

@@ -1,10 +1,20 @@
 import React from 'react';
+import Card from '../components/Card';
+import '../scss/Album.scss';
 
 function Album() {
     return (
-        <div>
-            <h1>My Marvel Ambum</h1>
-        </div>
+        <>
+            <h2 className='album-title'>Your collection:</h2>
+            <div className='album-container'>
+                <Card/>
+                <Card/>
+                <Card/>
+                <Card/>
+                <Card/>
+            </div>
+
+        </>
     );
 }
 

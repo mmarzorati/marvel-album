@@ -8,7 +8,7 @@ function App() {
     <>
       <Navbar/>
       <Router>
-        <div class="page-container">
+        <div class="page-padding">
             <Routes>
               <Route path="/album" element={<Album/>}/>
             </Routes>
