@@ -1,0 +1,23 @@
+.shop {
+    &-row {
+        display: flex;
+        flex-direction: start;
+    }
+    &-title {
+        color: var(--smoke-white)
+    }
+    &-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    &-row {
+        display: flex;
+        margin-bottom: 20px;
+    }
+}
+
+.mt {
+    margin-top: 100px;
+}

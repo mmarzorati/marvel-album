@@ -1,0 +1,46 @@
+.pack {
+    &-container {
+        height: 150px;
+        width: 110px;
+        border-radius: 10px;
+        border: 3px solid var(--light-grey);
+        padding: 5px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        flex-direction: column;
+    }
+    &-amount {
+        margin-top: 10px;
+        font-weight: 800;
+    }
+    &-desc {
+        margin-top: 0px;
+        font-weight: 800;
+    }
+    &-col {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 40px 40px 0px 0;
+    }
+    &-icon {
+        height: 25px;
+        width: 25px;
+        margin-left: 5px
+    }
+    &-icon-2 {
+        height: 40px;
+        width: 40px;
+    }
+    &-price {
+        font-size: 16px;
+        color: black;
+        font-weight: 600;
+    }
+    &-btn {
+        background-color: #1E90FF;
+    }
+}
