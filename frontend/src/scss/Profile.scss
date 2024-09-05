@@ -1,0 +1,18 @@
+.profile {
+    &-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+    }
+    &-title {
+        color: var(--smoke-white)
+    }
+    &-label {
+        font-weight: 600;
+        color: var(--red)
+    }
+    &-desc {
+        font-size: 20px;
+        color: var(--light-grey)
+    }
+}
