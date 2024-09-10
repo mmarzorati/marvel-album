@@ -1,0 +1,17 @@
+.character {
+    &-title {
+        color: var(--smoke-white)
+    }
+    &-subtitle {
+        font-size: 20px;
+        color: var(--red)
+    }
+    &-desc {
+        font-size: 20px;
+        color: var(--light-grey)
+    }
+    &-img {
+        height: 175px;
+        margin: 30px 0;
+    }
+}

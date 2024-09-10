@@ -1,0 +1,12 @@
+.all {
+    &-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    &-title {
+        color: var(--smoke-white);
+        text-align: center;
+    }
+}
