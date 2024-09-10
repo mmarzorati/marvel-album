@@ -5,6 +5,7 @@ import Shop from './pages/Shop';
 import Profile from './pages/Profile';
 import Character from './pages/Character';
 import All from './pages/All';
+import Trades from './pages/Trades';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
               <Route path="/profile" element={<Profile/>}/>
               <Route path="/character" element={<Character/>}/>
               <Route path="/all" element={<All/>}/>
+              <Route path="/trades" element={<Trades/>}/>
             </Routes>
         </div>
       </Router>

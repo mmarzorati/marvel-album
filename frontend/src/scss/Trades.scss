@@ -1,0 +1,63 @@
+$background-dark: #333;
+$cancelled-color: #ff4d4d;
+$completed-color: #4caf50;
+$pending-color: #ffc107;
+$text-color: #fff;
+
+.trades {
+    &-container {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    color: $text-color;
+    transition: background-color 0.3s ease;
+    height: 50px;
+    width: 150px;
+
+    &.active {
+        border: 2px solid $text-color;
+        opacity: 1;
+    }
+
+    &.inactive {
+        border: 2px solid lighten($background-dark, 10%);
+        opacity: 0.5;
+        color: black;
+    }
+
+    &.cancelled {
+        background-color: $cancelled-color;
+
+        &.inactive {
+        background-color: lighten($cancelled-color, 10%);
+        }
+    }
+
+    &.completed {
+        background-color: $completed-color;
+
+        &.inactive {
+        background-color: lighten($completed-color, 10%);
+        }
+    }
+
+    &.pending {
+        background-color: $pending-color;
+
+        &.inactive {
+        background-color: lighten($pending-color, 10%);
+        }
+    }
+}
