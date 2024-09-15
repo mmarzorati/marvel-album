@@ -1,8 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Card from '../components/Card';
 import '../scss/Album.scss';
+import { getAllCharacters } from '../apis/marvelApi';
 
 function Album() {
+
+    useEffect(() => {
+        const loadData = async () => {
+            // const characters = await getAllCharacters();
+            // console.log(characters);
+        }
+
+        loadData();
+    }, []);
+
     return (
         <>
             <div className='album-row'>

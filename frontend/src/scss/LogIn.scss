@@ -1,0 +1,66 @@
+.login {
+    &-container {
+    height: 100%;
+    width: 100%;
+    display:flex;
+    justify-content: center;
+    overflow-y: auto;
+    }
+    &-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-direction: column;
+    height: 100%;
+    input {
+        border: 1px solid var(--dark-red);
+        background-color: var(--dark-grey);
+        border-radius: 10px;
+        color: var(--smoke-white);
+        height: 50px;
+        width: 300px;
+        padding: 5px;
+    }
+    label {
+        color: var(--smoke-white);
+        margin-top: 20px;
+        text-decoration: underline;
+        &:hover {
+        cursor: pointer;
+        // inserire l'underline
+        color: var(--bs-gray-700);
+        }
+    }
+    h3 {
+        margin: 10% 0;
+        font-size: 25px;
+        color: var(--smoke-white);
+    }
+    }
+    &-btn {
+    background-color: var(--dark-red);
+    border: none;
+    border-radius: 10px;
+    border: 1px solid var(--dark-grey);
+    height: 50px;
+    width: 150px;
+    color: white;
+    margin: 40px 0;
+    }
+    &-password {
+    margin-top: 50px;
+    }
+    &-preferences {
+    max-width: 500px;
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    }
+}
+.toast {
+    z-index: 1000;
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}

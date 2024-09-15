@@ -6,6 +6,8 @@ import Profile from './pages/Profile';
 import Character from './pages/Character';
 import All from './pages/All';
 import Trades from './pages/Trades';
+import SignIn from './pages/SignIn.js';
+import LogIn from './pages/Login.js'
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
               <Route path="/character" element={<Character/>}/>
               <Route path="/all" element={<All/>}/>
               <Route path="/trades" element={<Trades/>}/>
+              <Route path="/signin" element={<SignIn/>}/>
+              <Route path="/login" element={<LogIn/>}/>
             </Routes>
         </div>
       </Router>
