@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import '../scss/LogIn.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { checkUser } from '../apis/backendApi';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -21,9 +22,15 @@ const LogIn = () => {
         theme: "dark",
         });
 
-    const loginUser = () => {
+    const loginUser = async () => {
         // controllo se gli input non sono vuoti
         if (email !== '' && password !== '') {
+            try {
+                const res = await checkUser(email, password)
+                console.log(res)
+            } catch (error) {
+                console.log('er'+error)
+            }
 
         } else {
             errorNotify('Uno o più campi sono vuoti')

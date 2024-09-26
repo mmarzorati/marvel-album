@@ -14,3 +14,15 @@ export async function createUser(name, username, email, password) {
         console.error('Error creating user:', error.response ? error.response.data : error.message);
     }
 }
+
+export async function checkUser(email, password) {
+    try {
+        const response = await axios.post('api/users/login', {
+            email: email,
+            password: password
+        });
+        console.log('User logged successfully:', response.data);
+    } catch (error) {
+        console.error('Log in error:', error.response ? error.response.data : error.message); //restituisci error
+    }
+}
