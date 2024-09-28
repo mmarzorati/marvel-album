@@ -50,13 +50,16 @@ const SignIn = () => {
         }
         return true;
     }
-    const EnrollUser = () => {
+    const EnrollUser = async () => {
         console.log('in')
         if (email !== '' && name !== '' && username !== '' && password !== '' && confirmPassword !== '') {
         if (checkFields()){
-            
-            createUser(name, username, email, password);
-            succesNotify('Iscrizione completata!')
+            try {
+                const res = await createUser(name, username, email, password);
+                succesNotify(res.message)
+            } catch (error) {
+                errorNotify(error.response.data.message)
+            }
 
         }
         } else {

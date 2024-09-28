@@ -11,6 +11,17 @@ const LogIn = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
+    const succesNotify = (text) => toast.success(text, {
+        position: "bottom-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
+
     const errorNotify = (text) => toast.error(text, {
         position: "bottom-right",
         autoClose: 5000,
@@ -27,9 +38,9 @@ const LogIn = () => {
         if (email !== '' && password !== '') {
             try {
                 const res = await checkUser(email, password)
-                console.log(res)
+                succesNotify(res.message)
             } catch (error) {
-                console.log('er'+error)
+                errorNotify(error.response.data.message)
             }
 
         } else {

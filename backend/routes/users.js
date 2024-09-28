@@ -6,10 +6,9 @@ const User = require('../models/User');
 const Card = require('../models/Card');
 const Trade = require('../models/Trade');
 
-// Endpoint per creare un utente
+// endpoint per la creazione di un utente
 router.post('/api/users', async (req, res) => {
     try {
-        // Creazione di un nuovo utente con i dati forniti
         const user = new User({
             username: req.body.username,
             name: req.body.name,
@@ -17,49 +16,52 @@ router.post('/api/users', async (req, res) => {
             password: req.body.password
         });
         
-        // Salvataggio del nuovo utente nel database
         await user.save();
-        res.status(201).send(user);
+        res.status(201).send({
+            user,
+            message: 'user saved successfully'
+        });
     } catch (error) {
         if (error.code === 11000) {
-            // Gestisce l'errore di unicità per username o email
+            // gestisce l'errore di unicità per username o email
             return res.status(400).send({ message: 'Username or email already exists' });
         }
         res.status(400).send(error);
     }
 });
 
+// endpoint per il processo di login
 router.post('/api/users/login', async (req, res) => {
     const { email, password } = req.body;
 
-        // Verifica che i campi siano presenti
-        if (!email || !password) {
-        return res.status(400).json({ message: 'Email and password are required' });
-        }
-    
-        try {
-        const user = await User.findOne({ email });
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-    
-        const isMatch = await user.comparePassword(password);
-        if (!isMatch) {
-            return res.status(400).json({ message: 'Username or password is wrong' });
-        }
-    
-        // // Creazione del cookie sicuro con l'ID dell'utente
-        // res.cookie('userId', user._id, {
-        //     httpOnly: true, // Il cookie è accessibile solo dal server
-        //     secure: true,   // Il cookie è inviato solo tramite HTTPS (in ambiente di produzione)
-        //     sameSite: 'strict', // Previene CSRF
-        // });
-    
-        return res.status(200).json({ message: 'Login completed successfully' });
-        } catch (error) {
-        console.error('Errore nel login:', error);
-        return res.status(500).json({ message: 'Server error' });
-        }
+    if (!email || !password) {
+    return res.status(400).json({ message: 'Email and password are required' });
+    }
+
+    try {
+    const user = await User.findOne({ email });
+    if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+    }
+
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) {
+        return res.status(400).json({ message: 'Username or password is wrong' });
+    }
+
+    // // Creazione del cookie sicuro con l'ID dell'utente
+    // res.cookie('userId', user._id, {
+    //     httpOnly: true, // Il cookie è accessibile solo dal server
+    //     secure: true,   // Il cookie è inviato solo tramite HTTPS (in ambiente di produzione)
+    //     sameSite: 'strict', // Previene CSRF
+    // });
+
+    return res.status(200).json({ message: 'Login completed successfully' });
+
+    } catch (error) {
+    console.error('Errore nel login:', error);
+    return res.status(500).json({ message: 'Server error' });
+    }
 });
 
 router.get('/api/users', async (req, res) => {

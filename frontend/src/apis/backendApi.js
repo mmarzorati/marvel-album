@@ -9,9 +9,10 @@ export async function createUser(name, username, email, password) {
             name: name,
             password: password
         });
-        console.log('User created successfully:', response.data);
+        return response.data
     } catch (error) {
         console.error('Error creating user:', error.response ? error.response.data : error.message);
+        throw error;
     }
 }
 
@@ -21,8 +22,9 @@ export async function checkUser(email, password) {
             email: email,
             password: password
         });
-        console.log('User logged successfully:', response.data);
+        return response.data
     } catch (error) {
-        console.error('Log in error:', error.response ? error.response.data : error.message); //restituisci error
+        console.error('Log in error:', error.response ? error.response.data : error.message);
+        throw error;
     }
 }
