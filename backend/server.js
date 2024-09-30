@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require('cookie-parser');
 const User = require('./models/User');
 const Card = require('./models/Card');
 const Trade = require('./models/Trade');
@@ -17,6 +18,8 @@ app.listen(3001, () => {
 // Connessione al database locale di mongoDB "mavel-album" - porta di default: 27017
 mongoose.connect('mongodb://localhost:27017/marvel-album').then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
+
+app.use(cookieParser());
 
 // Endpoint per creare uno scambio
 app.post('/trades', async (req, res) => {

@@ -21,7 +21,7 @@ const NavbarComponent = () => {
                 <Nav>
                     <Nav.Link href="/profile">Profile</Nav.Link>
                     <Nav.Link href="/settings">Settings</Nav.Link>
-                    <Nav.Link href="/logout">Logout</Nav.Link>
+                    <Nav.Link href="/login">Logout</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>

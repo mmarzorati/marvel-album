@@ -8,7 +8,8 @@ const UserSchema = new Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     collec: [{ type: Schema.Types.ObjectId, ref: 'Card' }],
-    trades: [{ type: Schema.Types.ObjectId, ref: 'Trade' }]
+    trades: [{ type: Schema.Types.ObjectId, ref: 'Trade' }],
+    coins: { type: Number, required: true }
 });
 
 // prima del salvataggio cripta la password

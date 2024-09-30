@@ -1,6 +1,9 @@
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const router = express.Router();
+const config = require('../config.json');
+const jwt = require('jsonwebtoken');
+const authMiddleware = require('../middlewere');
 
 const User = require('../models/User');
 const Card = require('../models/Card');
@@ -13,20 +16,37 @@ router.post('/api/users', async (req, res) => {
             username: req.body.username,
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            coins: 0
         });
         
         await user.save();
-        res.status(201).send({
-            user,
-            message: 'user saved successfully'
+
+        const token = jwt.sign(
+            { 
+                _id: user._id, 
+                email: user.email,
+                username: user.username,
+                name: user.name,
+                coins: user.coins
+            },
+            config.JWT_SECRET,               // chiave segreta per firmare il token
+            { expiresIn: '1h' }
+        );
+
+        res.cookie('token', token, {
+            httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
+            secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
+            maxAge: 60 * 60 * 1000 // 1 ora
         });
+        res.status(201).send({ message: 'User saved successfully', user });
+
     } catch (error) {
         if (error.code === 11000) {
             // gestisce l'errore di unicità per username o email
             return res.status(400).send({ message: 'Username or email already exists' });
         }
-        res.status(400).send(error);
+        res.status(500).send(error);
     }
 });
 
@@ -39,45 +59,45 @@ router.post('/api/users/login', async (req, res) => {
     }
 
     try {
-    const user = await User.findOne({ email });
-    if (!user) {
-        return res.status(404).json({ message: 'User not found' });
-    }
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
-    const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-        return res.status(400).json({ message: 'Username or password is wrong' });
-    }
+        const isMatch = await user.comparePassword(password);
+        if (!isMatch) {
+            return res.status(400).json({ message: 'Username or password is wrong' });
+        }
 
-    // // Creazione del cookie sicuro con l'ID dell'utente
-    // res.cookie('userId', user._id, {
-    //     httpOnly: true, // Il cookie è accessibile solo dal server
-    //     secure: true,   // Il cookie è inviato solo tramite HTTPS (in ambiente di produzione)
-    //     sameSite: 'strict', // Previene CSRF
-    // });
+        const token = jwt.sign(
+            { 
+                _id: user._id, 
+                email: user.email,
+                username: user.username,
+                name: user.name,
+                coins: user.coins
+            },
+            config.JWT_SECRET,               // chiave segreta per firmare il token
+            { expiresIn: '1h' }
+        );
 
-    return res.status(200).json({ message: 'Login completed successfully' });
+        res.cookie('token', token, {
+            httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
+            secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
+            maxAge: 60 * 60 * 1000 // 1 ora
+        });
+        return res.status(200).json({ message: 'Login completed successfully' });
 
     } catch (error) {
-    console.error('Errore nel login:', error);
-    return res.status(500).json({ message: 'Server error' });
+        console.error('Errore nel login:', error);
+        return res.status(500).json({ message: 'Server error' });
     }
 });
 
-router.get('/api/users', async (req, res) => {
+router.get('/api/user', authMiddleware, async (req, res) => {
     try {
-        // Trova tutti gli utenti nella collection
-        const users = await User.find();
-        
-        // Se non ci sono utenti, restituisci un errore
-        if (!users || users.length === 0) {
-            return res.status(404).send('No users found');
-        }
-
-        // Restituisci tutti gli utenti
-        res.status(200).json(users);
+        res.status(200).json(req.user);
     } catch (error) {
-        // Gestisci eventuali errori
         res.status(500).send(error.message);
     }
 });

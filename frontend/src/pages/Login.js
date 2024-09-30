@@ -41,6 +41,8 @@ const LogIn = () => {
                 succesNotify(res.message)
             } catch (error) {
                 errorNotify(error.response.data.message)
+            } finally {
+                navigate('/profile')
             }
 
         } else {

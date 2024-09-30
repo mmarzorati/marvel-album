@@ -28,3 +28,13 @@ export async function checkUser(email, password) {
         throw error;
     }
 }
+
+export async function getUserInfo() {
+    try {
+        const response = await axios.get('api/user', {}, {withCredentials: true});
+        return response.data
+    } catch (error) {
+        console.error('Log in error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
