@@ -98,20 +98,58 @@ router.get('/api/user', authMiddleware, async (req, res) => {
     try {
         res.status(200).json(req.user);
     } catch (error) {
+        console.error(error);
         res.status(500).send(error.message);
     }
 });
 
-// Endpoint per ottenere tutte le carte di un utente
-router.get('/users/:id/cards', async (req, res) => {
+// endpoint per ottenere tutte le carte di un utente
+router.get('/api/users/cards',authMiddleware , async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).populate('collection');
+        const user = await User.findById(req.user._id).populate('collec');
         if (!user) {
-        return res.status(404).send('User not found');
+            return res.status(404).send('User not found');
         }
-        res.send(user.collection);
+        res.status(200).send(user.collec);
     } catch (error) {
-        res.status(400).send(error);
+        console.error(error);
+        res.status(500).send(error);
+    }
+});
+
+// endpoint per l'aggiunta di una carta nel database
+router.post('/api/users/add-card', authMiddleware , async (req, res) => {
+    const { marvelId, name, description, pathImg } = req.body;
+
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        let card = await Card.findOne({ marvelId });
+        // se non è presente nel database crea la carta
+        if (!card) {
+            card = new Card({
+                marvelId,
+                name,
+                description,
+                pathImg
+            });
+            await card.save();
+
+        }
+
+        // indipendentemente se abbia già la carta o meno la aggiunge
+        user.collec.push(card._id);
+        await user.save();
+        console.log('Carta aggiunta alla collezione dell\'utente');
+
+        res.status(200).json({ message: 'Carta gestita correttamente' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Errore del server' });
     }
 });
 

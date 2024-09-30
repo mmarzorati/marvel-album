@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const CardSchema = new Schema({
-    id: { type: String, required: true },
-    amount: { type: Number, required: true }
+    marvelId: { type: Number, required: true },
+    name: { type: String, required: true },
+    description: { type: String, required: false },
+    pathImg: { type: String, required: true}
 });
 
 module.exports = mongoose.model('Card', CardSchema);

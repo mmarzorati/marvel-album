@@ -38,3 +38,27 @@ export async function getUserInfo() {
         throw error;
     }
 }
+
+export async function getUserCards() {
+    try {
+        const response = await axios.get('api/users/cards', {withCredentials: true});
+        return response.data
+    } catch (error) {
+        console.error('Log in error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+export async function addUserCard( marvelId, name, description, pathImg) {
+    try {
+        const response = await axios.post(
+            'api/users/add-card',
+            { marvelId, name, description, pathImg },
+            { withCredentials: true }
+        );
+        return response.data
+    } catch (error) {
+        console.error('Log in error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}

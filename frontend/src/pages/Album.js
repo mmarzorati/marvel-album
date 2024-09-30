@@ -1,14 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../components/Card';
 import '../scss/Album.scss';
-import { getAllCharacters } from '../apis/marvelApi';
+import { getUserCards } from '../apis/backendApi';
 
 function Album() {
 
+    const [collection, setCollection] = useState('');
+
     useEffect(() => {
         const loadData = async () => {
-            // const characters = await getAllCharacters();
-            // console.log(characters);
+            const res = await getUserCards();
+            setCollection(res);
         }
 
         loadData();
@@ -24,11 +26,14 @@ function Album() {
                 </span>
             </div>
             <div className='album-container'>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
-                <Card/>
+                {collection && collection.map((item) => (
+                    <Card 
+                        key={item._id}
+                        name={item.name}
+                        pathImg={item.pathImg}
+                        description={item.description}
+                    />
+                ))}
             </div>
 
         </>
