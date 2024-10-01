@@ -1,10 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../scss/Pack.scss';
 import Button from 'react-bootstrap/Button';
+import { Modal } from 'react-bootstrap';
 import coinIcon from '../assets/icons/coin.png';
 import { addUserCard } from '../apis/backendApi';
 
 function Pack(props) {
+
+    const [show, setShow] = useState(false);
+
+    const closeModal = () => setShow(false);
+    const showModal = () => setShow(true);
 
     const buyPack = () => {
         // test da RIMUOVERE
@@ -22,7 +28,7 @@ function Pack(props) {
                         <p className='pack-desc'>{props.desc}</p>
                     )}                   
                 </div>
-                <Button variant="success" className='pack-btn' onClick={buyPack}>
+                <Button variant="success" className='pack-btn' onClick={showModal}>
                     <label className='pack-price' >{props.price}</label>
                     {props.desc === "coin" ? (
                         <label className='pack-price' > €</label>
@@ -31,6 +37,31 @@ function Pack(props) {
                     )}
                 </Button>
             </div>
+            <Modal 
+                show={show} 
+                onHide={closeModal} 
+                {...props}
+                size="lg"
+                aria-labelledby="contained-modal-title-vcenter"
+                centered
+            >
+                <Modal.Header className='border-0' closeButton>
+                    <Modal.Title>
+                        Buy random cards pack
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body >
+                    Are you sure to spend {props.price} coins to buy this pack? You will recive {props.amount} random cards.
+                </Modal.Body>
+                <Modal.Footer className='border-0'>
+                    <Button variant="danger" onClick={closeModal}>
+                        Cancel
+                    </Button>
+                    <Button variant="success" onClick={closeModal}>
+                        Confirm
+                    </Button>
+                </Modal.Footer>
+            </Modal>
         </>
     );
 }
