@@ -43,4 +43,32 @@
     &-btn {
         background-color: #1E90FF;
     }
+    &-input {
+        border: 3px solid var(--dark-red);
+        background-color: var(--smoke-white);
+        border-radius: 10px;
+        color: var(--smoke-white);
+        height: 40px;
+        width: 300px;
+        padding: 5px;
+    }
+    &-input-small {
+        border: 3px solid var(--dark-red);
+        background-color: var(--smoke-white);
+        border-radius: 10px;
+        color: var(--smoke-white);
+        height: 40px;
+        width: 200px;
+        padding: 5px;
+    }
+    &-line {
+        width: 75%;
+        margin-top: 8px;
+    }
+    &-wrapper {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
 }

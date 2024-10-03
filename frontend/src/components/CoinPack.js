@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../scss/Pack.scss';
-import Button from 'react-bootstrap/Button';
+import { Col, Row, Container, Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import coinIcon from '../assets/icons/coin.png';
 import { addUserCard } from '../apis/backendApi';
@@ -41,13 +41,67 @@ function Pack(props) {
             >
                 <Modal.Header className='border-0' closeButton>
                     <Modal.Title>
-                        Buy random cards pack
+                        Buy coins
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body >
-                    Are you sure to spend {props.price} coins to buy this pack? You will recive {props.amount} random cards.
+                    <Container>
+                        <Row className='mb-3' >
+                            <Col xs={12} md={8} className='d-flex flex-column' >
+                                <label className='ms-2' >Card Number</label>
+                                <input 
+                                    placeholder='Card number' 
+                                    type='text' 
+                                    className='pack-input'
+                                />
+                            </Col>
+                            <Col xs={6} md={4} className='d-flex flex-column'>
+                                <label className='ms-2' >CVV</label>
+                                <input 
+                                    placeholder='CVV' 
+                                    type='text' 
+                                    className='pack-input-small'
+                                />
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col xs={12} md={8} className='d-flex flex-column' >
+                                <label className='ms-2' >Cardholder name</label>
+                                <input 
+                                    placeholder='Cardholder name' 
+                                    type='text' 
+                                    className='pack-input'
+                                />
+                            </Col>
+                            <Col xs={6} md={4} className='d-flex flex-column'>
+                                <label className='ms-2' >Expiration date</label>
+                                <input 
+                                    placeholder='MM/YY' 
+                                    type='text' 
+                                    className='pack-input-small'
+                                />
+                            </Col>
+                        </Row>
+                    </Container>
                 </Modal.Body>
                 <Modal.Footer className='border-0'>
+                <Container>
+                    <h4>Order recap</h4>
+                    <Row>
+                        <Col xs={3} md={2} className='pack-wrapper' >
+                            <label className='mb-4'>My cart:</label>
+                            <label>Total:</label>
+                        </Col>
+                        <Col xs={6} md={4} className='pack-wrapper' >
+                            <div className='d-flex mt-4'>
+                                <h5>{props.amount}</h5>
+                                <img className='pack-icon' src={coinIcon} alt="Coin Icon" />
+                            </div>
+                            <hr className="pack-line" />
+                            <h5>{props.price} €</h5>
+                        </Col>
+                    </Row>
+                </Container>
                     <Button variant="danger" onClick={closeModal}>
                         Cancel
                     </Button>
