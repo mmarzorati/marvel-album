@@ -11,7 +11,7 @@ export async function createUser(name, username, email, password) {
         });
         return response.data
     } catch (error) {
-        console.error('Error creating user:', error.response ? error.response.data : error.message);
+        console.error('Create user API error  :', error.response ? error.response.data : error.message);
         throw error;
     }
 }
@@ -24,7 +24,7 @@ export async function checkUser(email, password) {
         });
         return response.data
     } catch (error) {
-        console.error('Log in error:', error.response ? error.response.data : error.message);
+        console.error('Log in API error:', error.response ? error.response.data : error.message);
         throw error;
     }
 }
@@ -34,7 +34,7 @@ export async function getUserInfo() {
         const response = await axios.get('api/user', {}, {withCredentials: true});
         return response.data
     } catch (error) {
-        console.error('Log in error:', error.response ? error.response.data : error.message);
+        console.error('get user info API error:', error.response ? error.response.data : error.message);
         throw error;
     }
 }
@@ -44,7 +44,7 @@ export async function getUserCards() {
         const response = await axios.get('api/users/cards', {withCredentials: true});
         return response.data
     } catch (error) {
-        console.error('Log in error:', error.response ? error.response.data : error.message);
+        console.error('Get user card API error:', error.response ? error.response.data : error.message);
         throw error;
     }
 }
@@ -58,7 +58,38 @@ export async function addUserCard( marvelId, name, description, pathImg) {
         );
         return response.data
     } catch (error) {
-        console.error('Log in error:', error.response ? error.response.data : error.message);
+        console.error('Add card API error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+export async function buyCoins( amount ) {
+    try {
+        const response = await axios.post(
+            'api/users/coins',
+            { amount },
+            { withCredentials: true }
+        );
+        return response.data
+    } catch (error) {
+        console.error('Buy coins API error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
+export async function removeCoins( amount ) {
+    try {
+        if (amount > 0) {
+            amount = -amount;   // rendiamo negativa la cifra
+        }
+        const response = await axios.post(
+            'api/users/coins',
+            { amount },
+            { withCredentials: true }
+        );
+        return response.data
+    } catch (error) {
+        console.error('Remove coins API error:', error.response ? error.response.data : error.message);
         throw error;
     }
 }

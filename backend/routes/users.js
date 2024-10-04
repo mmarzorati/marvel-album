@@ -153,4 +153,26 @@ router.post('/api/users/add-card', authMiddleware , async (req, res) => {
     }
 });
 
+// endpoint per l'acquisto o la rimozione dei coins
+router.post('/api/users/coins', authMiddleware , async (req, res) => {
+    const { amount } = req.body;
+    try {
+        const user = await User.findById(req.user._id);
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+        if( (user.coins = user.coins + amount) < 0 ) {
+            return res.status(400).json({ message: 'You don\'t have enough coins' });
+        }
+
+        await user.save();
+        res.status(200).send(user);
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Errore del server' });
+    }
+});
+
 module.exports = router;

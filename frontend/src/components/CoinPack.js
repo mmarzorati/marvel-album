@@ -3,7 +3,7 @@ import '../scss/Pack.scss';
 import { Col, Row, Container, Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import coinIcon from '../assets/icons/coin.png';
-import { addUserCard } from '../apis/backendApi';
+import { addUserCard, buyCoins } from '../apis/backendApi';
 
 function Pack(props) {
 
@@ -11,6 +11,11 @@ function Pack(props) {
 
     const closeModal = () => setShow(false);
     const showModal = () => setShow(true);
+
+    const addCoins = async () => {
+        const res = await buyCoins(10);
+        console.log(res)
+    }
 
     const buyPack = () => {
         // test da RIMUOVERE
@@ -105,7 +110,7 @@ function Pack(props) {
                     <Button variant="danger" onClick={closeModal}>
                         Cancel
                     </Button>
-                    <Button variant="success" onClick={closeModal}>
+                    <Button variant="success" onClick={addCoins}>
                         Confirm
                     </Button>
                 </Modal.Footer>
