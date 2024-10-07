@@ -94,6 +94,7 @@ router.post('/api/users/login', async (req, res) => {
     }
 });
 
+// endpoint per la restituzione dei dati dell'utente
 router.get('/api/user', authMiddleware, async (req, res) => {
     try {
         res.status(200).json(req.user);
@@ -143,7 +144,6 @@ router.post('/api/users/add-card', authMiddleware , async (req, res) => {
         // indipendentemente se abbia già la carta o meno la aggiunge
         user.collec.push(card._id);
         await user.save();
-        console.log('Carta aggiunta alla collezione dell\'utente');
 
         res.status(200).json({ message: 'Carta gestita correttamente' });
 

@@ -6,19 +6,29 @@
         border-radius: 10px;
         border: 5px solid var(--light-grey);
         margin: 20px 20px 0px 0;
-        padding: 5px;
+        padding: 4px;
         display: flex;
-        justify-content: center;
         align-items: center;
         text-align: center;
         flex-direction: column;
+
     }
     &-name {
         margin-top: 10px;
-        color: var(--smoke-white)
+        color: var(--smoke-white);
+        height: 48px;
     }
     &-desc {
         color: var(--smoke-white);
         margin-top: 0px;
+        margin-bottom: 5px;
+        max-height: 100px;
+        text-overflow: ellipsis; 
+        overflow: hidden;
+    }
+    &-image {
+        width: 175px;
+        min-height: 175px;
+        max-height: 175px;
     }
 }
