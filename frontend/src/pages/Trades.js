@@ -2,17 +2,21 @@ import React from 'react';
 import CompletedTrade from '../components/CompletedTrade';
 import PendingTrade from '../components/PendingTrade';
 import CancelledTrade from '../components/CancelledTrade';
+import TradeStepper from '../modal/TradeStepper';
 import '../scss/Trades.scss';
+import plusIcon from '../assets/icons/plus.png';
 import { useState } from 'react';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 function Trades() {
 
     const [tradeType, setTradeType] = useState("pending");
+    const [show, setShow] = useState(false);
 
+    const closeModal = () => setShow(false);
+    const showModal = () => setShow(true);
     const setCompleted = () => setTradeType("completed");
-
     const setCancelled = () => setTradeType("cancelled");
-    
     const setPending = () => setTradeType("pending");
 
     const switchComponent = () => {
@@ -30,18 +34,31 @@ function Trades() {
     
     return (
         <>
-            <div className='trades-container'>
-                <div onClick={setCancelled} className={`button cancelled ${tradeType === 'cancelled' ? 'active' : 'inactive'}`}>
-                    Cancelled
+            <div className='trades-wrapper'>
+                <h2 className='trades-title'>Do you want swap some cards?</h2>
+                <Button className='button d-flex justify-content-center align-items-center mb-5' onClick={showModal}>
+                    <img className='trades-icon-2' src={plusIcon} alt="Plus Icon" />
+                        New trade
+                </Button>
+                <h2 className='trades-title'>Your trades:</h2>
+                <div className='trades-container'>
+                    <div onClick={setCancelled} className={`button cancelled ${tradeType === 'cancelled' ? 'active' : 'inactive'}`}>
+                        Cancelled
+                    </div>
+                    <div onClick={setPending} className={`button pending ${tradeType === 'pending' ? 'active' : 'inactive'}`}>
+                        Pending
+                    </div>
+                    <div onClick={setCompleted} className={`button completed ${tradeType === 'completed' ? 'active' : 'inactive'}`}>
+                        Completed
+                    </div>
                 </div>
-                <div onClick={setPending} className={`button pending ${tradeType === 'pending' ? 'active' : 'inactive'}`}>
-                    Pending
-                </div>
-                <div onClick={setCompleted} className={`button completed ${tradeType === 'completed' ? 'active' : 'inactive'}`}>
-                    Completed
-                </div>
+                {switchComponent()}
             </div>
-            {switchComponent()}
+            <TradeStepper 
+                show={show} 
+                showModal={showModal} 
+                closeModal={closeModal} 
+            />
         </>
     );
 }

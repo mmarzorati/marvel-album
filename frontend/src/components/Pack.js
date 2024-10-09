@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../scss/Pack.scss';
-import Button from 'react-bootstrap/Button';
-import { Modal } from 'react-bootstrap';
+import { Modal, Button } from 'react-bootstrap';
 import coinIcon from '../assets/icons/coin.png';
 import { addUserCard } from '../apis/backendApi';
 import { getCharacters } from '../apis/marvelApi';

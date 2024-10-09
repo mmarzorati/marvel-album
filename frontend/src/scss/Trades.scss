@@ -9,12 +9,37 @@ $text-color: #fff;
         justify-content: center;
         display: flex;
         align-items: center;
+        white-space: nowrap;
     }
     &-icon {
         height: 100px;
         width: 100px;
         padding: 0px;
         margin: 0px 20px;
+    }
+    &-icon-2 {
+        height: 20px;
+        width: 20px;
+        margin-right: 5px;
+        filter: invert(1);
+    }
+    &-title {
+        color: var(--smoke-white);
+        margin-bottom: 30px;
+    }
+    &-wrapper {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+    }
+}
+
+.step {
+    &-container {
+        display: flex;            
+        justify-content: center;   
+        align-items: center;
     }
 }
 

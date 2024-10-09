@@ -2,7 +2,7 @@ import React from 'react';
 import '../scss/Trades.scss';
 import tradeIcon from '../assets/icons/trade.png';
 import Minicard from './MiniCard'
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Button } from 'react-bootstrap';
 
 function Trade() {
     return (
