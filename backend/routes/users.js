@@ -175,4 +175,28 @@ router.post('/api/users/coins', authMiddleware , async (req, res) => {
     }
 });
 
+// endpoint per la ricerca dell'utente
+router.post('/api/users/search', authMiddleware , async (req, res) => {
+    const { query } = req.query;
+    try {
+        if (!query) {
+            return res.status(400).json({ message: 'Devi fornire una stringa di ricerca' });
+        }
+
+        const users = await User.find({
+            $or: [
+              { name: { $regex: query, $options: 'i' } },  // Cerca nel nome (opzione 'i' per case-insensitive)
+              { username: { $regex: query, $options: 'i' } }  // Cerca nello username
+            ]
+        });
+
+        res.status(200).send(users);
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
 module.exports = router;

@@ -93,3 +93,16 @@ export async function removeCoins( amount ) {
         throw error;
     }
 }
+
+export async function searchUsersAPI( query ) {
+    try {
+        const response = await axios.post(
+            `api/users/search?query=${query}`,
+            { withCredentials: true }
+        );
+        return response.data
+    } catch (error) {
+        console.error('Serach users API error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}

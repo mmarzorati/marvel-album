@@ -41,6 +41,57 @@ $text-color: #fff;
         justify-content: center;   
         align-items: center;
     }
+    &-search {
+        &-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 300px;
+            height: 400px;
+        }
+        &-bar {
+            width: 100%; 
+            padding: 8px;
+            margin-top: 25px;
+            font-size: 16px;
+            border-radius: 10px;
+            border: solid 5px var(--red);
+            outline: none; 
+            &:focus {
+                border: solid 5px var(--red);
+            }
+        }
+        &-list {
+            left: 0;
+            width: 100%;
+            border: 1px solid var(--red);
+            background-color: var(--light-grey);
+            list-style-type: none;
+            padding: 5px;
+            margin: 0;
+            border-radius: 10px;
+        }
+        &-item {
+            padding: 8px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee
+        }
+        &-text {
+            margin-top: 40px;
+        }
+        &-selected {
+            margin-top: 10px;
+            padding: 5px;
+            background-color: var(--orange);
+            border: solid 3px var(--red);
+            width: fit-content;
+            border-radius: 10px;
+        }
+        &-warning {
+            color: red;
+            margin-top: 10px;
+        }
+    }
 }
 
 .minicard {

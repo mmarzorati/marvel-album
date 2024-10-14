@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../scss/Trades.scss';
 import 
     {
@@ -12,7 +12,7 @@ import
     } 
 from '@mui/material';
 import { Modal } from 'react-bootstrap';
-import { useState } from 'react';
+import StepOne from '../components/stepper/StepOne.js';
 
 const steps = [
     {
@@ -33,6 +33,7 @@ export default function TradeStepper(props) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
+    const [receiver, setReceiver] = useState(null);
 
     const nextStep = () => {
         if (activeStep>=2) {
@@ -43,7 +44,28 @@ export default function TradeStepper(props) {
     }
 
     const previousStep = () => {
-        setActiveStep(activeStep-1)
+        if (activeStep>0) {
+            setActiveStep(activeStep-1)
+        }
+    }
+
+    const switchComponent = () => {
+        switch (activeStep) {
+            case 0:
+                return (
+                    <StepOne 
+                        userSelected={receiver} 
+                        setUserSelected={setReceiver}
+                        nextStep={nextStep} 
+                    />
+                );
+            case 1:
+                // return <PendingTrade />;
+            case 2:
+                // return <CancelledTrade />;
+            default:
+                return <div></div>;
+        }
     }
 
     return (
@@ -74,18 +96,10 @@ export default function TradeStepper(props) {
                                 ))}
                             </Stepper>
                             <Box className='step-container'>
-                                <Typography>{steps[activeStep].desc}</Typography>
+                                {switchComponent()}
                             </Box>
                         </Box>
                     </Modal.Body>
-                    <Modal.Footer className='border-0'>
-                        <Button variant="danger" onClick={previousStep}>
-                            Cancel
-                        </Button>
-                        <Button onClick={nextStep} sx={{ mr: 1 }}>
-                            Next
-                        </Button>
-                    </Modal.Footer>
                 </> 
             )}
         </Modal>
