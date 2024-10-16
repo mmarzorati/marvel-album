@@ -1,10 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { searchUsersAPI } from '../../apis/backendApi';
-import 
-    {
-        Button,
-    } 
-from '@mui/material';
+import { Button } from '@mui/material';
 import { Modal } from 'react-bootstrap';
 
 function StepOne(props) {

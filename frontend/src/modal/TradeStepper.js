@@ -12,7 +12,8 @@ import
     } 
 from '@mui/material';
 import { Modal } from 'react-bootstrap';
-import StepOne from '../components/stepper/StepOne.js';
+import StepTwo from '../components/stepper/Step-Two.js';
+import StepOne from '../components/stepper/Step-One.js';
 
 const steps = [
     {
@@ -60,7 +61,14 @@ export default function TradeStepper(props) {
                     />
                 );
             case 1:
-                // return <PendingTrade />;
+                return (
+                    <StepTwo 
+                        userSelected={receiver} 
+                        setUserSelected={setReceiver}
+                        nextStep={nextStep}
+                        previousStep={previousStep} 
+                    />
+                );
             case 2:
                 // return <CancelledTrade />;
             default:
