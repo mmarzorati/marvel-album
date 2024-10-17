@@ -49,6 +49,16 @@ export async function getUserCards() {
     }
 }
 
+export async function getUserCardsById(id) {
+    try {
+        const response = await axios.get(`api/cards/${id}`, { withCredentials: true });
+        return response.data
+    } catch (error) {
+        console.error('Get user card API error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
+
 export async function addUserCard( marvelId, name, description, pathImg) {
     try {
         const response = await axios.post(

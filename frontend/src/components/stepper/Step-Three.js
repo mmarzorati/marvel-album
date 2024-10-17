@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { searchUsersAPI } from '../../apis/backendApi';
 import { Button } from '@mui/material';
 import { Modal } from 'react-bootstrap';
-import { getUserCards } from '../../apis/backendApi';
+import { getUserCardsById } from '../../apis/backendApi';
 import MiniCard from '../MiniCard'
 
-function StepTwo(props) {
+function SepThree(props) {
 
     const [collection, setCollection] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -13,7 +13,8 @@ function StepTwo(props) {
 
     useEffect(() => {
         const loadData = async () => {
-            const res = await getUserCards()
+            console.log(props.receiver)
+            const res = await getUserCardsById(props.receiver._id)
             setCollection(res)
             setIsLoading(false)
         }
@@ -30,7 +31,7 @@ function StepTwo(props) {
         );
     };
 
-    const confirmCards = () => {
+    const confirmTrade = () => {
         console.log(selectedIds)
         props.nextStep()
     }
@@ -56,12 +57,12 @@ function StepTwo(props) {
                 <Button variant="danger" onClick={props.previousStep}>
                     Cancel
                 </Button>
-                <Button onClick={confirmCards} sx={{ mr: 1 }}>
-                    Next
+                <Button onClick={confirmTrade} sx={{ mr: 1 }}>
+                    Create Trade
                 </Button>
             </Modal.Footer>
         </div>
     );
     };
 
-export default StepTwo;
+export default SepThree;

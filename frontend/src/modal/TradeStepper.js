@@ -14,6 +14,7 @@ from '@mui/material';
 import { Modal } from 'react-bootstrap';
 import StepTwo from '../components/stepper/Step-Two.js';
 import StepOne from '../components/stepper/Step-One.js';
+import StepThree from '../components/stepper/Step-Three.js';
 
 const steps = [
     {
@@ -35,6 +36,7 @@ export default function TradeStepper(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
     const [receiver, setReceiver] = useState(null);
+    const [receiverCards, setReceiverCards] = useState(null);
 
     const nextStep = () => {
         if (activeStep>=2) {
@@ -62,15 +64,19 @@ export default function TradeStepper(props) {
                 );
             case 1:
                 return (
-                    <StepTwo 
-                        userSelected={receiver} 
-                        setUserSelected={setReceiver}
+                    <StepTwo
                         nextStep={nextStep}
                         previousStep={previousStep} 
                     />
                 );
             case 2:
-                // return <CancelledTrade />;
+                return (
+                    <StepThree
+                        receiver={receiver}
+                        nextStep={nextStep}
+                        previousStep={previousStep} 
+                    />
+                );
             default:
                 return <div></div>;
         }

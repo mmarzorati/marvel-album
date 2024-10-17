@@ -5,6 +5,7 @@ const User = require('./models/User');
 const Card = require('./models/Card');
 const Trade = require('./models/Trade');
 const usersRoutes = require('./routes/users');
+const cardsRoutes = require('./routes/cards');
 
 const app = express();
 const PORT = 3001;
@@ -46,3 +47,4 @@ app.patch('/trades/:id', async (req, res) => {
 });
 
 app.use(usersRoutes);
+app.use(cardsRoutes);
