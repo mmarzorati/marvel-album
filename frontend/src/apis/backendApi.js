@@ -116,3 +116,17 @@ export async function searchUsersAPI( query ) {
         throw error;
     }
 }
+
+export async function createTrade( receiver_id, rec_cards, sen_cards) {
+    try {
+        const response = await axios.post(
+            'api/trades',
+            { receiver_id, rec_cards, sen_cards },
+            { withCredentials: true }
+        );
+        return response.data
+    } catch (error) {
+        console.error('Create trade API error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}

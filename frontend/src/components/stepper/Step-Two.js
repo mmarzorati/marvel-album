@@ -10,6 +10,7 @@ function StepTwo(props) {
     const [collection, setCollection] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedIds, setSelectedIds] = useState([]);
+    const [isButtonDisable, setIsButtonDisable] = useState(true); 
 
     useEffect(() => {
         const loadData = async () => {
@@ -22,6 +23,11 @@ function StepTwo(props) {
         setSelectedIds([])
     }, []);
 
+    // disabilita il bottone 'Next' se è vuoto
+    useEffect(() => {
+        setIsButtonDisable(selectedIds.length === 0);
+    }, [selectedIds]);
+
     const checkboxSelected = (id) => {
         setSelectedIds((prevSelectedIds) =>     // aggiorna l'array selectedIds aggiungendo o rimuovendo l'ID a seconda che la minicard sia selezionata o deselezionata
             prevSelectedIds.includes(id)
@@ -31,7 +37,7 @@ function StepTwo(props) {
     };
 
     const confirmCards = () => {
-        console.log(selectedIds)
+        props.setReceiverCards(selectedIds)
         props.nextStep()
     }
 
@@ -41,7 +47,7 @@ function StepTwo(props) {
                 {!isLoading && collection ? (
                     collection.map((item) => (
                         <MiniCard 
-                            id={item.marvelId}
+                            id={item._id}
                             name={item.name}
                             pathImg={item.pathImg}
                             checkboxSelected={checkboxSelected}
@@ -56,7 +62,7 @@ function StepTwo(props) {
                 <Button variant="danger" onClick={props.previousStep}>
                     Cancel
                 </Button>
-                <Button onClick={confirmCards} sx={{ mr: 1 }}>
+                <Button disabled={isButtonDisable} onClick={confirmCards} sx={{ mr: 1 }}>
                     Next
                 </Button>
             </Modal.Footer>

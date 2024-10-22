@@ -66,7 +66,8 @@ export default function TradeStepper(props) {
                 return (
                     <StepTwo
                         nextStep={nextStep}
-                        previousStep={previousStep} 
+                        previousStep={previousStep}
+                        setReceiverCards={setReceiverCards}  
                     />
                 );
             case 2:
@@ -74,7 +75,8 @@ export default function TradeStepper(props) {
                     <StepThree
                         receiver={receiver}
                         nextStep={nextStep}
-                        previousStep={previousStep} 
+                        previousStep={previousStep}
+                        receiverCards={receiverCards}
                     />
                 );
             default:

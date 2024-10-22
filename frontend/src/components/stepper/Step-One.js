@@ -27,6 +27,10 @@ function StepOne(props) {
             setResults([]);
         }
     }, [debouncedQuery]);
+
+    useEffect(() => {
+        setIsButtonDisable(!props.userSelected);
+    }, [props.userSelected]);
     
     const searchUsers = async (searchQuery) => {
         try {
@@ -46,7 +50,6 @@ function StepOne(props) {
         props.setUserSelected(user); 
         setQuery('');
         setIsDropdownVisible(false);
-        setIsButtonDisable(false);
     };
     
     return (

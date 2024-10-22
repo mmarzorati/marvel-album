@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { searchUsersAPI } from '../../apis/backendApi';
+import { createTrade } from '../../apis/backendApi';
 import { Button } from '@mui/material';
 import { Modal } from 'react-bootstrap';
 import { getUserCardsById } from '../../apis/backendApi';
@@ -9,7 +9,8 @@ function SepThree(props) {
 
     const [collection, setCollection] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [selectedIds, setSelectedIds] = useState([]);
+    const [senderCards, setSenderCards] = useState([]);
+    const [isButtonDisable, setIsButtonDisable] = useState(true); 
 
     useEffect(() => {
         const loadData = async () => {
@@ -20,20 +21,38 @@ function SepThree(props) {
         }
 
         loadData()
-        setSelectedIds([])
+        setSenderCards([])
     }, []);
 
+    // disabilita il bottone 'Next' se è vuoto
+    useEffect(() => {
+        setIsButtonDisable(senderCards.length === 0);
+    }, [senderCards]);
+
     const checkboxSelected = (id) => {
-        setSelectedIds((prevSelectedIds) =>     // aggiorna l'array selectedIds aggiungendo o rimuovendo l'ID a seconda che la minicard sia selezionata o deselezionata
+        setSenderCards((prevSelectedIds) =>     // aggiorna l'array receiverCards aggiungendo o rimuovendo l'ID a seconda che la minicard sia selezionata o deselezionata
             prevSelectedIds.includes(id)
             ? prevSelectedIds.filter((selectedId) => selectedId !== id)
             : [...prevSelectedIds, id]
         );
     };
 
-    const confirmTrade = () => {
-        console.log(selectedIds)
-        props.nextStep()
+    const confirmTrade = async () => {
+        if (props.receiverCards && senderCards) {
+            try {
+                setIsLoading(true)
+                await createTrade(props.receiver._id, senderCards, props.receiverCards)
+            } catch (error) {
+                console.log('error')
+            } finally {
+                setIsLoading(false)
+            }
+            
+        }
+        else {
+            console.log('error')
+            console.log(props.receiverCards, senderCards)
+        }
     }
 
     return (
@@ -42,7 +61,7 @@ function SepThree(props) {
                 {!isLoading && collection ? (
                     collection.map((item) => (
                         <MiniCard 
-                            id={item.marvelId}
+                            id={item._id}
                             name={item.name}
                             pathImg={item.pathImg}
                             checkboxSelected={checkboxSelected}
@@ -57,7 +76,7 @@ function SepThree(props) {
                 <Button variant="danger" onClick={props.previousStep}>
                     Cancel
                 </Button>
-                <Button onClick={confirmTrade} sx={{ mr: 1 }}>
+                <Button disabled={isButtonDisable} onClick={confirmTrade} sx={{ mr: 1 }}>
                     Create Trade
                 </Button>
             </Modal.Footer>

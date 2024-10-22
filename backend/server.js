@@ -4,8 +4,11 @@ const cookieParser = require('cookie-parser');
 const User = require('./models/User');
 const Card = require('./models/Card');
 const Trade = require('./models/Trade');
+// routes
 const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
+const tradesRoutes = require('./routes/trades');
+
 
 const app = express();
 const PORT = 3001;
@@ -48,3 +51,4 @@ app.patch('/trades/:id', async (req, res) => {
 
 app.use(usersRoutes);
 app.use(cardsRoutes);
+app.use(tradesRoutes);
