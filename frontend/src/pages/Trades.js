@@ -1,7 +1,7 @@
 import React from 'react';
-import CompletedTrade from '../components/CompletedTrade';
-import PendingTrade from '../components/PendingTrade';
-import CancelledTrade from '../components/CancelledTrade';
+import CompletedTrade from '../components/trade/CompletedTrade';
+import PendingTrade from '../components/trade/PendingTrade';
+import CancelledTrade from '../components/trade/CancelledTrade';
 import TradeStepper from '../modal/TradeStepper';
 import '../scss/Trades.scss';
 import plusIcon from '../assets/icons/plus.png';

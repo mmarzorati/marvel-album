@@ -1,5 +1,5 @@
 import React from 'react';
-import '../scss/Trades.scss';
+import '../../scss/Trades.scss';
 
 function CancelledTrade() {
     

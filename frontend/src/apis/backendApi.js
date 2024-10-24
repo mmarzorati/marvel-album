@@ -130,3 +130,13 @@ export async function createTrade( receiver_id, rec_cards, sen_cards) {
         throw error;
     }
 }
+
+export async function getUserTrades(status) {
+    try {
+        const response = await axios.get(`api/trades/${status}`, { withCredentials: true });
+        return response.data
+    } catch (error) {
+        console.error('Get Trade API error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}

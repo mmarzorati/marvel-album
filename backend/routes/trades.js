@@ -44,13 +44,52 @@ router.post('/api/trades', authMiddleware, async (req, res) => {
             rec_cards,
             sen_cards
         });
-
         const savedTrade = await newTrade.save();
+
+        // aggiunge agli utenti mittente e al destinatario lo scambio nel reciproco campo
+        await User.findByIdAndUpdate(sender_id, {
+            $push: { trades: savedTrade._id }
+        });
+        await User.findByIdAndUpdate(receiver_id, {
+            $push: { trades: savedTrade._id }
+        });
 
         res.status(201).json(savedTrade);
     } catch (error) {
         res.status(500).json({ message: 'Errore durante la creazione del trade', error: error.message });
     }
 })
+
+router.get('/api/trades/:status', authMiddleware, async (req, res) => {
+    try {
+        const { status } = req.params;
+
+        // controlla se l'ID utente è valido
+        if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
+            return res.status(400).json({ message: 'ID utente non valido.' });
+        }
+
+        // controlla se lo stato è valido
+        const validStatuses = ['pending', 'completed', 'cancelled'];
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ message: 'Stato non valido. Deve essere "pending", "completed" o "cancelled".' });
+        }
+
+        // Trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
+        const user = await User.findById(req.user._id).populate({
+            path: 'trades',
+            match: { status: status }, // Filtro per status direttamente nella query
+            populate: 'rec_cards sen_cards'
+        });
+
+        if (!user) {
+            return res.status(404).json({ message: 'Utente non trovato.' });
+        }
+
+        res.status(200).json(user.trades);
+    } catch (error) {
+        res.status(500).json({ message: 'Errore durante la ricerca dei trade', error: error.message });
+    }
+});
 
 module.exports = router;
