@@ -2,6 +2,8 @@ $background-dark: #333;
 $cancelled-color: #ff4d4d;
 $completed-color: #4caf50;
 $pending-color: #ffc107;
+$sent-color: #9c27b0;
+$received-color: #00bcd4;
 $text-color: #fff;
 
 .trades {
@@ -121,6 +123,7 @@ $text-color: #fff;
     width: 150px;
     border-radius: 10px;
     color: var(--smoke-white);
+    font-size: 14px;
     background-color: var(--red);
     display: flex;
     justify-content: center;
@@ -143,9 +146,9 @@ $text-color: #fff;
 }
 
 .tradecard {
-    height: 200px;
-    width: 150px;
-    border-radius: 10px;
+    height: 150px;
+    width: 100px;
+    border-radius: 5px;
     color: var(--smoke-white);
     background-color: var(--red);
     display: flex;
@@ -157,8 +160,8 @@ $text-color: #fff;
     margin-top: 20px;
     position: relative;
     img {
-        height: 125px;
-        width: 110px;
+        height: 90px;
+        width: 80px;
     }
     &-checkbox {
         position: absolute;
@@ -214,6 +217,22 @@ $text-color: #fff;
 
         &.inactive {
         background-color: lighten($pending-color, 10%);
+        }
+    }
+
+    &.sent {
+        background-color: $sent-color;
+
+        &.inactive {
+        background-color: lighten($sent-color, 10%);
+        }
+    }
+
+    &.received {
+        background-color: $received-color;
+
+        &.inactive {
+        background-color: lighten($received-color, 10%);
         }
     }
 }

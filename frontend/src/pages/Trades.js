@@ -10,23 +10,26 @@ import { Container, Row, Col, Button } from 'react-bootstrap';
 
 function Trades() {
 
-    const [tradeType, setTradeType] = useState("pending");
+    const [tradeStatus, setTradeStatus] = useState("pending");
+    const [tradeOrigin, setTradeOrigin] = useState("sent");
     const [show, setShow] = useState(false);
 
     const closeModal = () => setShow(false);
     const showModal = () => setShow(true);
-    const setCompleted = () => setTradeType("completed");
-    const setCancelled = () => setTradeType("cancelled");
-    const setPending = () => setTradeType("pending");
+    const setCompleted = () => setTradeStatus("completed");
+    const setCancelled = () => setTradeStatus("cancelled");
+    const setPending = () => setTradeStatus("pending");
+    const setSent = () => setTradeOrigin("sent");
+    const setReceived = () => setTradeOrigin("received");
 
-    const switchComponent = () => {
-        switch (tradeType) {
+    const switchStatus = () => {
+        switch (tradeStatus) {
             case 'completed':
-                return <CompletedTrade />;
+                return <CompletedTrade tradeOrigin={tradeOrigin} />;
             case 'pending':
-                return <PendingTrade />;
+                return <PendingTrade tradeOrigin={tradeOrigin} />;
             case 'cancelled':
-                return <CancelledTrade />;
+                return <CancelledTrade tradeOrigin={tradeOrigin} />;
             default:
                 return <div></div>;
         }
@@ -40,19 +43,27 @@ function Trades() {
                     <img className='trades-icon-2' src={plusIcon} alt="Plus Icon" />
                         New trade
                 </Button>
-                <h2 className='trades-title'>Your trades:</h2>
                 <div className='trades-container'>
-                    <div onClick={setCancelled} className={`button cancelled ${tradeType === 'cancelled' ? 'active' : 'inactive'}`}>
+                    <div onClick={setSent} className={`button sent ${tradeOrigin === 'sent' ? 'active' : 'inactive'}`}>
+                        Sent
+                    </div>
+                    <div onClick={setReceived} className={`button received ${tradeOrigin === 'received' ? 'active' : 'inactive'}`}>
+                        Received
+                    </div>
+                </div>
+                <h2 className='trades-title'>Status</h2>
+                <div className='trades-container'>
+                    <div onClick={setCancelled} className={`button cancelled ${tradeStatus === 'cancelled' ? 'active' : 'inactive'}`}>
                         Cancelled
                     </div>
-                    <div onClick={setPending} className={`button pending ${tradeType === 'pending' ? 'active' : 'inactive'}`}>
+                    <div onClick={setPending} className={`button pending ${tradeStatus === 'pending' ? 'active' : 'inactive'}`}>
                         Pending
                     </div>
-                    <div onClick={setCompleted} className={`button completed ${tradeType === 'completed' ? 'active' : 'inactive'}`}>
+                    <div onClick={setCompleted} className={`button completed ${tradeStatus === 'completed' ? 'active' : 'inactive'}`}>
                         Completed
                     </div>
                 </div>
-                {switchComponent()}
+                {switchStatus()}
             </div>
             <TradeStepper 
                 show={show} 

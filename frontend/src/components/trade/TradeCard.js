@@ -7,8 +7,8 @@ function TradeCard(props) {
     const [name, setName] = useState(props.name);
 
     useEffect(() => {
-        if (props.name.length > 10) {
-            setName(props.name.substring(0, 10) + '...');
+        if (props.name.length > 8) {
+            setName(props.name.substring(0, 8) + '...');
         } else {
             setName(props.name);
         }
@@ -16,9 +16,9 @@ function TradeCard(props) {
 
     return (
         <>
-            <div className='minicard'>
+            <div className='tradecard'>
                 <Image src={props.pathImg } rounded />
-                <h6>{name}</h6>
+                <label>{name}</label>
             </div>
         </>
     );
