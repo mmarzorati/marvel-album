@@ -22,10 +22,14 @@ function Trade(props) {
                     />
                 ))}
             </Row>
-            <div>
-                <Button variant="danger" className='trades-btn'>Reject</Button>
-                <Button variant="success" className='trades-btn'>Accept</Button>
-            </div>
+            {
+                props.status === 'pending' ? (
+                    <div>
+                        <Button variant="danger" className='trades-btn'>Reject</Button>
+                        <Button variant="success" className='trades-btn'>Accept</Button>
+                    </div>
+                ) : null
+            }
         </>
     );
 }

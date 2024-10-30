@@ -38,20 +38,24 @@ function Trades() {
     return (
         <>
             <div className='trades-wrapper'>
-                <h2 className='trades-title'>Do you want swap some cards?</h2>
-                <Button className='button d-flex justify-content-center align-items-center mb-5' onClick={showModal}>
-                    <img className='trades-icon-2' src={plusIcon} alt="Plus Icon" />
-                        New trade
-                </Button>
-                <div className='trades-container'>
+                <div className='trades-container mb-5 mt-5'>
+                    <h2 className='trades-title'>Do you want swap some cards?</h2>
+                    <Button className='button d-flex justify-content-center align-items-center mb-4' onClick={showModal}>
+                        <img className='trades-icon-2' src={plusIcon} alt="Plus Icon" />
+                            New trade
+                    </Button>
+                </div>
+                <h2 className='trades-title '>Your trades overview</h2>
+                <label className='trades-subtitle'>Choose trade category</label>
+                <div className='trades-container mb-5'>
                     <div onClick={setSent} className={`button sent ${tradeOrigin === 'sent' ? 'active' : 'inactive'}`}>
                         Sent
                     </div>
-                    <div onClick={setReceived} className={`button received ${tradeOrigin === 'received' ? 'active' : 'inactive'}`}>
+                    <div onClick={setReceived} className={`button sent ${tradeOrigin === 'received' ? 'active' : 'inactive'}`}>
                         Received
                     </div>
                 </div>
-                <h2 className='trades-title'>Status</h2>
+                <label className='trades-subtitle'>Select status</label>
                 <div className='trades-container'>
                     <div onClick={setCancelled} className={`button cancelled ${tradeStatus === 'cancelled' ? 'active' : 'inactive'}`}>
                         Cancelled

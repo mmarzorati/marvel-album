@@ -63,9 +63,10 @@ router.post('/api/trades', authMiddleware, async (req, res) => {
 router.get('/api/trades/:status', authMiddleware, async (req, res) => {
     try {
         const { status } = req.params;
+        const userId = req.user._id;
 
         // controlla se l'ID utente è valido
-        if (!mongoose.Types.ObjectId.isValid(req.user._id)) {
+        if (!mongoose.Types.ObjectId.isValid(userId)) {
             return res.status(400).json({ message: 'ID utente non valido.' });
         }
 
@@ -75,8 +76,8 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
             return res.status(400).json({ message: 'Stato non valido. Deve essere "pending", "completed" o "cancelled".' });
         }
 
-        // Trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
-        const user = await User.findById(req.user._id).populate({
+        // trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
+        const user = await User.findById(userId).populate({
             path: 'trades',
             match: { status: status }, // Filtro per status direttamente nella query
             populate: 'rec_cards sen_cards'
@@ -86,7 +87,10 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
             return res.status(404).json({ message: 'Utente non trovato.' });
         }
 
-        res.status(200).json(user.trades);
+        const sent_trades = user.trades.filter(trade => trade.sender_id.toString() === userId.toString());
+        const received_trades = user.trades.filter(trade => trade.receiver_id.toString() === userId.toString());
+
+        res.status(200).json({ sent_trades, received_trades });
     } catch (error) {
         res.status(500).json({ message: 'Errore durante la ricerca dei trade', error: error.message });
     }

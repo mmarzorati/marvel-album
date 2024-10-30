@@ -11,8 +11,9 @@ function CompletedTrade({tradeOrigin}) {
 
     useEffect(() => {
         const loadData = async () => {
-            const res = await getUserTrades('pending')
-            setTradesSent(res)
+            const res = await getUserTrades('completed')
+            setTradesSent(res.sent_trades)
+            setTradesReceived(res.received_trades)
         }
 
         loadData()
@@ -24,31 +25,30 @@ function CompletedTrade({tradeOrigin}) {
     
     return (
         <>
-            <h2>Completed trades</h2>
-                        {  tradeOrigin === 'sent' ? (                            
-                                tradesSent && tradesSent.map((item) => (
-                                    <Trade 
-                                        id={item._id}
-                                        sender_id={item.sender_id}
-                                        receiver_id={item.receiver_id}
-                                        rec_cards={item.rec_cards}
-                                        sen_cards={item.sen_cards}
-                                        status='pending'
-                                    />
-                                ))
-                            ) : (
-                                tradesReceived && tradesReceived.map((item) => (
-                                    <Trade 
-                                        id={item._id}
-                                        sender_id={item.sender_id}
-                                        receiver_id={item.receiver_id}
-                                        rec_cards={item.rec_cards}
-                                        sen_cards={item.sen_cards}
-                                        status='pending'
-                                    />
-                                ))
-                            )
-                        }
+                {  tradeOrigin === 'sent' ? (                            
+                        tradesSent && tradesSent.map((item) => (
+                            <Trade 
+                                id={item._id}
+                                sender_id={item.sender_id}
+                                receiver_id={item.receiver_id}
+                                rec_cards={item.rec_cards}
+                                sen_cards={item.sen_cards}
+                                status='completed'
+                            />
+                        ))
+                    ) : (
+                        tradesReceived && tradesReceived.map((item) => (
+                            <Trade 
+                                id={item._id}
+                                sender_id={item.sender_id}
+                                receiver_id={item.receiver_id}
+                                rec_cards={item.rec_cards}
+                                sen_cards={item.sen_cards}
+                                status='completed'
+                            />
+                        ))
+                    )
+                }
         </>
     );
 }
