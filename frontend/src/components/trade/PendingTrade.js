@@ -3,7 +3,7 @@ import '../../scss/Trades.scss';
 import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
 
-function PendingTrade({tradeOrigin}) {
+function PendingTrade({tradeOrigin, tradeStatus}) {
 
     const [tradesSent, setTradesSent] = useState(null);
     const [tradesReceived, setTradesReceived] = useState(null);
@@ -26,25 +26,30 @@ function PendingTrade({tradeOrigin}) {
         <>
                 {  tradeOrigin === 'sent' ? (                            
                         tradesSent && tradesSent.map((item) => (
-                            <Trade 
-                                id={item._id}
-                                sender_id={item.sender_id}
-                                receiver_id={item.receiver_id}
-                                rec_cards={item.rec_cards}
-                                sen_cards={item.sen_cards}
-                                status='pending'
-                            />
+                            <>
+                                <Trade 
+                                    id={item._id}
+                                    sender_id={item.sender_id}
+                                    receiver_id={item.receiver_id}
+                                    rec_cards={item.rec_cards}
+                                    sen_cards={item.sen_cards}
+                                    status='pending'
+                                />
+                            </>
                         ))
                     ) : (
                         tradesReceived && tradesReceived.map((item) => (
-                            <Trade 
-                                id={item._id}
-                                sender_id={item.sender_id}
-                                receiver_id={item.receiver_id}
-                                rec_cards={item.rec_cards}
-                                sen_cards={item.sen_cards}
-                                status='pending'
-                            />
+                            <>
+                                <Trade 
+                                    id={item._id}
+                                    sender_id={item.sender_id}
+                                    receiver_id={item.receiver_id}
+                                    rec_cards={item.rec_cards}
+                                    sen_cards={item.sen_cards}
+                                    status='pending'
+                                    tradeOrigin={tradeOrigin}
+                                />
+                            </>
                         ))
                     )
                 }

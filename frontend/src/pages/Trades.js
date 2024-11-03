@@ -27,7 +27,7 @@ function Trades() {
             case 'completed':
                 return <CompletedTrade tradeOrigin={tradeOrigin} />;
             case 'pending':
-                return <PendingTrade tradeOrigin={tradeOrigin} />;
+                return <PendingTrade tradeOrigin={tradeOrigin} tradeStatus={tradeStatus}/>;
             case 'cancelled':
                 return <CancelledTrade tradeOrigin={tradeOrigin} />;
             default:
@@ -38,7 +38,7 @@ function Trades() {
     return (
         <>
             <div className='trades-wrapper'>
-                <div className='trades-container mb-5 mt-5'>
+                <div className='trades-container mb-4 mt-4'>
                     <h2 className='trades-title'>Do you want swap some cards?</h2>
                     <Button className='button d-flex justify-content-center align-items-center mb-4' onClick={showModal}>
                         <img className='trades-icon-2' src={plusIcon} alt="Plus Icon" />
@@ -46,8 +46,7 @@ function Trades() {
                     </Button>
                 </div>
                 <h2 className='trades-title '>Your trades overview</h2>
-                <label className='trades-subtitle'>Choose trade category</label>
-                <div className='trades-container mb-5'>
+                <div className='trades-container mb-4'>
                     <div onClick={setSent} className={`button sent ${tradeOrigin === 'sent' ? 'active' : 'inactive'}`}>
                         Sent
                     </div>
@@ -55,7 +54,6 @@ function Trades() {
                         Received
                     </div>
                 </div>
-                <label className='trades-subtitle'>Select status</label>
                 <div className='trades-container'>
                     <div onClick={setCancelled} className={`button cancelled ${tradeStatus === 'cancelled' ? 'active' : 'inactive'}`}>
                         Cancelled
