@@ -1,10 +1,20 @@
 import React, {useEffect} from 'react';
 import '../../scss/Trades.scss';
 import tradeIcon from '../../assets/icons/trade.png';
-import TradeCard from './TradeCard'
+import TradeCard from './TradeCard';
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { changeTradeStatus } from '../../apis/backendApi';
 
 function Trade(props) {
+
+    const handleTradeStatus = async (status) => {
+        const res = await changeTradeStatus(status, props.id);
+    } 
+
+    const capitalizeFirstLetter = (string) => {
+        if (!string) return "";
+        return string.charAt(0).toUpperCase() + string.slice(1);
+    }
 
     return (
         <>
@@ -29,12 +39,12 @@ function Trade(props) {
                     ))}
                 </div>
             </Row>
-            <div className={`trades-tag-${props.status}`}>Pending</div>
+            <div className={`trades-tag-${props.status}`}>{capitalizeFirstLetter(props.status)}</div>
             {
                 (props.status === 'pending' && props.tradeOrigin === 'received') ? (
                     <div>
-                        <Button variant="danger" className='trades-btn'>Reject</Button>
-                        <Button variant="success" className='trades-btn'>Accept</Button>
+                        <Button onClick={() => handleTradeStatus('cancelled')} variant="danger" className='trades-btn'>Reject</Button>
+                        <Button onClick={() => handleTradeStatus('completed')} variant="success" className='trades-btn'>Accept</Button>
                     </div>
                 ) : null
             }

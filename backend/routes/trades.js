@@ -96,4 +96,38 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
     }
 });
 
+router.patch('/api/trades', authMiddleware, async (req, res) => {
+    try {
+        const { tradeId, status } = req.body;
+        const userId = req.user._id;
+
+        // Verifica se l'ID del trade è valido
+        if (!mongoose.Types.ObjectId.isValid(tradeId)) {
+            return res.status(400).json({ message: 'ID trade non valido.' });
+        }
+
+        // conrtrolla che lo stato sia valido
+        const validStatuses = ['completed', 'cancelled'];
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ message: 'Stato non valido. Deve essere "completed" o "cancelled".' });
+        }
+
+        // controlla che l'utente sia coinvolto come sender o receiver
+        const trade = await Trade.findOne({
+            _id: tradeId,
+            $or: [{ sender_id: userId }, { receiver_id: userId }]
+        });
+        if (!trade) {
+            return res.status(404).json({ message: 'Trade non trovato o accesso negato.' });
+        }
+
+        trade.status = status;
+        await trade.save();
+
+        res.status(200).json({ message: `Stato del trade aggiornato a ${status}.`, trade });
+    } catch (error) {
+        res.status(500).json({ message: 'Errore durante l\'aggiornamento dello stato del trade.', error: error.message });
+    }
+});
+
 module.exports = router;

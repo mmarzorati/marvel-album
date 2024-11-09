@@ -140,3 +140,17 @@ export async function getUserTrades(status) {
         throw error;
     }
 }
+
+export async function changeTradeStatus(status, tradeId) {
+    try {
+        const response = await axios.patch(
+            `api/trades`,
+            { status, tradeId },
+            { withCredentials: true }
+        )
+        return response.data
+    } catch (error) {
+        console.error('Get Trade API error:', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}
