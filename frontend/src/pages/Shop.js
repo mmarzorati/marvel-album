@@ -2,11 +2,14 @@ import React, { useEffect, useState } from 'react';
 import Pack from '../components/Pack';
 import CoinPack from '../components/CoinPack';
 import '../scss/Shop.scss';
-import { getCharacters  } from '../apis/marvelApi';
+import { getCharacters } from '../apis/marvelApi';
+import { getUserInfo } from '../apis/backendApi';
+import CoinIcon from '../assets/icons/coin.png';
 
 function Shop() {
 
     const [totalCards, setTotalCards] = useState(null);
+    const [coins, setCoins] = useState(null);
 
     useEffect(() => {
         const loadData = async () => {
@@ -14,6 +17,8 @@ function Shop() {
             if (setTotalCards(res.total)) {
                 console.error("Error loading total cards")
             }
+            const response = await getUserInfo();
+            setCoins(response.coins)
         }
 
         loadData();
@@ -22,7 +27,18 @@ function Shop() {
     return (
         <>
         <div className='shop-container'>
-            <h2 className='shop-title'>Buy Packs</h2>
+            <div className='shop-header'>
+                <h2 className='shop-title'>Buy Packs</h2>
+                <div className='shop-row tr-position'>
+                    <label className='shop-coin'>{coins} </label>
+                    <img
+                        alt=""
+                        src={CoinIcon}
+                        className ='shop-icon'
+                    />
+                </div>
+            </div>
+
             <div className='shop-row'>
                 <Pack amount="100" desc="random cards" price="50" color="#FFD700" totalCards={totalCards}/>
                 <Pack amount="50" desc="random cards" price="30" color="#9370DB" totalCards={totalCards}/>

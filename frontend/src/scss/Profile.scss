@@ -9,15 +9,21 @@
     }
     &-label {
         font-weight: 600;
-        color: var(--red)
+        color: #ffc107
     }
     &-desc {
         font-size: 20px;
         color: var(--light-grey)
     }
     &-icon {
-        height: 175px;
-        width: 175px;
+        height: 125px;
+        width: 125px;
         margin: 40px 0 50px 0;
+        filter: invert(1);
+    }
+    &-col {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
     }
 }

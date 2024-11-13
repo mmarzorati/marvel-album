@@ -41,21 +41,21 @@ function Profile() {
                     <h2 className='profile-title'>Profile</h2>
                     <img className='profile-icon' src={userIcon} alt="user Icon" />
                     <Row className='text-center' >
-                        <Col>
+                        <Col className='profile-col'>
                             <label className='profile-label' >Name</label>
                             <h6 className='profile-desc'>{name}</h6>
                         </Col>
-                        <Col>
+                        <Col className='profile-col'>
                             <label className='profile-label' >Username</label>
                             <h6 className='profile-desc'>{username}</h6>
                         </Col>
                     </Row>
                     <Row className='text-center'>
-                        <Col>
+                        <Col className='profile-col'>
                             <label className='profile-label' >Email</label>
                             <h6 className='profile-desc'>{email}</h6>
                         </Col>
-                        <Col>
+                        <Col className='profile-col'>
                             <label className='profile-label' >Coins</label>
                             <h6 className='profile-desc'>{coins}</h6>
                         </Col>

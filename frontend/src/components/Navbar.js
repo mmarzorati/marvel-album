@@ -2,26 +2,33 @@ import React, { useState, useEffect } from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import '../scss/Navbar.scss';
 
 const NavbarComponent = () => {
-
-    useEffect(() => {
-
-    }, []); 
 
     return (
         <Navbar bg="dark" data-bs-theme="dark">
             <Container>
-                <Navbar.Brand href="/home">Navbar</Navbar.Brand>
                 <Nav className="me-auto">
-                    <Nav.Link href="/album">Home</Nav.Link>
-                    <Nav.Link href="/shop">Shop</Nav.Link>
-                    <Nav.Link href="/trades">Trades</Nav.Link>
+                    <Nav.Link className='nav-object' href="/album">
+                        Album
+                        {/* <img
+                            alt=""
+                            src="/img/logo.svg"
+                            width="30"
+                            height="30"
+                            className="d-inline-block align-top"
+                        /> */}
+                    </Nav.Link>
+                    <Nav.Link className='nav-object' href="/shop">Shop</Nav.Link>
+                    <Nav.Link className='nav-object' href="/trades">Trades</Nav.Link>
                 </Nav>
                 <Nav>
-                    <Nav.Link href="/profile">Profile</Nav.Link>
-                    <Nav.Link href="/settings">Settings</Nav.Link>
-                    <Nav.Link href="/login">Logout</Nav.Link>
+                    <Nav.Link className='nav-object' href="/profile">
+                        Profile
+                    </Nav.Link>
+                    <Nav.Link className='nav-object' href="/settings">Settings</Nav.Link>
+                    <Nav.Link className='nav-object' href="/login">Logout</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
