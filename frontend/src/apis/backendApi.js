@@ -75,12 +75,15 @@ export async function addUserCard( marvelId, name, description, pathImg) {
 
 export async function buyCoins( amount ) {
     try {
-        const response = await axios.post(
-            'api/users/coins',
-            { amount },
-            { withCredentials: true }
-        );
-        return response.data
+        if (amount > 0 ) {
+            amount = +amount; 
+            const response = await axios.post(
+                'api/users/coins',
+                { amount },
+                { withCredentials: true }
+            );
+            return response.data
+        }
     } catch (error) {
         console.error('Buy coins API error:', error.response ? error.response.data : error.message);
         throw error;

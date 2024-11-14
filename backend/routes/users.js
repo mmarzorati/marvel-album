@@ -166,7 +166,27 @@ router.post('/api/users/coins', authMiddleware , async (req, res) => {
         }
 
         await user.save();
-        res.status(200).send(user);
+        
+        // dopo aver salvato l'utente viene aggiotnato il token dell'utente con i coins aggiornati
+        const token = jwt.sign(
+            { 
+                _id: user._id, 
+                email: user.email,
+                username: user.username,
+                name: user.name,
+                coins: user.coins
+            },
+            config.JWT_SECRET,               // chiave segreta per firmare il token
+            { expiresIn: '1h' }
+        );
+
+        res.cookie('token', token, {
+            httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
+            secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
+            maxAge: 60 * 60 * 1000 // 1 ora
+        });
+
+        res.status(200).send({ coins: user.coins });
 
 
     } catch (error) {

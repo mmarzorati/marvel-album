@@ -13,13 +13,16 @@ function Pack(props) {
     const showModal = () => setShow(true);
 
     const addCoins = async () => {
-        const res = await buyCoins(10);
-        console.log(res)
-    }
-
-    const buyPack = () => {
-        // test da RIMUOVERE
-        addUserCard(1011334, "3-D Man", "", "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784");
+        try {
+            const res = await buyCoins(props.amount);
+            props.setCoins(res.coins)
+        }
+        catch (error) {
+            // toast error
+        }
+        finally {
+            closeModal();
+        }
     }
 
     return (

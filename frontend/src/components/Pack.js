@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../scss/Pack.scss';
 import { Modal, Button } from 'react-bootstrap';
 import coinIcon from '../assets/icons/coin.png';
-import { addUserCard } from '../apis/backendApi';
+import { addUserCard, removeCoins } from '../apis/backendApi';
 import { getCharacters } from '../apis/marvelApi';
 
 function Pack(props) {
@@ -16,24 +16,30 @@ function Pack(props) {
     const showModal = () => setShow(true);
 
     const confirmPurchase = async () => {
-        setIsLoading(true);
-        for (let i = 0; i < props.amount; i++) {
-            // genera un numero casuale tra 0 e carteTotali -1,questo perchè rappresenterà l'offset, che permette di saltare il numero di elementi indicato
-            const randomNumber = Math.floor(Math.random() * (props.totalCards)); 
-            const res = await getCharacters(1, randomNumber)
-            await addUserCard(
-                res.results[0].id, 
-                res.results[0].name, 
-                res.results[0].description, 
-                res.results[0].thumbnail.path + '.' + res.results[0].thumbnail.extension
-            );
+        try {
+            const user = await removeCoins(props.price)
+            setIsLoading(true);
+            for (let i = 0; i < props.amount; i++) {
+                // genera un numero casuale tra 0 e carteTotali -1,questo perchè rappresenterà l'offset, che permette di saltare il numero di elementi indicato
+                const randomNumber = Math.floor(Math.random() * (props.totalCards)); 
+                const res = await getCharacters(1, randomNumber)
+                await addUserCard(
+                    res.results[0].id, 
+                    res.results[0].name, 
+                    res.results[0].description, 
+                    res.results[0].thumbnail.path + '.' + res.results[0].thumbnail.extension
+                );
+            }
+            props.setCoins(user.coins)
         }
-        setIsLoading(false);
-    }
+        catch (error) {
+            console.log(error)
+        }
+        finally {
+            setIsLoading(false);
+            closeModal();
+        }
 
-    const buyPack = () => {
-        // test da RIMUOVERE
-        addUserCard(1011334, "3-D Man", "", "http://i.annihil.us/u/prod/marvel/i/mg/c/e0/535fecbbb9784");
     }
 
     return (
