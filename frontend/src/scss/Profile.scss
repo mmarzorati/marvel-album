@@ -8,22 +8,50 @@
         color: var(--smoke-white)
     }
     &-label {
-        font-weight: 600;
-        color: #ffc107
+        font-weight: 700;
+        color: black;
+        font-size: 18px;
     }
     &-desc {
         font-size: 20px;
-        color: var(--light-grey)
+        color: var(--light-grey);
+        margin: 0;
     }
     &-icon {
-        height: 125px;
-        width: 125px;
+        height: 150px;
+        width: 150px;
         margin: 40px 0 50px 0;
-        filter: invert(1);
+        filter: brightness(70%);
     }
     &-col {
         display: flex;
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+    }
+    &-row {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    &-edit {
+        height: 50px;
+        width: 50px;
+        padding: 10px;
+        border: solid 4px transparent;
+        margin-left: 20px;
+        &:hover {
+            border: solid 4px black;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+    }
+    &-coin {
+        height: 30px;
+        width: 30px;
+        margin-left: 5px;
+        filter: invert(0.9);
+    }
+    &-mb {
+        margin-bottom: 50px;
     }
 }

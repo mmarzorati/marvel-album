@@ -157,3 +157,30 @@ export async function changeTradeStatus(status, tradeId) {
         throw error;
     }
 }
+
+export async function updateUserInfo(fieldType, inputValue) {
+
+    const payload = {
+        email: null,
+        name: null,
+        username: null
+    };
+
+    if (fieldType in payload) {
+        payload[fieldType] = inputValue;
+    } else {
+        throw new Error(`Invalid fieldType: ${fieldType}`);
+    }
+
+    try {
+        const response = await axios.put(
+            'api/users', 
+            payload, 
+            { withCredentials: true }
+        );
+        return response.data
+    } catch (error) {
+        console.error('Create user API error  :', error.response ? error.response.data : error.message);
+        throw error;
+    }
+}

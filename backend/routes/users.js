@@ -104,6 +104,46 @@ router.get('/api/user', authMiddleware, async (req, res) => {
     }
 });
 
+// endpoint per aggiornare un utente
+router.put('/api/users', authMiddleware, async (req, res) => {
+    const userId = req.user._id;
+
+    try {
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+
+        // controllo di unicità per username
+        if (req.body.username && req.body.username !== user.username) {
+            const existingUsername = await User.findOne({ username: req.body.username });
+            if (existingUsername) {
+                return res.status(400).send({ message: 'Username already exists' });
+            }
+            user.username = req.body.username;      // aggiorna solo se passa il controllo
+        }
+
+        // controllo di unicità per email
+        if (req.body.email && req.body.email !== user.email) {
+            const existingEmail = await User.findOne({ email: req.body.email });
+            if (existingEmail) {
+                return res.status(400).send({ message: 'Email already exists' });
+            }
+            user.email = req.body.email;
+        }
+
+        if (req.body.name) {
+            user.name = req.body.name;
+        }
+
+        await user.save();
+
+        res.status(200).send({ message: 'User updated successfully', user });
+    } catch (error) {
+        res.status(500).send({ message: 'Error updating user', error });
+    }
+});
+
 // endpoint per ottenere tutte le carte di un utente
 router.get('/api/users/cards',authMiddleware , async (req, res) => {
     try {
