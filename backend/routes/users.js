@@ -147,7 +147,7 @@ router.put('/api/users', authMiddleware, async (req, res) => {
 // endpoint per ottenere tutte le carte di un utente
 router.get('/api/users/cards',authMiddleware , async (req, res) => {
     try {
-        const user = await User.findById(req.user._id).populate('collec');
+        const user = await User.findById(req.user._id).populate('collec.cardId');
         if (!user) {
             return res.status(404).send('User not found');
         }
@@ -159,7 +159,7 @@ router.get('/api/users/cards',authMiddleware , async (req, res) => {
 });
 
 // endpoint per l'aggiunta di una carta nel database
-router.post('/api/users/add-card', authMiddleware , async (req, res) => {
+router.post('/api/users/add-card', authMiddleware, async (req, res) => {
     const { marvelId, name, description, pathImg } = req.body;
 
     try {
@@ -178,15 +178,21 @@ router.post('/api/users/add-card', authMiddleware , async (req, res) => {
                 pathImg
             });
             await card.save();
-
         }
 
-        // indipendentemente se abbia già la carta o meno la aggiunge
-        user.collec.push(card._id);
+        // controlla se la carta è già presente in "collec"
+        const existingCard = user.collec.find(item => item.cardId.toString() === card._id.toString());
+        if (existingCard) {
+            // se presente incrementa solamente quantity
+            existingCard.quantity += 1;
+        } else {
+            // se invece la carta non c'è già la aggiunge e imposta quantity a 1
+            user.collec.push({ cardId: card._id, quantity: 1 });
+        }
+
         await user.save();
 
-        res.status(200).json({ message: 'Carta gestita correttamente' });
-
+        res.status(200).json({ message: 'Carta gestita correttamente', user });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Errore del server' });

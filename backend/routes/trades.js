@@ -12,7 +12,7 @@ const Trade = require('../models/Trade');
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
 
-// endpoint per ottenere tutte le carte di un utente dato l'id di uno user 
+// endpoint per creare un nuovo "trade"
 router.post('/api/trades', authMiddleware, async (req, res) => {
     try {
         const { receiver_id, rec_cards, sen_cards } = req.body;

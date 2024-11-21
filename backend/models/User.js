@@ -7,11 +7,10 @@ const UserSchema = new Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    collec: [{ type: Schema.Types.ObjectId, ref: 'Card' }],
-    // collec: [{
-    //     cardId: { type: Schema.Types.ObjectId, ref: 'Card', required: true },
-    //     quantity: { type: Number, required: true }
-    // }],
+    collec: [{
+        cardId: { type: Schema.Types.ObjectId, ref: 'Card', required: true },
+        quantity: { type: Number, required: true }
+    }],
     trades: [{ type: Schema.Types.ObjectId, ref: 'Trade' }],
     coins: { type: Number, required: true }
 });

@@ -10,7 +10,7 @@ const Card = require('../models/Card');
 const Trade = require('../models/Trade');
 
 // endpoint per ottenere tutte le carte di un utente dato l'id di uno user 
-router.get('/api/cards/:userId', authMiddleware, async (req, res) => {
+router.get('/api/cards/:userId', authMiddleware, async (req, res) => {    // INUTILE??
     try {
         const userId = req.params.userId;
 

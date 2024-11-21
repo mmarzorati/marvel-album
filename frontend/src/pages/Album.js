@@ -46,10 +46,10 @@ function Album() {
             <div className='album-container'>
                 {collection && collection.map((item) => (
                     <Card 
-                        key={item._id}
-                        name={item.name}
-                        pathImg={item.pathImg}
-                        description={item.description}
+                        key={item.cardId._id}
+                        name={item.cardId.name}
+                        pathImg={item.cardId.pathImg}
+                        description={item.cardId.description}
                     />
                 ))}
             </div>
