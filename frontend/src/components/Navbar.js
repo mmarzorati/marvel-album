@@ -27,7 +27,6 @@ const NavbarComponent = () => {
                     <Nav.Link className='nav-object' href="/profile">
                         Profile
                     </Nav.Link>
-                    <Nav.Link className='nav-object' href="/settings">Settings</Nav.Link>
                     <Nav.Link className='nav-object' href="/login">Logout</Nav.Link>
                 </Nav>
             </Container>

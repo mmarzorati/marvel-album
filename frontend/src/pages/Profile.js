@@ -49,7 +49,10 @@ function Profile() {
 
     const updateInfo = async () => {
         if (inputValue) {
-            await updateUserInfo(fieldType, inputValue);
+            const res = await updateUserInfo(fieldType, inputValue);
+            setUsername(res.user.username)
+            setName(res.user.name)
+            setEmail(res.user.email)
             closeModal();
             setInputValue('');
         }
@@ -73,7 +76,7 @@ function Profile() {
                                     <label className='profile-label' >Name</label>
                                     <h6 className='profile-desc'>{name}</h6>
                                 </div>
-                                <img className='profile-edit' src={pencilIcon} alt="user Icon" onClick={() => openModal("email")}/>
+                                <img className='profile-edit' src={pencilIcon} alt="user Icon" onClick={() => openModal("name")}/>
                             </Col>
                             
                             <Col className='profile-row profile-mb'>
