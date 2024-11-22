@@ -10,11 +10,11 @@ const Card = require('../models/Card');
 const Trade = require('../models/Trade');
 
 // endpoint per ottenere tutte le carte di un utente dato l'id di uno user 
-router.get('/api/cards/:userId', authMiddleware, async (req, res) => {    // INUTILE??
+router.get('/api/cards/:userId', authMiddleware, async (req, res) => {
     try {
         const userId = req.params.userId;
 
-        const user = await User.findById(userId).populate('collec');
+        const user = await User.findById(userId).populate('collec.cardId');
         if (!user) {
             return res.status(404).send('User not found');
         }

@@ -47,9 +47,9 @@ function StepTwo(props) {
                 {!isLoading && collection ? (
                     collection.map((item) => (
                         <MiniCard 
-                            id={item._id}
-                            name={item.name}
-                            pathImg={item.pathImg}
+                            id={item.cardId._id}
+                            name={item.cardId.name}
+                            pathImg={item.cardId.pathImg}
                             checkboxSelected={checkboxSelected}
                         />
                     ))

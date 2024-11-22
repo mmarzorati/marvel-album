@@ -121,11 +121,83 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
             return res.status(404).json({ message: 'Trade non trovato o accesso negato.' });
         }
 
-        trade.status = status;
+        // se si vuole cancellare il trade viene semplicemente cambiato lo stato 
+        if (status !== 'completed') {
+            trade.status = status;
+            await trade.save();
+            return res.status(200).json({ message: `Stato del trade aggiornato a ${status}.`, trade });
+        }
+
+        // se invece si vuole compltare il trade:
+        const sender = await User.findById(trade.sender_id);
+        const receiver = await User.findById(trade.receiver_id);
+        if (!sender || !receiver) {
+            return res.status(404).json({ message: 'Mittente o destinatario non trovato.' });
+        }
+
+        // verifica se le carte degli scambi sono ancora possedute, magari è già stata scambiata
+        // ma va fatto prima degli altri for per essere sicuri di non procedere ai vari scambi
+        for (const card of trade.sen_cards) {
+            const cardInCollection = sender.collec.find(item => item.cardId.toString() === card._id.toString());
+            if (!cardInCollection || cardInCollection.quantity < 1) {
+                return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}` });
+            }
+        }
+
+        for (const card of trade.rec_cards) {
+            const cardInCollection = receiver.collec.find(item => item.cardId.toString() === card._id.toString());
+            if (!cardInCollection || cardInCollection.quantity < 1) {
+                return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}` });
+            }
+        }
+
+        // invio carte dal mittente al destinatario
+            for (const card of trade.sen_cards) {
+                const cardInCollection = sender.collec.find(item => item.cardId.toString() === card._id.toString());
+
+                // riduzione della quantità della carta, se arriva a zero viene eliminata dal campo collec
+                cardInCollection.quantity -= 1;
+                if (cardInCollection.quantity === 0) {
+                    sender.collec = sender.collec.filter(item => item.cardId.toString() !== card._id.toString());
+                }
+
+                // viene aggiunta la carta al desrtinatario stando attenti ai doppioni
+                const cardInToUser = receiver.collec.find(item => item.cardId.toString() === card._id.toString());
+                if (cardInToUser) {
+                    cardInToUser.quantity += 1;
+                } else {
+                    receiver.collec.push({ cardId: card._id, quantity: 1 });
+                }
+            }
+
+        // scambio da destinatario a mittente
+            for (const card of trade.rec_cards) {
+                const cardInCollection =  receiver.collec.find(item => item.cardId.toString() === card._id.toString());
+                console.log(cardInCollection)
+                
+                cardInCollection.quantity -= 1;
+                if (cardInCollection.quantity === 0) {
+                    receiver.collec = receiver.collec.filter(item => item.cardId.toString() !== card._id.toString());
+                }
+
+                const cardInToUser = sender.collec.find(item => item.cardId.toString() === card._id.toString());
+                if (cardInToUser) {
+                    cardInToUser.quantity += 1;
+                } else {
+                    sender.collec.push({ cardId: card._id, quantity: 1 });
+                }
+            }
+
+        await sender.save();
+        await receiver.save();
+
+        trade.status = 'completed';
         await trade.save();
 
-        res.status(200).json({ message: `Stato del trade aggiornato a ${status}.`, trade });
+        res.status(200).json({ message: 'Trade completato con successo.', trade });
+
     } catch (error) {
+        console.log(error);
         res.status(500).json({ message: 'Errore durante l\'aggiornamento dello stato del trade.', error: error.message });
     }
 });
