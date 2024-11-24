@@ -77,6 +77,7 @@ export default function TradeStepper(props) {
                         nextStep={nextStep}
                         previousStep={previousStep}
                         receiverCards={receiverCards}
+                        closeModal={props.closeModal}
                     />
                 );
             default:

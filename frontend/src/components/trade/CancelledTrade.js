@@ -25,7 +25,7 @@ function CancelledTrade({tradeOrigin}) {
     return (
         <>
                 {  tradeOrigin === 'sent' ? (                            
-                        tradesSent && tradesSent.map((item) => (
+                        tradesSent && tradesSent.trades.map((item) => (
                             <Trade 
                                 id={item._id}
                                 sender_id={item.sender_id}
@@ -36,7 +36,7 @@ function CancelledTrade({tradeOrigin}) {
                             />
                         ))
                     ) : (
-                        tradesReceived && tradesReceived.map((item) => (
+                        tradesReceived && tradesReceived.trades.map((item) => (
                             <Trade 
                                 id={item._id}
                                 sender_id={item.sender_id}

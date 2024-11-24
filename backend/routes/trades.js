@@ -77,18 +77,41 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
         }
 
         // trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
-        const user = await User.findById(userId).populate({
+        const sent_trades = await User.findById(userId).select('trades').populate({
             path: 'trades',
-            match: { status: status }, // Filtro per status direttamente nella query
-            populate: 'rec_cards sen_cards'
+            match: { status: status, sender_id: userId }, // filtro per status direttamente nella query
+            populate: [
+                {
+                    path: 'sender_id',
+                    select: 'name username' // seleziona solo name e username
+                },
+                {
+                    path: 'receiver_id',
+                    select: 'name username'
+                },
+                { 
+                    path: 'rec_cards sen_cards'
+                }
+            ]
         });
 
-        if (!user) {
-            return res.status(404).json({ message: 'Utente non trovato.' });
-        }
-
-        const sent_trades = user.trades.filter(trade => trade.sender_id.toString() === userId.toString());
-        const received_trades = user.trades.filter(trade => trade.receiver_id.toString() === userId.toString());
+        const received_trades = await User.findById(userId).select('trades').populate({
+            path: 'trades',
+            match: { status: status, receicer_id: userId },
+            populate: [
+                {
+                    path: 'sender_id',
+                    select: 'name username'
+                },
+                {
+                    path: 'receiver_id',
+                    select: 'name username' 
+                },
+                { 
+                    path: 'rec_cards sen_cards' 
+                }
+            ]
+        });
 
         res.status(200).json({ sent_trades, received_trades });
     } catch (error) {
@@ -140,6 +163,8 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
         for (const card of trade.sen_cards) {
             const cardInCollection = sender.collec.find(item => item.cardId.toString() === card._id.toString());
             if (!cardInCollection || cardInCollection.quantity < 1) {
+                trade.status = 'cancelled';
+                await trade.save();
                 return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}` });
             }
         }
@@ -147,6 +172,8 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
         for (const card of trade.rec_cards) {
             const cardInCollection = receiver.collec.find(item => item.cardId.toString() === card._id.toString());
             if (!cardInCollection || cardInCollection.quantity < 1) {
+                trade.status = 'cancelled';
+                await trade.save();
                 return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}` });
             }
         }
@@ -173,8 +200,6 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
         // scambio da destinatario a mittente
             for (const card of trade.rec_cards) {
                 const cardInCollection =  receiver.collec.find(item => item.cardId.toString() === card._id.toString());
-                console.log(cardInCollection)
-                
                 cardInCollection.quantity -= 1;
                 if (cardInCollection.quantity === 0) {
                     receiver.collec = receiver.collec.filter(item => item.cardId.toString() !== card._id.toString());

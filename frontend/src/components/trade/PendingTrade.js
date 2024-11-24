@@ -21,11 +21,11 @@ function PendingTrade({tradeOrigin, tradeStatus}) {
     useEffect(() => {
         console.log(tradesSent, tradesReceived, tradeOrigin)
     }, [tradeOrigin]);
-    
+    // invertire nei received inserire i nomi utenti
     return (
         <>
                 {  tradeOrigin === 'sent' ? (                            
-                        tradesSent && tradesSent.map((item) => (
+                        tradesSent && tradesSent.trades.map((item) => (
                             <>
                                 <Trade 
                                     id={item._id}
@@ -38,7 +38,7 @@ function PendingTrade({tradeOrigin, tradeStatus}) {
                             </>
                         ))
                     ) : (
-                        tradesReceived && tradesReceived.map((item) => (
+                        tradesReceived && tradesReceived.trades.map((item) => (
                             <>
                                 <Trade 
                                     id={item._id}

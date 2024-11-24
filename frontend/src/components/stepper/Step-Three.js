@@ -46,8 +46,8 @@ function SepThree(props) {
                 console.log('error')
             } finally {
                 setIsLoading(false)
+                props.closeModal()
             }
-            
         }
         else {
             console.log('error')
