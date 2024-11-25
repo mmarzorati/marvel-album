@@ -26,7 +26,8 @@ function CompletedTrade({tradeOrigin}) {
     return (
         <>
                 {  tradeOrigin === 'sent' ? (                            
-                        tradesSent && tradesSent.trades.map((item) => (
+                        tradesSent && [...tradesSent.trades]
+                        .reverse().map((item) => (
                             <Trade 
                                 id={item._id}
                                 sender_id={item.sender_id}
@@ -37,7 +38,8 @@ function CompletedTrade({tradeOrigin}) {
                             />
                         ))
                     ) : (
-                        tradesReceived && tradesReceived.trades.map((item) => (
+                        tradesReceived && [...tradesReceived.trades]
+                        .reverse().map((item) => (
                             <Trade 
                                 id={item._id}
                                 sender_id={item.sender_id}

@@ -97,7 +97,7 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
 
         const received_trades = await User.findById(userId).select('trades').populate({
             path: 'trades',
-            match: { status: status, receicer_id: userId },
+            match: { status: status, receiver_id: userId },
             populate: [
                 {
                     path: 'sender_id',
@@ -165,7 +165,7 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
             if (!cardInCollection || cardInCollection.quantity < 1) {
                 trade.status = 'cancelled';
                 await trade.save();
-                return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}` });
+                return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}`, trade });
             }
         }
 
@@ -174,7 +174,7 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
             if (!cardInCollection || cardInCollection.quantity < 1) {
                 trade.status = 'cancelled';
                 await trade.save();
-                return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}` });
+                return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}` , trade });
             }
         }
 

@@ -27,7 +27,7 @@ function Trades() {
             case 'completed':
                 return <CompletedTrade tradeOrigin={tradeOrigin} />;
             case 'pending':
-                return <PendingTrade tradeOrigin={tradeOrigin} tradeStatus={tradeStatus}/>;
+                return <PendingTrade tradeOrigin={tradeOrigin} setTradeStatus={setTradeStatus}/>;
             case 'cancelled':
                 return <CancelledTrade tradeOrigin={tradeOrigin} />;
             default:

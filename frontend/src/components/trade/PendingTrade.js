@@ -3,7 +3,7 @@ import '../../scss/Trades.scss';
 import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
 
-function PendingTrade({tradeOrigin, tradeStatus}) {
+function PendingTrade(props) {
 
     const [tradesSent, setTradesSent] = useState(null);
     const [tradesReceived, setTradesReceived] = useState(null);
@@ -19,13 +19,14 @@ function PendingTrade({tradeOrigin, tradeStatus}) {
     }, []);
 
     useEffect(() => {
-        console.log(tradesSent, tradesReceived, tradeOrigin)
-    }, [tradeOrigin]);
+        console.log(tradesSent, tradesReceived, props.tradeOrigin)
+    }, [props.tradeOrigin]);
     // invertire nei received inserire i nomi utenti
     return (
         <>
-                {  tradeOrigin === 'sent' ? (                            
-                        tradesSent && tradesSent.trades.map((item) => (
+                {  props.tradeOrigin === 'sent' ? (                            
+                        tradesSent && [...tradesSent.trades]
+                        .reverse().map((item) => (
                             <>
                                 <Trade 
                                     id={item._id}
@@ -38,7 +39,8 @@ function PendingTrade({tradeOrigin, tradeStatus}) {
                             </>
                         ))
                     ) : (
-                        tradesReceived && tradesReceived.trades.map((item) => (
+                        tradesReceived && [...tradesReceived.trades]
+                        .reverse().map((item) => (
                             <>
                                 <Trade 
                                     id={item._id}
@@ -47,7 +49,8 @@ function PendingTrade({tradeOrigin, tradeStatus}) {
                                     rec_cards={item.rec_cards}
                                     sen_cards={item.sen_cards}
                                     status='pending'
-                                    tradeOrigin={tradeOrigin}
+                                    tradeOrigin={props.tradeOrigin}
+                                    setTradeStatus={props.setTradeStatus}
                                 />
                             </>
                         ))

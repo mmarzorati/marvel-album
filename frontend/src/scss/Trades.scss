@@ -6,6 +6,13 @@ $sent-color: #9c27b0;
 $received-color: #00bcd4;
 $text-color: #fff;
 
+@mixin row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
 .trades {
     &-container {
         justify-content: center;
@@ -14,19 +21,29 @@ $text-color: #fff;
         white-space: nowrap;
     }
     &-row {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
+        @include row;
+        &-names {
+            @include row;
+            justify-content: space-around;
+            max-width: 1500px;
+        }
     }
     &-side-left {
         width: 40%;
+        max-width: 500px;
         display: flex;
         flex-direction: row-reverse;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
     }
     &-side-right {
         width: 40%;
+        max-width: 500px;
         display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
     }
     &-side-middle {
         width: 20%;
@@ -224,6 +241,7 @@ $text-color: #fff;
     text-align: center;
     margin: 0 10px;
     margin-top: 20px;
+    padding: 10px;
     position: relative;
     img {
         height: 90px;

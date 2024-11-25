@@ -8,7 +8,8 @@ import { changeTradeStatus } from '../../apis/backendApi';
 function Trade(props) {
 
     const handleTradeStatus = async (status) => {
-        const res = await changeTradeStatus(status, props.id);
+        await changeTradeStatus(status, props.id);
+        props.setTradeStatus(status)
     } 
 
     const capitalizeFirstLetter = (string) => {
@@ -17,9 +18,12 @@ function Trade(props) {
     }
 
     return (
-        <>
-            <Row className='trades-row me-0 ms-0'>
-                <label className='trades-subtitle'>{props.sender_id.username}</label>
+        <>  
+            <div className='trades-row-names'>
+                <label className='trades-subtitle'>{props.sender_id.name} - {props.sender_id.username}</label>
+                <label className='trades-subtitle'>{props.receiver_id.name} - {props.receiver_id.username}</label>
+            </div>
+            <div className='trades-row me-0 ms-0'>
                 <div className='trades-side-left'>
                     { props.sen_cards && props.sen_cards.map((item) => (
                         <TradeCard
@@ -31,7 +35,6 @@ function Trade(props) {
                 <div className='trades-side-middle'>
                     <img className='trades-icon' src={tradeIcon} alt="user Icon" />
                 </div>
-                <label className='trades-subtitle'>{props.receiver_id.username}</label>
                 <div className='trades-side-right' >
                     { props.rec_cards && props.rec_cards.map((item) => (
                         <TradeCard
@@ -40,7 +43,7 @@ function Trade(props) {
                         />
                     ))}
                 </div>
-            </Row>
+            </div>
             <div className={`trades-tag-${props.status}`}>{capitalizeFirstLetter(props.status)}</div>
             {
                 (props.status === 'pending' && props.tradeOrigin === 'received') ? (
