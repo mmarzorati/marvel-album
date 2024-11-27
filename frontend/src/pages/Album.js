@@ -3,6 +3,7 @@ import Card from '../components/Card';
 import '../scss/Album.scss';
 import { getUserCards } from '../apis/backendApi';
 import { getCharacters } from '../apis/marvelApi';
+import noResultsIcon from '../assets/icons/no-results.png';
 
 function Album() {
 
@@ -44,14 +45,23 @@ function Album() {
                 </span>
             </div>
             <div className='album-container'>
-                {collection && collection.map((item) => (
-                    <Card 
-                        key={item.cardId._id}
-                        name={item.cardId.name}
-                        pathImg={item.cardId.pathImg}
-                        description={item.cardId.description}
-                    />
-                ))}
+                {collection && collection.length > 0 ? (
+                        collection.map((item) => (
+                        <Card 
+                            key={item.cardId._id}
+                            name={item.cardId.name}
+                            pathImg={item.cardId.pathImg}
+                            description={item.cardId.description}
+                        />
+                    ))
+                ) : (
+                    <>
+                        <div className='no-items-container'>
+                            <label className='trades-no-items'>No cards found</label>
+                            <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                        </div>
+                    </>
+                )}
             </div>
 
         </>

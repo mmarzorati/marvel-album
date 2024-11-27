@@ -2,11 +2,15 @@ import React, {useEffect, useState} from 'react';
 import '../../scss/Trades.scss';
 import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
+import noResultsIcon from '../../assets/icons/no-results.png';
+import Snackbar from '@mui/material/Snackbar';
+import Slide from '@mui/material/Slide';
 
 function CancelledTrade({tradeOrigin}) {
 
     const [tradesSent, setTradesSent] = useState(null);
     const [tradesReceived, setTradesReceived] = useState(null);
+    const [open, setOpen] = useState(null);
 
     useEffect(() => {
         const loadData = async () => {
@@ -16,40 +20,67 @@ function CancelledTrade({tradeOrigin}) {
         }
 
         loadData()
+        setOpen(true)
     }, []);
 
     useEffect(() => {
         console.log(tradesSent, tradesReceived, tradeOrigin)
     }, [tradeOrigin]);
+
+    const handleClose = () => {
+        setOpen(false)
+    }
     
     return (
         <>
                 {  tradeOrigin === 'sent' ? (                            
-                        tradesSent && [...tradesSent.trades]
-                        .reverse().map((item) => (
-                            <Trade 
-                                id={item._id}
-                                sender_id={item.sender_id}
-                                receiver_id={item.receiver_id}
-                                rec_cards={item.rec_cards}
-                                sen_cards={item.sen_cards}
-                                status='cancelled'
-                            />
-                        ))
+                        tradesSent && tradesSent.trades.length > 0 ? (
+                            [...tradesSent.trades]
+                            .reverse().map((item) => (
+                                <Trade 
+                                    id={item._id}
+                                    sender_id={item.sender_id}
+                                    receiver_id={item.receiver_id}
+                                    rec_cards={item.rec_cards}
+                                    sen_cards={item.sen_cards}
+                                    status='cancelled'
+                                />
+                            ))
+                        ) : (
+                            <div className='no-items-container'>
+                                <label className='trades-no-items'>No trades found</label>
+                                <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                            </div>
+                        )
                     ) : (
-                        tradesReceived && [...tradesReceived.trades]
-                        .reverse().map((item) => (
-                            <Trade 
-                                id={item._id}
-                                sender_id={item.sender_id}
-                                receiver_id={item.receiver_id}
-                                rec_cards={item.rec_cards}
-                                sen_cards={item.sen_cards}
-                                status='cancelled'
-                            />
-                        ))
+                        tradesReceived && tradesReceived.trades.length > 0 ? (
+                            [...tradesReceived.trades]
+                            .reverse().map((item) => (
+                                <Trade 
+                                    id={item._id}
+                                    sender_id={item.sender_id}
+                                    receiver_id={item.receiver_id}
+                                    rec_cards={item.rec_cards}
+                                    sen_cards={item.sen_cards}
+                                    status='cancelled'
+                                />
+                            ))
+                        ) :(
+                            <div className='no-items-container'>
+                                <label className='trades-no-items'>No trades found</label>
+                                <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                            </div>
+                        )
                     )
                 }
+                <Snackbar
+                    anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}
+                    open={open}
+                    onClose={handleClose}
+                    message="test"
+                    TransitionComponent={(props) => <Slide {...props} direction="up" />}
+                    autoHideDuration={4000}
+                />
         </>
     );
 }

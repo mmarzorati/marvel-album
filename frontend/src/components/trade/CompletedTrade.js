@@ -3,6 +3,7 @@ import '../../scss/Trades.scss';
 import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import noResultsIcon from '../../assets/icons/no-results.png';
 
 function CompletedTrade({tradeOrigin}) {
 
@@ -26,29 +27,44 @@ function CompletedTrade({tradeOrigin}) {
     return (
         <>
                 {  tradeOrigin === 'sent' ? (                            
-                        tradesSent && [...tradesSent.trades]
-                        .reverse().map((item) => (
-                            <Trade 
-                                id={item._id}
-                                sender_id={item.sender_id}
-                                receiver_id={item.receiver_id}
-                                rec_cards={item.rec_cards}
-                                sen_cards={item.sen_cards}
-                                status='completed'
-                            />
-                        ))
+                        tradesSent && tradesSent.trades.length > 0 ? (
+                            [...tradesSent.trades]
+                            .reverse().map((item) => (
+                                <Trade 
+                                    id={item._id}
+                                    sender_id={item.sender_id}
+                                    receiver_id={item.receiver_id}
+                                    rec_cards={item.rec_cards}
+                                    sen_cards={item.sen_cards}
+                                    status='completed'
+                                />
+                            ))
+                        ) : (
+                            <div className='no-items-container'>
+                                <label className='trades-no-items'>No trades found</label>
+                                <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                            </div>
+                        )
                     ) : (
-                        tradesReceived && [...tradesReceived.trades]
-                        .reverse().map((item) => (
-                            <Trade 
-                                id={item._id}
-                                sender_id={item.sender_id}
-                                receiver_id={item.receiver_id}
-                                rec_cards={item.rec_cards}
-                                sen_cards={item.sen_cards}
-                                status='completed'
-                            />
-                        ))
+                        tradesReceived && tradesReceived.trades.length > 0 ? (
+                            [...tradesReceived.trades]
+                            .reverse().map((item) => (
+                                <Trade 
+                                    id={item._id}
+                                    sender_id={item.sender_id}
+                                    receiver_id={item.receiver_id}
+                                    rec_cards={item.rec_cards}
+                                    sen_cards={item.sen_cards}
+                                    status='completed'
+                                />
+                            ))
+                        ) : (
+                            
+                            <div className='no-items-container'>
+                                <label className='trades-no-items'>No trades found</label>
+                                <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                            </div>
+                        )
                     )
                 }
         </>

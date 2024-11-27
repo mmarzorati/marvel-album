@@ -90,6 +90,11 @@ $text-color: #fff;
         border: solid 2px;
         color: var(--smoke-white);
     }
+    &-no-items {
+        color: #eee2a2;
+        font-size: 25px;
+        margin-top: 50px;
+    }
     &-tag {
         &-pending {
             margin-top: 20px;
@@ -319,4 +324,11 @@ $text-color: #fff;
         background-color: lighten($received-color, 10%);
         }
     }
+}
+
+.no-items-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
