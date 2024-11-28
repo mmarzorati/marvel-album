@@ -8,7 +8,7 @@ function StepOne(props) {
     const [results, setResults] = useState([]); 
     const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
     const [debouncedQuery, setDebouncedQuery] = useState(query);
-    const [isButtonDisable, setIsButtonDisable] = useState(true); 
+    const [isButtonDisable, setIsButtonDisable] = useState(true);
     
     useEffect(() => {
         const handler = setTimeout(() => {

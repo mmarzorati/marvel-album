@@ -36,9 +36,7 @@ export default function TradeStepper(props) {
     const [receiverCards, setReceiverCards] = useState(null);
 
     const nextStep = () => {
-        if (activeStep>=2) {
-            // funzione di creazione dello sccambio
-        } else {
+        if (activeStep<2) {
             setActiveStep(activeStep+1)
         }
     }
@@ -47,6 +45,10 @@ export default function TradeStepper(props) {
         if (activeStep>0) {
             setActiveStep(activeStep-1)
         }
+    }
+
+    const resetStep = () => {
+        setActiveStep(0);
     }
 
     const switchComponent = () => {
@@ -74,9 +76,11 @@ export default function TradeStepper(props) {
                         nextStep={nextStep}
                         previousStep={previousStep}
                         receiverCards={receiverCards}
+                        setUserSelected={setReceiver}
                         closeModal={props.closeModal}
                         setPending={props.setPending}
                         updateTrades={props.updateTrades}
+                        resetStep={resetStep}
                     />
                 );
             default:

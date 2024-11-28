@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { Modal } from 'react-bootstrap';
 import { getUserCardsById } from '../../apis/backendApi';
 import MiniCard from '../MiniCard'
+import noResultsIcon from '../../assets/icons/no-results.png';
 
 function SepThree(props) {
 
@@ -48,6 +49,9 @@ function SepThree(props) {
                 setIsLoading(false)
                 props.closeModal()
                 props.setPending()
+                // riazzero la selezione carte per i prossimi trade
+                props.resetStep()
+                props.setUserSelected(null)
             }
         }
         else {
@@ -59,18 +63,26 @@ function SepThree(props) {
     return (
         <div className='w-100 step-search-container'>
             <div className='step-cards-container'>
-                {!isLoading && collection ? (
-                    collection.map((item) => (
-                        <MiniCard 
-                            id={item.cardId._id}
-                            name={item.cardId.name}
-                            pathImg={item.cardId.pathImg}
-                            checkboxSelected={checkboxSelected}
-                        />
-                    ))
+                {!isLoading ? (
+                    collection && collection.length > 0 ? (
+                        collection.map((item) => (
+                            <MiniCard 
+                                id={item.cardId._id}
+                                name={item.cardId.name}
+                                pathImg={item.cardId.pathImg}
+                                checkboxSelected={checkboxSelected}
+                            />
+                        ))
+                    ) : (
+                        <div className='no-items-container'>
+                            <label className='trades-no-items-2'>No cards found</label>
+                            <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                        </div>
+                    )
                 ) : (
                     <div>SPINNER</div>
-                )}
+                )
+}
             
             </div>
             <Modal.Footer className='border-0 w-100'>

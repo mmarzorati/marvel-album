@@ -33,54 +33,54 @@ function CancelledTrade({tradeOrigin}) {
     
     return (
         <>
-                {  tradeOrigin === 'sent' ? (                            
-                        tradesSent && tradesSent.trades.length > 0 ? (
-                            [...tradesSent.trades]
-                            .reverse().map((item) => (
-                                <Trade 
-                                    id={item._id}
-                                    sender_id={item.sender_id}
-                                    receiver_id={item.receiver_id}
-                                    rec_cards={item.rec_cards}
-                                    sen_cards={item.sen_cards}
-                                    status='cancelled'
-                                />
-                            ))
-                        ) : (
-                            <div className='no-items-container'>
-                                <label className='trades-no-items'>No trades found</label>
-                                <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
-                            </div>
-                        )
+            {  tradeOrigin === 'sent' ? (                            
+                    tradesSent && tradesSent.trades.length > 0 ? (
+                        [...tradesSent.trades]
+                        .reverse().map((item) => (
+                            <Trade 
+                                id={item._id}
+                                sender_id={item.sender_id}
+                                receiver_id={item.receiver_id}
+                                rec_cards={item.rec_cards}
+                                sen_cards={item.sen_cards}
+                                status='cancelled'
+                            />
+                        ))
                     ) : (
-                        tradesReceived && tradesReceived.trades.length > 0 ? (
-                            [...tradesReceived.trades]
-                            .reverse().map((item) => (
-                                <Trade 
-                                    id={item._id}
-                                    sender_id={item.sender_id}
-                                    receiver_id={item.receiver_id}
-                                    rec_cards={item.rec_cards}
-                                    sen_cards={item.sen_cards}
-                                    status='cancelled'
-                                />
-                            ))
-                        ) :(
-                            <div className='no-items-container'>
-                                <label className='trades-no-items'>No trades found</label>
-                                <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
-                            </div>
-                        )
+                        <div className='no-items-container'>
+                            <label className='trades-no-items'>No trades found</label>
+                            <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                        </div>
                     )
-                }
-                <Snackbar
-                    anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}
-                    open={open}
-                    onClose={handleClose}
-                    message="test"
-                    TransitionComponent={(props) => <Slide {...props} direction="up" />}
-                    autoHideDuration={4000}
-                />
+                ) : (
+                    tradesReceived && tradesReceived.trades.length > 0 ? (
+                        [...tradesReceived.trades]
+                        .reverse().map((item) => (
+                            <Trade 
+                                id={item._id}
+                                sender_id={item.sender_id}
+                                receiver_id={item.receiver_id}
+                                rec_cards={item.rec_cards}
+                                sen_cards={item.sen_cards}
+                                status='cancelled'
+                            />
+                        ))
+                    ) :(
+                        <div className='no-items-container'>
+                            <label className='trades-no-items'>No trades found</label>
+                            <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                        </div>
+                    )
+                )
+            }
+            <Snackbar
+                anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}
+                open={open}
+                onClose={handleClose}
+                message="test"
+                TransitionComponent={(props) => <Slide {...props} direction="up" />}
+                autoHideDuration={4000}
+            />
         </>
     );
 }

@@ -4,6 +4,7 @@ import { Button } from '@mui/material';
 import { Modal } from 'react-bootstrap';
 import { getUserCards } from '../../apis/backendApi';
 import MiniCard from '../MiniCard'
+import noResultsIcon from '../../assets/icons/no-results.png';
 
 function StepTwo(props) {
 
@@ -14,9 +15,15 @@ function StepTwo(props) {
 
     useEffect(() => {
         const loadData = async () => {
-            const res = await getUserCards()
-            setCollection(res)
-            setIsLoading(false)
+            try {
+                setIsLoading(true)
+                const res = await getUserCards()
+                setCollection(res)
+            } catch (error) {
+                console.log('error')
+            } finally {
+                setIsLoading(false)
+            }
         }
 
         loadData()
@@ -44,15 +51,22 @@ function StepTwo(props) {
     return (
         <div className='w-100 step-search-container'>
             <div className='step-cards-container'>
-                {!isLoading && collection ? (
-                    collection.map((item) => (
-                        <MiniCard 
-                            id={item.cardId._id}
-                            name={item.cardId.name}
-                            pathImg={item.cardId.pathImg}
-                            checkboxSelected={checkboxSelected}
-                        />
-                    ))
+                {!isLoading ? (
+                    collection && collection.length > 0 ? (
+                        collection.map((item) => (
+                            <MiniCard 
+                                id={item.cardId._id}
+                                name={item.cardId.name}
+                                pathImg={item.cardId.pathImg}
+                                checkboxSelected={checkboxSelected}
+                            />
+                        ))
+                    ) : (
+                        <div className='no-items-container'>
+                            <label className='trades-no-items-2'>No cards found</label>
+                            <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                        </div>
+                    )
                 ) : (
                     <div>SPINNER</div>
                 )}
