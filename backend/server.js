@@ -23,31 +23,9 @@ app.listen(3001, () => {
 mongoose.connect('mongodb://localhost:27017/marvel-album').then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
 
+
 app.use(cookieParser());
 
-// Endpoint per creare uno scambio
-app.post('/trades', async (req, res) => {
-    try {
-        const trade = new Trade(req.body);
-        await trade.save();
-        res.status(201).send(trade);
-    } catch (error) {
-        res.status(400).send(error);
-    }
-});
-
-// Endpoint per aggiornare lo status di uno scambio
-app.patch('/trades/:id', async (req, res) => {
-    try {
-        const trade = await Trade.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true });
-        if (!trade) {
-        return res.status(404).send('Trade not found');
-        }
-        res.send(trade);
-    } catch (error) {
-        res.status(400).send(error);
-    }
-});
 
 app.use(usersRoutes);
 app.use(cardsRoutes);
