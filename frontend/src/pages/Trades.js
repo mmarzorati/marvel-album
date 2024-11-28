@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import CompletedTrade from '../components/trade/CompletedTrade';
 import PendingTrade from '../components/trade/PendingTrade';
 import CancelledTrade from '../components/trade/CancelledTrade';
@@ -6,12 +6,13 @@ import TradeStepper from '../modal/TradeStepper';
 import '../scss/Trades.scss';
 import plusIcon from '../assets/icons/plus.png';
 import { useState } from 'react';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 function Trades() {
 
     const [tradeStatus, setTradeStatus] = useState("pending");
     const [tradeOrigin, setTradeOrigin] = useState("sent");
+    const [createModalTrades, setCreateModalTrades] = useState(null);
     const [show, setShow] = useState(false);
 
     const closeModal = () => setShow(false);
@@ -27,13 +28,25 @@ function Trades() {
             case 'completed':
                 return <CompletedTrade tradeOrigin={tradeOrigin} />;
             case 'pending':
-                return <PendingTrade tradeOrigin={tradeOrigin} setTradeStatus={setTradeStatus}/>;
+                return <PendingTrade 
+                    tradeOrigin={tradeOrigin} 
+                    setTradeStatus={setTradeStatus}
+                    updateTrades={createModalTrades}
+                />;
             case 'cancelled':
                 return <CancelledTrade tradeOrigin={tradeOrigin} />;
             default:
                 return <div></div>;
         }
     };
+
+    // funzione per aggiornare i trades in pending dopo che ne è stato creato uno
+    const handleCreateModalTrades = (trades) => {  
+        if (tradeStatus === 'pending') {
+            setCreateModalTrades(trades);
+            console.log('trades',trades );
+        }
+    }
     
     return (
         <>
@@ -70,7 +83,9 @@ function Trades() {
             <TradeStepper 
                 show={show} 
                 showModal={showModal} 
-                closeModal={closeModal} 
+                closeModal={closeModal}ù
+                setPending={setPending} 
+                updateTrades={handleCreateModalTrades}
             />
         </>
     );

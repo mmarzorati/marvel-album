@@ -1,13 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../scss/Trades.scss';
 import 
     {
         Stepper, 
         Step, 
-        StepLabel, 
-        Button,
-        StepContent,
-        Typography,
+        StepLabel,
         Box
     } 
 from '@mui/material';
@@ -78,6 +75,8 @@ export default function TradeStepper(props) {
                         previousStep={previousStep}
                         receiverCards={receiverCards}
                         closeModal={props.closeModal}
+                        setPending={props.setPending}
+                        updateTrades={props.updateTrades}
                     />
                 );
             default:

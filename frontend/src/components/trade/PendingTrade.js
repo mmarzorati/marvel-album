@@ -20,8 +20,9 @@ function PendingTrade(props) {
     }, []);
 
     useEffect(() => {
-        console.log(tradesSent, tradesReceived, props.tradeOrigin)
-    }, [props.tradeOrigin]);
+        setTradesSent(props.updateTrades.sent_trades)
+        setTradesReceived(props.updateTrades.received_trades)
+    }, [props.updateTrades]);
     return (
         <>
         {

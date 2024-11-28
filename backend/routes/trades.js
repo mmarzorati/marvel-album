@@ -54,7 +54,44 @@ router.post('/api/trades', authMiddleware, async (req, res) => {
             $push: { trades: savedTrade._id }
         });
 
-        res.status(201).json(savedTrade);
+        // trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
+        const sent_trades = await User.findById(sender_id).select('trades').populate({
+            path: 'trades',
+            match: { status: 'pending', sender_id: sender_id },
+            populate: [
+                {
+                    path: 'sender_id',
+                    select: 'name username' // seleziona solo name e username
+                },
+                {
+                    path: 'receiver_id',
+                    select: 'name username'
+                },
+                { 
+                    path: 'rec_cards sen_cards'
+                }
+            ]
+        });
+
+        const received_trades = await User.findById(sender_id).select('trades').populate({
+            path: 'trades',
+            match: { status: 'pending', receiver_id: sender_id },
+            populate: [
+                {
+                    path: 'sender_id',
+                    select: 'name username'
+                },
+                {
+                    path: 'receiver_id',
+                    select: 'name username' 
+                },
+                { 
+                    path: 'rec_cards sen_cards' 
+                }
+            ]
+        });
+
+        res.status(200).json({ sent_trades, received_trades });
     } catch (error) {
         res.status(500).json({ message: 'Errore durante la creazione del trade', error: error.message });
     }
@@ -119,6 +156,7 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
     }
 });
 
+// endpoint per l'aggiornamento dello status di un trade
 router.patch('/api/trades', authMiddleware, async (req, res) => {
     try {
         const { tradeId, status } = req.body;

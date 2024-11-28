@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import '../../scss/Trades.scss';
 import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
-import { Container, Row, Col, Button } from 'react-bootstrap';
 import noResultsIcon from '../../assets/icons/no-results.png';
 
 function CompletedTrade({tradeOrigin}) {
@@ -19,10 +18,6 @@ function CompletedTrade({tradeOrigin}) {
 
         loadData()
     }, []);
-
-    useEffect(() => {
-        console.log(tradesSent, tradesReceived, tradeOrigin)
-    }, [tradeOrigin]);
     
     return (
         <>

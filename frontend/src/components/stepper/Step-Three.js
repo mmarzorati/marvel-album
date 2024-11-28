@@ -14,7 +14,6 @@ function SepThree(props) {
 
     useEffect(() => {
         const loadData = async () => {
-            console.log(props.receiver)
             const res = await getUserCardsById(props.receiver._id)
             setCollection(res)
             setIsLoading(false)
@@ -41,12 +40,14 @@ function SepThree(props) {
         if (props.receiverCards && senderCards) {
             try {
                 setIsLoading(true)
-                await createTrade(props.receiver._id, senderCards, props.receiverCards)
+                const res = await createTrade(props.receiver._id, senderCards, props.receiverCards)
+                props.updateTrades(res)
             } catch (error) {
                 console.log('error')
             } finally {
                 setIsLoading(false)
                 props.closeModal()
+                props.setPending()
             }
         }
         else {
