@@ -242,8 +242,10 @@ router.post('/api/users/coins', authMiddleware , async (req, res) => {
 });
 
 // endpoint per la ricerca dell'utente
-router.post('/api/users/search', authMiddleware , async (req, res) => {
+router.post('/api/users/search', authMiddleware, async (req, res) => {
     const { query } = req.query;
+    const userId = req.user._id;
+
     try {
         if (!query) {
             return res.status(400).json({ message: 'Devi fornire una stringa di ricerca' });
@@ -251,13 +253,23 @@ router.post('/api/users/search', authMiddleware , async (req, res) => {
 
         const users = await User.find({
             $or: [
-              { name: { $regex: query, $options: 'i' } },  // Cerca nel nome (opzione 'i' per case-insensitive)
-              { username: { $regex: query, $options: 'i' } }  // Cerca nello username
+                { name: { $regex: query, $options: 'i' } },  // cerca nei nome
+                { username: { $regex: query, $options: 'i' } }  // cerca negli username
             ]
         });
 
-        res.status(200).send(users);
+        // filtra per escludere l'utente e restituire solo i campi che servono lato FE
+        // escludiamo l'utente così non può fare scambi con se stesso
 
+        const filteredUsers = users
+            .filter(user => user.id !== userId) // Escludi l'utente che chiama l'API
+            .map(user => ({
+                _id: user._id,
+                name: user.name,
+                username: user.username
+            }));
+
+        res.status(200).json(filteredUsers);
 
     } catch (error) {
         console.error(error);

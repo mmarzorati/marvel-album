@@ -33,7 +33,7 @@ export default function TradeStepper(props) {
     const [isLoading, setIsLoading] = useState(false);
     const [activeStep, setActiveStep] = useState(0);
     const [receiver, setReceiver] = useState(null);
-    const [receiverCards, setReceiverCards] = useState(null);
+    const [senderCards, setSenderCards] = useState(null);
 
     const nextStep = () => {
         if (activeStep<2) {
@@ -66,7 +66,7 @@ export default function TradeStepper(props) {
                     <StepTwo
                         nextStep={nextStep}
                         previousStep={previousStep}
-                        setReceiverCards={setReceiverCards}  
+                        setSenderCards={setSenderCards}  
                     />
                 );
             case 2:
@@ -75,7 +75,7 @@ export default function TradeStepper(props) {
                         receiver={receiver}
                         nextStep={nextStep}
                         previousStep={previousStep}
-                        receiverCards={receiverCards}
+                        senderCards={senderCards}
                         setUserSelected={setReceiver}
                         closeModal={props.closeModal}
                         setPending={props.setPending}

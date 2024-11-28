@@ -10,7 +10,7 @@ function SepThree(props) {
 
     const [collection, setCollection] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [senderCards, setSenderCards] = useState([]);
+    const [receiverCards, setReceiverCards] = useState([]);
     const [isButtonDisable, setIsButtonDisable] = useState(true); 
 
     useEffect(() => {
@@ -21,16 +21,16 @@ function SepThree(props) {
         }
 
         loadData()
-        setSenderCards([])
+        setReceiverCards([])
     }, []);
 
     // disabilita il bottone 'Next' se è vuoto
     useEffect(() => {
-        setIsButtonDisable(senderCards.length === 0);
-    }, [senderCards]);
+    setIsButtonDisable(receiverCards.length === 0);
+    }, [receiverCards]);
 
     const checkboxSelected = (id) => {
-        setSenderCards((prevSelectedIds) =>     // aggiorna l'array receiverCards aggiungendo o rimuovendo l'ID a seconda che la minicard sia selezionata o deselezionata
+        setReceiverCards((prevSelectedIds) =>     // aggiorna l'array receiverCards aggiungendo o rimuovendo l'ID a seconda che la minicard sia selezionata o deselezionata
             prevSelectedIds.includes(id)
             ? prevSelectedIds.filter((selectedId) => selectedId !== id)
             : [...prevSelectedIds, id]
@@ -38,13 +38,13 @@ function SepThree(props) {
     };
 
     const confirmTrade = async () => {
-        if (props.receiverCards && senderCards) {
+        if (props.senderCards && receiverCards) {
             try {
                 setIsLoading(true)
-                const res = await createTrade(props.receiver._id, senderCards, props.receiverCards)
+                const res = await createTrade(props.receiver._id, receiverCards, props.senderCards)
                 props.updateTrades(res)
             } catch (error) {
-                console.log('error')
+                console.error('error', error)
             } finally {
                 setIsLoading(false)
                 props.closeModal()
@@ -56,7 +56,6 @@ function SepThree(props) {
         }
         else {
             console.log('error')
-            console.log(props.receiverCards, senderCards)
         }
     }
 

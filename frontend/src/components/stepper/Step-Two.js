@@ -44,7 +44,7 @@ function StepTwo(props) {
     };
 
     const confirmCards = () => {
-        props.setReceiverCards(selectedIds)
+        props.setSenderCards(selectedIds)
         props.nextStep()
     }
 
