@@ -52,6 +52,7 @@ function Album() {
                             name={item.cardId.name}
                             pathImg={item.cardId.pathImg}
                             description={item.cardId.description}
+                            quantity={item.quantity}
                         />
                     ))
                 ) : (
