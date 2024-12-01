@@ -5,13 +5,15 @@ import { Modal } from 'react-bootstrap';
 import { getUserCardsById } from '../../apis/backendApi';
 import MiniCard from '../MiniCard'
 import noResultsIcon from '../../assets/icons/no-results.png';
+import { useSnackbar } from './../AlertContext';
 
 function SepThree(props) {
 
     const [collection, setCollection] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [receiverCards, setReceiverCards] = useState([]);
-    const [isButtonDisable, setIsButtonDisable] = useState(true); 
+    const [isButtonDisable, setIsButtonDisable] = useState(true);
+    const { showSnackbar } = useSnackbar();
 
     useEffect(() => {
         const loadData = async () => {
@@ -43,8 +45,9 @@ function SepThree(props) {
                 setIsLoading(true)
                 const res = await createTrade(props.receiver._id, receiverCards, props.senderCards)
                 props.updateTrades(res)
+                showSnackbar(res.message, 'success');
             } catch (error) {
-                console.error('error', error)
+                showSnackbar(error.message, 'error');
             } finally {
                 setIsLoading(false)
                 props.closeModal()
@@ -60,39 +63,41 @@ function SepThree(props) {
     }
 
     return (
-        <div className='w-100 step-search-container'>
-            <div className='step-cards-container'>
-                {!isLoading ? (
-                    collection && collection.length > 0 ? (
-                        collection.map((item) => (
-                            <MiniCard 
-                                id={item.cardId._id}
-                                name={item.cardId.name}
-                                pathImg={item.cardId.pathImg}
-                                checkboxSelected={checkboxSelected}
-                            />
-                        ))
+        <>
+            <div className='w-100 step-search-container'>
+                <div className='step-cards-container'>
+                    {!isLoading ? (
+                        collection && collection.length > 0 ? (
+                            collection.map((item) => (
+                                <MiniCard 
+                                    id={item.cardId._id}
+                                    name={item.cardId.name}
+                                    pathImg={item.cardId.pathImg}
+                                    quantitaty={item.quantitaty}
+                                    checkboxSelected={checkboxSelected}
+                                />
+                            ))
+                        ) : (
+                            <div className='no-items-container'>
+                                <label className='trades-no-items-2'>No cards found</label>
+                                <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
+                            </div>
+                        )
                     ) : (
-                        <div className='no-items-container'>
-                            <label className='trades-no-items-2'>No cards found</label>
-                            <img className='profile-icon' src={noResultsIcon} alt="Not Found Icon" />
-                        </div>
+                        <div>SPINNER</div>
                     )
-                ) : (
-                    <div>SPINNER</div>
-                )
-}
-            
+                    }
+                </div>
+                <Modal.Footer className='border-0 w-100'>
+                    <Button variant="danger" onClick={props.previousStep}>
+                        Cancel
+                    </Button>
+                    <Button disabled={isButtonDisable} onClick={confirmTrade} sx={{ mr: 1 }}>
+                        Create Trade
+                    </Button>
+                </Modal.Footer>
             </div>
-            <Modal.Footer className='border-0 w-100'>
-                <Button variant="danger" onClick={props.previousStep}>
-                    Cancel
-                </Button>
-                <Button disabled={isButtonDisable} onClick={confirmTrade} sx={{ mr: 1 }}>
-                    Create Trade
-                </Button>
-            </Modal.Footer>
-        </div>
+    </>
     );
     };
 

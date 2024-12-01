@@ -1,11 +1,10 @@
-import React, {useEffect} from 'react';
+import React, { useState } from 'react';
 import CompletedTrade from '../components/trade/CompletedTrade';
 import PendingTrade from '../components/trade/PendingTrade';
 import CancelledTrade from '../components/trade/CancelledTrade';
 import TradeStepper from '../modal/TradeStepper';
 import '../scss/Trades.scss';
 import plusIcon from '../assets/icons/plus.png';
-import { useState } from 'react';
 import { Button } from 'react-bootstrap';
 
 function Trades() {

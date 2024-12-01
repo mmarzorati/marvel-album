@@ -3,14 +3,11 @@ import '../../scss/Trades.scss';
 import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
 import noResultsIcon from '../../assets/icons/no-results.png';
-import Snackbar from '@mui/material/Snackbar';
-import Slide from '@mui/material/Slide';
 
 function CancelledTrade({tradeOrigin}) {
 
     const [tradesSent, setTradesSent] = useState(null);
     const [tradesReceived, setTradesReceived] = useState(null);
-    const [open, setOpen] = useState(null);
 
     useEffect(() => {
         const loadData = async () => {
@@ -20,16 +17,11 @@ function CancelledTrade({tradeOrigin}) {
         }
 
         loadData()
-        setOpen(true)
     }, []);
 
     useEffect(() => {
         console.log(tradesSent, tradesReceived, tradeOrigin)
     }, [tradeOrigin]);
-
-    const handleClose = () => {
-        setOpen(false)
-    }
     
     return (
         <>
@@ -73,14 +65,6 @@ function CancelledTrade({tradeOrigin}) {
                     )
                 )
             }
-            <Snackbar
-                anchorOrigin={{vertical: 'bottom', horizontal: 'center' }}
-                open={open}
-                onClose={handleClose}
-                message="test"
-                TransitionComponent={(props) => <Slide {...props} direction="up" />}
-                autoHideDuration={4000}
-            />
         </>
     );
 }
