@@ -4,21 +4,26 @@ import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
 import noResultsIcon from '../../assets/icons/no-results.png';
 import { useSnackbar } from './../AlertContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function CompletedTrade({tradeOrigin}) {
 
     const [tradesSent, setTradesSent] = useState(null);
     const [tradesReceived, setTradesReceived] = useState(null);
     const { showSnackbar } = useSnackbar();
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const loadData = async () => {
             try {
+                setIsLoading(true)
                 const res = await getUserTrades('completed')
                 setTradesSent(res.sent_trades)
                 setTradesReceived(res.received_trades)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
+            } finally {
+                setIsLoading(false)
             }
         }
 
@@ -27,7 +32,12 @@ function CompletedTrade({tradeOrigin}) {
     
     return (
         <>
-            {  tradeOrigin === 'sent' ? (                            
+            {  isLoading ? (
+                <div className='album-spinner'>
+                    <CircularProgress color="error" size="100px"/>
+                </div>
+            ) : (
+                tradeOrigin === 'sent' ? (                            
                     tradesSent && tradesSent.trades.length > 0 ? (
                         [...tradesSent.trades]
                         .reverse().map((item) => (
@@ -67,6 +77,7 @@ function CompletedTrade({tradeOrigin}) {
                         </div>
                     )
                 )
+            )
             }
         </>
     );

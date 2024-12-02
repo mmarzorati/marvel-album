@@ -15,4 +15,10 @@
     &-wrapper {
         display: flex;
     }
+    &-spinner {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 200px;
+    }
 }

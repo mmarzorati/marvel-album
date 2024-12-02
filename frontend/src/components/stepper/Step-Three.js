@@ -6,6 +6,7 @@ import { getUserCardsById } from '../../apis/backendApi';
 import MiniCard from '../MiniCard'
 import noResultsIcon from '../../assets/icons/no-results.png';
 import { useSnackbar } from './../AlertContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function SepThree(props) {
 
@@ -88,7 +89,9 @@ function SepThree(props) {
                             </div>
                         )
                     ) : (
-                        <div>SPINNER</div>
+                        <div className='pack-spinner'>
+                            <CircularProgress color="error" size="100px"/>
+                        </div>
                     )
                     }
                 </div>

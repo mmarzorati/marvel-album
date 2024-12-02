@@ -6,6 +6,7 @@ import coinIcon from '../assets/icons/coin.png';
 import pencilIcon from '../assets/icons/pencil.png';
 import { getUserInfo, updateUserInfo } from '../apis/backendApi';
 import { useSnackbar } from './../components/AlertContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Profile() {
 
@@ -24,6 +25,7 @@ function Profile() {
     useEffect(() => {
         const fetchData = async () => {
             try {
+                setLoading(true); 
                 const res = await getUserInfo();
                 setUsername(res.username)
                 setName(res.name)
@@ -71,7 +73,9 @@ function Profile() {
         <>
             <Container className='text-center'>
                 { loading ? (
-                    <h1>is loading</h1>   // da modificare
+                    <div className='album-spinner'>
+                        <CircularProgress color="error" size="100px"/>
+                    </div>
                 ) : (
                     <>
                         <h2 className='profile-title'>Profile</h2>

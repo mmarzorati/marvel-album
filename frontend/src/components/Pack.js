@@ -5,13 +5,13 @@ import coinIcon from '../assets/icons/coin.png';
 import { addUserCard } from '../apis/backendApi';
 import { getCharacters } from '../apis/marvelApi';
 import { useSnackbar } from './../components/AlertContext';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function Pack(props) {
 
-    // inseriere gestione errori
-
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [loadingValue, setLoadingValue] = useState(1);
     const { showSnackbar } = useSnackbar();
 
     const closeModal = () => setShow(false);
@@ -31,6 +31,8 @@ function Pack(props) {
                     res.results[0].description, 
                     res.results[0].thumbnail.path + '.' + res.results[0].thumbnail.extension
                 );
+                // +2 per renderlo più utile per l'utente a livello visivo
+                setLoadingValue(((i+2)*100)/props.amount)  // calcolo lo status in percentuale del processo epr mostrarlo nello spinner
             }
             props.setCoins(user.coins)
             showSnackbar("Cards successfully added", 'success');
@@ -41,6 +43,7 @@ function Pack(props) {
         finally {
             setIsLoading(false);
             closeModal();
+            setLoadingValue(1); // reset dello spinner value
         }
 
     }
@@ -67,7 +70,9 @@ function Pack(props) {
                 centered
             >
             {isLoading ? (
-                <p>SPINNER</p>
+                <div className='pack-spinner'>
+                    <CircularProgress variant="determinate" color="error" size="100px" value={loadingValue}/>
+                </div>
             ) : (
                 <>         
                     <Modal.Header className='border-0' closeButton>

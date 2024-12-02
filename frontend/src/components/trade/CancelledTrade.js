@@ -4,21 +4,26 @@ import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
 import { useSnackbar } from './../AlertContext';
 import noResultsIcon from '../../assets/icons/no-results.png';
+import CircularProgress from '@mui/material/CircularProgress';
 
 function CancelledTrade({tradeOrigin}) {
 
     const [tradesSent, setTradesSent] = useState(null);
     const [tradesReceived, setTradesReceived] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
     const { showSnackbar } = useSnackbar();
 
     useEffect(() => {
         const loadData = async () => {
             try {
+                setIsLoading(true)
                 const res = await getUserTrades('cancelled')
                 setTradesSent(res.sent_trades)
                 setTradesReceived(res.received_trades)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
+            } finally {
+                setIsLoading(false)
             }
         }
 
@@ -31,7 +36,12 @@ function CancelledTrade({tradeOrigin}) {
     
     return (
         <>
-            {  tradeOrigin === 'sent' ? (                            
+            {  isLoading ? (
+                <div className='album-spinner'>
+                    <CircularProgress color="error" size="100px"/>
+                </div>
+            ) : (
+                tradeOrigin === 'sent' ? (                            
                     tradesSent && tradesSent.trades.length > 0 ? (
                         [...tradesSent.trades]
                         .reverse().map((item) => (
@@ -70,6 +80,7 @@ function CancelledTrade({tradeOrigin}) {
                         </div>
                     )
                 )
+            )
             }
         </>
     );
