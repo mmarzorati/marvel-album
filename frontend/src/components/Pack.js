@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import '../scss/Pack.scss';
 import { Modal, Button } from 'react-bootstrap';
 import coinIcon from '../assets/icons/coin.png';
-import { addUserCard, removeCoins } from '../apis/backendApi';
+import { addUserCard } from '../apis/backendApi';
 import { getCharacters } from '../apis/marvelApi';
+import { useSnackbar } from './../components/AlertContext';
 
 function Pack(props) {
 
@@ -11,13 +12,14 @@ function Pack(props) {
 
     const [show, setShow] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const { showSnackbar } = useSnackbar();
 
     const closeModal = () => setShow(false);
     const showModal = () => setShow(true);
 
     const confirmPurchase = async () => {
         try {
-            const user = await removeCoins(props.price)
+            const user = await (props.price)
             setIsLoading(true);
             for (let i = 0; i < props.amount; i++) {
                 // genera un numero casuale tra 0 e carteTotali -1,questo perchè rappresenterà l'offset, che permette di saltare il numero di elementi indicato
@@ -31,9 +33,10 @@ function Pack(props) {
                 );
             }
             props.setCoins(user.coins)
+            showSnackbar("Cards successfully added", 'success');
         }
         catch (error) {
-            console.log(error)
+            showSnackbar(error.response.data.message, 'error');
         }
         finally {
             setIsLoading(false);

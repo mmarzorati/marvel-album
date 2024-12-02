@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import '../scss/LogIn.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUser } from '../apis/backendApi';
+import { useSnackbar } from './../components/AlertContext';
 
 const SignIn = () => {
 
@@ -11,18 +12,20 @@ const SignIn = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
+    const { showSnackbar } = useSnackbar();
 
     const checkFields = () => {
-        // Controllo che sia diverso password e confrimPassword 
+        // controllo che sia diverso password e confrimPassword 
         if (password !== confirmPassword) {
-        // errore password non corrispondono
-        return false;
+            showSnackbar('The two passwords do not match', 'error');
+            return false;
         }
-        // Controllo che abbia la struttura di una mail
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-        // errore email non valida
-        return false;
+
+        // controllo che abbia la struttura di una mail
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!isValidEmail.test(email)) {
+            showSnackbar('Email is not valid', 'error');
+            return false;
         }
         return true;
     }
@@ -32,16 +35,14 @@ const SignIn = () => {
         if (checkFields()){
             try {
                 const res = await createUser(name, username, email, password);
-                
-            } catch (error) {
-                
-            } finally {
+                showSnackbar(res.message, 'success');
                 navigate('/profile')
+            } catch (error) {
+                showSnackbar(error.response.data.message, 'error');
             }
-
         }
         } else {
-            // errore devono rispettare tutti i requisiti
+            showSnackbar('All fields must meet the requirements', 'error');
         }
     }
 

@@ -4,20 +4,26 @@ import '../scss/Album.scss';
 import { getUserCards } from '../apis/backendApi';
 import { getCharacters } from '../apis/marvelApi';
 import noResultsIcon from '../assets/icons/no-results.png';
+import { useSnackbar } from './../components/AlertContext';
 
 function Album() {
 
     const [collection, setCollection] = useState('');
     const [totalCards, setTotalCards] = useState(null);
     const [percentageCards, setPercentageCards] = useState(null);
+    const { showSnackbar } = useSnackbar();
 
     useEffect(() => {
         const loadData = async () => {
-            const res = await getUserCards();
-            setCollection(res);
-            const cards = await getCharacters(1,0)
-            if (setTotalCards(cards.total)) {
-                console.error("Error loading total cards")
+            try {
+                const res = await getUserCards();
+                setCollection(res);
+                const cards = await getCharacters(1,0)
+                if (setTotalCards(cards.total)) {
+                    console.error("Error loading total cards")
+                }
+            } catch (error) {
+                showSnackbar(error.response.data.message, 'error');
             }
         }
 

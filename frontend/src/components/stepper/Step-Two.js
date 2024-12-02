@@ -1,17 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { searchUsersAPI } from '../../apis/backendApi';
 import { Button } from '@mui/material';
 import { Modal } from 'react-bootstrap';
 import { getUserCards } from '../../apis/backendApi';
 import MiniCard from '../MiniCard'
 import noResultsIcon from '../../assets/icons/no-results.png';
+import { useSnackbar } from './../AlertContext';
 
 function StepTwo(props) {
 
     const [collection, setCollection] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [selectedIds, setSelectedIds] = useState([]);
-    const [isButtonDisable, setIsButtonDisable] = useState(true); 
+    const [isButtonDisable, setIsButtonDisable] = useState(true);
+    const { showSnackbar } = useSnackbar();
 
     useEffect(() => {
         const loadData = async () => {
@@ -20,7 +21,7 @@ function StepTwo(props) {
                 const res = await getUserCards()
                 setCollection(res)
             } catch (error) {
-                console.log('error')
+                showSnackbar(error.response.data.message, 'error');
             } finally {
                 setIsLoading(false)
             }

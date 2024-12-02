@@ -5,6 +5,7 @@ import userIcon from '../assets/icons/user.png';
 import coinIcon from '../assets/icons/coin.png';
 import pencilIcon from '../assets/icons/pencil.png';
 import { getUserInfo, updateUserInfo } from '../apis/backendApi';
+import { useSnackbar } from './../components/AlertContext';
 
 function Profile() {
 
@@ -16,6 +17,7 @@ function Profile() {
     const [inputValue, setInputValue] = useState(null);
     const [coins, setCoins] = useState(null);
     const [showEditModal, setShowEditModal] = useState(false);
+    const { showSnackbar } = useSnackbar();
 
     const closeModal = () => setShowEditModal(false);
 
@@ -27,9 +29,8 @@ function Profile() {
                 setName(res.name)
                 setEmail(res.email)
                 setCoins(res.coins)
-                console.log(res);
             } catch (error) {
-                // Imposta lo stato di errore
+                showSnackbar(error.response.data.message, 'error');
             } finally {
                 setLoading(false); 
             }
@@ -49,15 +50,20 @@ function Profile() {
 
     const updateInfo = async () => {
         if (inputValue) {
-            const res = await updateUserInfo(fieldType, inputValue);
-            setUsername(res.user.username)
-            setName(res.user.name)
-            setEmail(res.user.email)
-            closeModal();
-            setInputValue('');
+            try {
+                const res = await updateUserInfo(fieldType, inputValue);
+                setUsername(res.user.username)
+                setName(res.user.name)
+                setEmail(res.user.email)
+                closeModal();
+                setInputValue('');
+            }
+            catch (error) {
+                showSnackbar(error.response.data.message, 'error');
+            }
         }
         else {
-            // errore toast
+            showSnackbar('Input is not valid', 'error');
         }
     };
 

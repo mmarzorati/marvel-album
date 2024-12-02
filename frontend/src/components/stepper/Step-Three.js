@@ -17,9 +17,13 @@ function SepThree(props) {
 
     useEffect(() => {
         const loadData = async () => {
-            const res = await getUserCardsById(props.receiver._id)
-            setCollection(res)
-            setIsLoading(false)
+            try {
+                const res = await getUserCardsById(props.receiver._id)
+                setCollection(res)
+                setIsLoading(false)
+            } catch (error) {
+                showSnackbar(error.response.data.message, 'error');
+            }
         }
 
         loadData()
@@ -47,7 +51,7 @@ function SepThree(props) {
                 props.updateTrades(res)
                 showSnackbar(res.message, 'success');
             } catch (error) {
-                showSnackbar(error.message, 'error');
+                showSnackbar(error.response.data.message, 'error');
             } finally {
                 setIsLoading(false)
                 props.closeModal()

@@ -3,17 +3,23 @@ import '../../scss/Trades.scss';
 import Trade from './Trade'
 import {getUserTrades} from '../../apis/backendApi'
 import noResultsIcon from '../../assets/icons/no-results.png';
+import { useSnackbar } from './../AlertContext';
 
 function CompletedTrade({tradeOrigin}) {
 
     const [tradesSent, setTradesSent] = useState(null);
     const [tradesReceived, setTradesReceived] = useState(null);
+    const { showSnackbar } = useSnackbar();
 
     useEffect(() => {
         const loadData = async () => {
-            const res = await getUserTrades('completed')
-            setTradesSent(res.sent_trades)
-            setTradesReceived(res.received_trades)
+            try {
+                const res = await getUserTrades('completed')
+                setTradesSent(res.sent_trades)
+                setTradesReceived(res.received_trades)
+            } catch (error) {
+                showSnackbar(error.response.data.message, 'error');
+            }
         }
 
         loadData()

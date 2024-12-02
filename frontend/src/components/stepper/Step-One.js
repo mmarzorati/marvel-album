@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { searchUsersAPI } from '../../apis/backendApi';
 import { Button } from '@mui/material';
 import { Modal } from 'react-bootstrap';
+import { useSnackbar } from './../AlertContext';
 
 function StepOne(props) {
     const [query, setQuery] = useState('');
@@ -9,6 +10,7 @@ function StepOne(props) {
     const [isDropdownVisible, setIsDropdownVisible] = useState(false); 
     const [debouncedQuery, setDebouncedQuery] = useState(query);
     const [isButtonDisable, setIsButtonDisable] = useState(true);
+    const { showSnackbar } = useSnackbar();
     
     useEffect(() => {
         const handler = setTimeout(() => {
@@ -38,7 +40,7 @@ function StepOne(props) {
             setResults(res.slice(0, 5));
             setIsDropdownVisible(true);
         } catch (error) {
-            console.error('Errore nella ricerca utenti:', error);
+            showSnackbar(error.response.data.message, 'error');
         }
     };
     

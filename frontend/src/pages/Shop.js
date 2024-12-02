@@ -5,20 +5,26 @@ import '../scss/Shop.scss';
 import { getCharacters } from '../apis/marvelApi';
 import { getUserInfo } from '../apis/backendApi';
 import CoinIcon from '../assets/icons/coin.png';
+import { useSnackbar } from './../components/AlertContext';
 
 function Shop() {
 
     const [totalCards, setTotalCards] = useState(null);
     const [coins, setCoins] = useState(null);
+    const { showSnackbar } = useSnackbar();
 
     useEffect(() => {
         const loadData = async () => {
-            const res = await getCharacters(1,0)
-            if (setTotalCards(res.total)) {
-                console.error("Error loading total cards")
+            try {
+                const res = await getCharacters(1,0)
+                if (setTotalCards(res.total)) {
+                    showSnackbar("Error loading total cards", 'error');
+                }
+                const response = await getUserInfo();
+                setCoins(response.coins)
+            } catch (error) {
+                showSnackbar(error.response.data.message, 'error');
             }
-            const response = await getUserInfo();
-            setCoins(response.coins)
         }
 
         loadData();

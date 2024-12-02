@@ -3,22 +3,24 @@ import '../scss/Pack.scss';
 import { Col, Row, Container, Button } from 'react-bootstrap';
 import { Modal } from 'react-bootstrap';
 import coinIcon from '../assets/icons/coin.png';
-import { addUserCard, buyCoins } from '../apis/backendApi';
+import { buyCoins } from '../apis/backendApi';
+import { useSnackbar } from './../components/AlertContext';
 
 function Pack(props) {
 
     const [show, setShow] = useState(false);
-
     const closeModal = () => setShow(false);
     const showModal = () => setShow(true);
+    const { showSnackbar } = useSnackbar();
 
     const addCoins = async () => {
         try {
             const res = await buyCoins(props.amount);
             props.setCoins(res.coins)
+            showSnackbar("Coins successfully added to your wallet", 'success');
         }
         catch (error) {
-            // toast error
+            showSnackbar(error.response.data.message, 'error');
         }
         finally {
             closeModal();

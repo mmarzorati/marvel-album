@@ -16,10 +16,9 @@ const LogIn = () => {
             try {
                 const res = await checkUser(email, password)
                 showSnackbar(res.message, 'success');
+                navigate('/profile')
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
-            } finally {
-                navigate('/profile')
             }
 
         } else {

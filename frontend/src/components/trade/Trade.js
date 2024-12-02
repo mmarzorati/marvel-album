@@ -4,12 +4,20 @@ import tradeIcon from '../../assets/icons/trade.png';
 import TradeCard from './TradeCard';
 import { Container, Row, Col, Button } from 'react-bootstrap';
 import { changeTradeStatus } from '../../apis/backendApi';
+import { useSnackbar } from './../AlertContext';
 
 function Trade(props) {
 
+    const { showSnackbar } = useSnackbar();
+
     const handleTradeStatus = async (status) => {
-        await changeTradeStatus(status, props.id);
-        props.setTradeStatus(status)
+        try {
+            const res = await changeTradeStatus(status, props.id);
+            props.setTradeStatus(status)
+            showSnackbar(res.message, 'success');
+        } catch (error) {
+            showSnackbar(error.response.data.message, 'error');
+        }
     } 
 
     const capitalizeFirstLetter = (string) => {
