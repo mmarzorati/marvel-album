@@ -16,13 +16,13 @@ router.get('/api/cards/:userId', authMiddleware, async (req, res) => {
 
         const user = await User.findById(userId).populate('collec.cardId');
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(404).send({message: 'User not found'});
         }
 
         res.status(200).send(user.collec);
     } catch (error) {
         console.error(error);
-        res.status(500).send('Internal Server Error');
+        res.status(500).send({ message: 'Internal Server Error', error: error });
     }
 });
 

@@ -19,7 +19,6 @@ router.post('/api/users', async (req, res) => {
             password: req.body.password,
             coins: 0
         });
-        
         await user.save();
 
         const token = jwt.sign(
@@ -39,14 +38,14 @@ router.post('/api/users', async (req, res) => {
             secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
             maxAge: 60 * 60 * 1000 // 1 ora
         });
-        res.status(201).send({ message: 'User saved successfully', user });
+        res.status(201).send({ message: 'User saved successfully'});
 
     } catch (error) {
         if (error.code === 11000) {
             // gestisce l'errore di unicità per username o email
-            return res.status(400).send({ message: 'Username or email already exists' });
+            return res.status(400).send({ message: 'Username or email already exists'});
         }
-        res.status(500).send(error);
+        res.status(500).send({ message: 'Internal server error', error });
     }
 });
 
@@ -55,7 +54,7 @@ router.post('/api/users/login', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required' });
+        return res.status(400).json({ message: 'Email and password are required' });
     }
 
     try {
@@ -90,17 +89,18 @@ router.post('/api/users/login', async (req, res) => {
 
     } catch (error) {
         console.error('Errore nel login:', error);
-        return res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Internal server error' });
     }
 });
 
 // endpoint per la restituzione dei dati dell'utente
 router.get('/api/user', authMiddleware, async (req, res) => {
     try {
-        res.status(200).json(req.user);
+        const { username, coin, name, email } = req.user;
+        res.status(200).json({ username, coin, name, email });
     } catch (error) {
         console.error(error);
-        res.status(500).send(error.message);
+        res.status(500).send({message: 'Internal server error' , error: error.message});
     }
 });
 
@@ -137,31 +137,31 @@ router.put('/api/users', authMiddleware, async (req, res) => {
         }
 
         await user.save();
-
-        res.status(200).send({ message: 'User updated successfully', user });
+        const { username, coin, name, email } = user;
+        res.status(200).send({ message: 'User updated successfully', user: { username, coin, name, email } });
     } catch (error) {
-        res.status(500).send({ message: 'Error updating user', error });
+        res.status(500).send({ message: 'Internal server error', error });
     }
 });
 
 // endpoint per ottenere tutte le carte di un utente
-router.get('/api/users/cards',authMiddleware , async (req, res) => {
+router.get('/api/users/cards', authMiddleware, async (req, res) => {
     try {
         const user = await User.findById(req.user._id).populate('collec.cardId');
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(404).send({ message: 'User not found' });
         }
         res.status(200).send(user.collec);
     } catch (error) {
         console.error(error);
-        res.status(500).send(error);
+        res.status(500).send({ message: 'Internal server error', error: error.message });
     }
 });
 
 // endpoint per l'aggiunta di una carta nel database
 router.post('/api/users/add-card', authMiddleware, async (req, res) => {
-    const { marvelId, name, description, pathImg } = req.body;
 
+    const { marvelId, name, description, pathImg } = req.body;
     try {
         const user = await User.findById(req.user._id);
         if (!user) {
@@ -192,25 +192,24 @@ router.post('/api/users/add-card', authMiddleware, async (req, res) => {
 
         await user.save();
 
-        res.status(200).json({ message: 'Carta gestita correttamente', user });
+        res.status(200).json({ message: 'Card successfully added' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Errore del server' });
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 
 // endpoint per l'acquisto o la rimozione dei coins
-router.post('/api/users/coins', authMiddleware , async (req, res) => {
+router.post('/api/users/coins', authMiddleware, async (req, res) => {
     const { amount } = req.body;
     try {
         const user = await User.findById(req.user._id);
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.status(404).send({ message: 'User not found' });
         }
         if( (user.coins = user.coins + amount) < 0 ) {
             return res.status(400).json({ message: 'You don\'t have enough coins' });
         }
-
         await user.save();
         
         // dopo aver salvato l'utente viene aggiotnato il token dell'utente con i coins aggiornati
@@ -232,12 +231,11 @@ router.post('/api/users/coins', authMiddleware , async (req, res) => {
             maxAge: 60 * 60 * 1000 // 1 ora
         });
 
-        res.status(200).send({ coins: user.coins });
-
+        res.status(200).send({ message: 'Coins wallet updated', coins: user.coins });
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Errore del server' });
+        res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 });
 
@@ -248,7 +246,7 @@ router.post('/api/users/search', authMiddleware, async (req, res) => {
 
     try {
         if (!query) {
-            return res.status(400).json({ message: 'Devi fornire una stringa di ricerca' });
+            return res.status(400).json({ message: 'You must provide a search string' });
         }
 
         const users = await User.find({
@@ -273,7 +271,7 @@ router.post('/api/users/search', authMiddleware, async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server Error' });
+        res.status(500).json({ message: 'Internal server Error' });
     }
 });
 

@@ -20,22 +20,22 @@ router.post('/api/trades', authMiddleware, async (req, res) => {
 
         // controlla se i campi obbligatori sono presenti
         if ( !receiver_id || !Array.isArray(rec_cards) || !Array.isArray(sen_cards)) {
-            return res.status(400).json({ message: 'Parametri non validi: sender_id, receiver_id, rec_cards e sen_cards sono obbligatori.' });
+            return res.status(400).json({ message: 'Invalid parameters: sender_id, receiver_id, rec_cards, and sen_cards are required' });
         }
 
         // controlla se gli ID sono validi
         if ( !isValidObjectId(receiver_id)) {
-            return res.status(400).json({ message: 'ID non valido per sender_id o receiver_id.' });
+            return res.status(400).json({ message: 'Invalid ID for receiver_id' });
         }
 
         // controlla che gli array contengano solo ObjectId validi
         if (!rec_cards.every(isValidObjectId) || !sen_cards.every(isValidObjectId)) {
-            return res.status(400).json({ message: 'rec_cards e sen_cards devono contenere solo ID validi.' });
+            return res.status(400).json({ message: 'rec_cards and sen_cards must contain only valid IDs' });
         }
 
         // controlla se gli array sono vuoti (controllo già presente anche a FE)
         if (rec_cards.length === 0 || sen_cards.length === 0) {
-            return res.status(400).json({ message: 'rec_cards e sen_cards non possono essere vuoti.' });
+            return res.status(400).json({ message: 'rec_cards and sen_cards cannot be empty' });
         }
 
         const newTrade = new Trade({
@@ -91,12 +91,13 @@ router.post('/api/trades', authMiddleware, async (req, res) => {
             ]
         });
 
-        res.status(200).json({ sent_trades, received_trades });
+        res.status(200).json({ sent_trades, received_trades, message: 'The new trade has been successfully created!' });
     } catch (error) {
-        res.status(500).json({ message: 'Errore durante la creazione del trade', error: error.message });
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 })
 
+// endpoint per la restituzione dei trades per status
 router.get('/api/trades/:status', authMiddleware, async (req, res) => {
     try {
         const { status } = req.params;
@@ -104,13 +105,13 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
 
         // controlla se l'ID utente è valido
         if (!mongoose.Types.ObjectId.isValid(userId)) {
-            return res.status(400).json({ message: 'ID utente non valido.' });
+            return res.status(400).json({ message: 'Invalid user ID' });
         }
 
         // controlla se lo stato è valido
         const validStatuses = ['pending', 'completed', 'cancelled'];
         if (!validStatuses.includes(status)) {
-            return res.status(400).json({ message: 'Stato non valido. Deve essere "pending", "completed" o "cancelled".' });
+            return res.status(400).json({ message: 'Invalid status. It must be "pending," "completed," or "cancelled' });
         }
 
         // trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
@@ -150,9 +151,9 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
             ]
         });
 
-        res.status(200).json({ sent_trades, received_trades });
+        res.status(200).json({ sent_trades, received_trades, message: `Ecco tutti i ${status} trades` });
     } catch (error) {
-        res.status(500).json({ message: 'Errore durante la ricerca dei trade', error: error.message });
+        res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 });
 
@@ -164,13 +165,13 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
 
         // Verifica se l'ID del trade è valido
         if (!mongoose.Types.ObjectId.isValid(tradeId)) {
-            return res.status(400).json({ message: 'ID trade non valido.' });
+            return res.status(400).json({ message: 'Invalid user ID' });
         }
 
         // conrtrolla che lo stato sia valido
         const validStatuses = ['completed', 'cancelled'];
         if (!validStatuses.includes(status)) {
-            return res.status(400).json({ message: 'Stato non valido. Deve essere "completed" o "cancelled".' });
+            return res.status(400).json({ message: 'Invalid status. It must be "completed" or "cancelled"' });
         }
 
         // controlla che l'utente sia coinvolto come sender o receiver
@@ -179,21 +180,21 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
             $or: [{ sender_id: userId }, { receiver_id: userId }]
         });
         if (!trade) {
-            return res.status(404).json({ message: 'Trade non trovato o accesso negato.' });
+            return res.status(404).json({ message: 'Trade not found or access denied' });
         }
 
         // se si vuole cancellare il trade viene semplicemente cambiato lo stato 
         if (status !== 'completed') {
             trade.status = status;
             await trade.save();
-            return res.status(200).json({ message: `Stato del trade aggiornato a ${status}.`, trade });
+            return res.status(200).json({ message: `The trade has been rejected` });
         }
 
         // se invece si vuole compltare il trade:
         const sender = await User.findById(trade.sender_id);
         const receiver = await User.findById(trade.receiver_id);
         if (!sender || !receiver) {
-            return res.status(404).json({ message: 'Mittente o destinatario non trovato.' });
+            return res.status(404).json({ message: 'Sender or recipient not found' });
         }
 
         // verifica se le carte degli scambi sono ancora possedute, magari è già stata scambiata
@@ -203,7 +204,7 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
             if (!cardInCollection || cardInCollection.quantity < 1) {
                 trade.status = 'cancelled';
                 await trade.save();
-                return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}`, trade });
+                return res.status(400).json({ message: `The user does not own the card with the name: ${card.name}. The trade has been rejected `, trade });
             }
         }
 
@@ -212,7 +213,7 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
             if (!cardInCollection || cardInCollection.quantity < 1) {
                 trade.status = 'cancelled';
                 await trade.save();
-                return res.status(400).json({ message: `L'utente non possiede la carta con ID ${card.name}` , trade });
+                return res.status(400).json({ message: `The user does not own the card with the name: ${card.name}. The trade has been rejected` , trade });
             }
         }
 
@@ -257,11 +258,11 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
         trade.status = 'completed';
         await trade.save();
 
-        res.status(200).json({ message: 'Trade completato con successo.', trade });
+        res.status(200).json({ message: 'The trade has been accepted' });
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({ message: 'Errore durante l\'aggiornamento dello stato del trade.', error: error.message });
+        res.status(500).json({ message: 'Internal server error', error: error.message });
     }
 });
 
