@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../scss/LogIn.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { createUser } from '../apis/backendApi';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 const SignIn = () => {
 
@@ -14,38 +12,16 @@ const SignIn = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
     const navigate = useNavigate();
 
-    const succesNotify = (text) => toast.success(text, {
-    position: "bottom-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
-    });
-
-    const errorNotify = (text) => toast.error(text, {
-    position: "bottom-right",
-    autoClose: 5000,
-    hideProgressBar: false,
-    closeOnClick: true,
-    pauseOnHover: true,
-    draggable: true,
-    progress: undefined,
-    theme: "dark",
-    });
-
     const checkFields = () => {
         // Controllo che sia diverso password e confrimPassword 
         if (password !== confirmPassword) {
-        errorNotify('Le due password non corrispondono');
+        // errore password non corrispondono
         return false;
         }
         // Controllo che abbia la struttura di una mail
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if (!emailRegex.test(email)) {
-        errorNotify('Email non valida');
+        // errore email non valida
         return false;
         }
         return true;
@@ -56,16 +32,16 @@ const SignIn = () => {
         if (checkFields()){
             try {
                 const res = await createUser(name, username, email, password);
-                succesNotify(res.message)
+                
             } catch (error) {
-                errorNotify(error.response.data.message)
+                
             } finally {
                 navigate('/profile')
             }
 
         }
         } else {
-            errorNotify('Tutti i campi devono rispettare i requisiti!')
+            // errore devono rispettare tutti i requisiti
         }
     }
 
@@ -114,7 +90,6 @@ const SignIn = () => {
                 </Link>
                 <button className='login-btn' onClick={EnrollUser} >Signin</button>
             </div>
-            <ToastContainer />
         </div>
     );
 };

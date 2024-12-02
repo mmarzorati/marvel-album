@@ -1,52 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import '../scss/LogIn.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import { checkUser } from '../apis/backendApi';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { useSnackbar } from './../components/AlertContext';
 
 const LogIn = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
-    const succesNotify = (text) => toast.success(text, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        });
-
-    const errorNotify = (text) => toast.error(text, {
-        position: "bottom-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "dark",
-        });
+    const { showSnackbar } = useSnackbar();
 
     const loginUser = async () => {
         // controllo se gli input non sono vuoti
         if (email !== '' && password !== '') {
             try {
                 const res = await checkUser(email, password)
-                succesNotify(res.message)
+                showSnackbar(res.message, 'success');
             } catch (error) {
-                errorNotify(error.response.data.message)
+                showSnackbar(error.response.data.message, 'error');
             } finally {
                 navigate('/profile')
             }
 
         } else {
-            errorNotify('Uno o più campi sono vuoti')
+            showSnackbar('Error: empty fields', 'error');
         }
     }
 
@@ -73,7 +50,6 @@ const LogIn = () => {
                 </Link>
                 <button className='login-btn' onClick={loginUser}>Login</button>
             </div>
-            <ToastContainer />
         </div>
     );
 };

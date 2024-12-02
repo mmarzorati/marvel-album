@@ -27,6 +27,10 @@ export const SnackbarProvider = ({ children }) => {
                 onClose={closeSnackbar}
                 autoHideDuration={4000}
                 TransitionComponent={(props) => <Slide {...props} direction="up" />}
+                sx={{
+                    width: "50%",
+                    maxWidth: "600px",
+                }}
             >
                 <MuiAlert
                     severity={snackbarType}
