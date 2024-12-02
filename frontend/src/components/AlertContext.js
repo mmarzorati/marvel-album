@@ -11,9 +11,12 @@ export const SnackbarProvider = ({ children }) => {
     const [snackbarType, setSnackbarType] = useState('success');
 
     const showSnackbarHandler = useCallback((message, type = 'success') => {
-        setSnackbarMessage(message);
-        setSnackbarType(type);
-        setShowSnackbar(true);
+        setShowSnackbar(false);
+        setTimeout(() => {
+            setSnackbarMessage(message);
+            setSnackbarType(type);
+            setShowSnackbar(true);
+        }, 100); // piccolo delay per garantire il reset della snackbar dopo la chiusura automatica
     }, []);
 
     const closeSnackbar = () => setShowSnackbar(false);
