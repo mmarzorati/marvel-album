@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../scss/Pack.scss';
 import { Modal, Button } from 'react-bootstrap';
 import coinIcon from '../assets/icons/coin.png';
-import { addUserCard } from '../apis/backendApi';
+import { addUserCard, removeCoins } from '../apis/backendApi';
 import { getCharacters } from '../apis/marvelApi';
 import { useSnackbar } from './../components/AlertContext';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -19,7 +19,7 @@ function Pack(props) {
 
     const confirmPurchase = async () => {
         try {
-            const user = await (props.price)
+            const user = await removeCoins(props.price)
             setIsLoading(true);
             for (let i = 0; i < props.amount; i++) {
                 // genera un numero casuale tra 0 e carteTotali -1,questo perchè rappresenterà l'offset, che permette di saltare il numero di elementi indicato

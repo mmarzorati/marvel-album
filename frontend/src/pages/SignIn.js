@@ -15,6 +15,12 @@ const SignIn = () => {
     const { showSnackbar } = useSnackbar();
 
     const checkFields = () => {
+        // controlo che il nome sia formato da sole lettere e rendo solo la prima maiuscola
+        if(!/^[a-zA-Z]*$/.test(name)) {
+            showSnackbar('The name must consist of letters only', 'error');
+            return false;
+        }
+
         // controllo che sia diverso password e confrimPassword 
         if (password !== confirmPassword) {
             showSnackbar('The two passwords do not match', 'error');
@@ -27,6 +33,12 @@ const SignIn = () => {
             showSnackbar('Email is not valid', 'error');
             return false;
         }
+
+        if (username !== username.toLowerCase() && /^[a-zA-Z]*$/.test(username)) {
+            showSnackbar('Username must be lowercase', 'error');
+            return false;
+        }
+
         return true;
     }
     const EnrollUser = async () => {
@@ -34,7 +46,8 @@ const SignIn = () => {
         if (email !== '' && name !== '' && username !== '' && password !== '' && confirmPassword !== '') {
         if (checkFields()){
             try {
-                const res = await createUser(name, username, email, password);
+                const formattedName = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+                const res = await createUser(formattedName, username, email, password);
                 showSnackbar(res.message, 'success');
                 navigate('/profile')
             } catch (error) {

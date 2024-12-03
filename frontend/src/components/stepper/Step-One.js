@@ -37,7 +37,9 @@ function StepOne(props) {
     const searchUsers = async (searchQuery) => {
         try {
             const res = await searchUsersAPI(searchQuery);
-            setResults(res.slice(0, 5));
+            if (res.length > 0) {
+                setResults(res.slice(0, 5));
+            }
             setIsDropdownVisible(true);
         } catch (error) {
             showSnackbar(error.response.data.message, 'error');
@@ -70,7 +72,7 @@ function StepOne(props) {
                             <li
                                 key={user.id}
                                 onClick={() => handleSelectUser(user)}
-                                className='step-serach-item'
+                                className='step-search-item'
                             >
                                 {user.username} - {user.name}
                             </li>

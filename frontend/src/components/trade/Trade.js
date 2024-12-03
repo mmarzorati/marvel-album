@@ -1,8 +1,8 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import '../../scss/Trades.scss';
 import tradeIcon from '../../assets/icons/trade.png';
 import TradeCard from './TradeCard';
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { changeTradeStatus } from '../../apis/backendApi';
 import { useSnackbar } from './../AlertContext';
 
@@ -13,10 +13,11 @@ function Trade(props) {
     const handleTradeStatus = async (status) => {
         try {
             const res = await changeTradeStatus(status, props.id);
-            props.setTradeStatus(status)
+            props.setTradeStatus(status);
             showSnackbar(res.message, 'success');
         } catch (error) {
             showSnackbar(error.response.data.message, 'error');
+            props.setTradeStatus('cancelled');
         }
     } 
 
