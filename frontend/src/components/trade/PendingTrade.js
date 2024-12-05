@@ -19,10 +19,9 @@ function PendingTrade(props) {
                 const res = await getUserTrades('pending')
                 setTradesSent(res.sent_trades)
                 setTradesReceived(res.received_trades)
+                setIsLoading(false)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
-            } finally {
-                setIsLoading(false)
             }
         }
 

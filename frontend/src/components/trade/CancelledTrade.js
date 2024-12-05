@@ -20,10 +20,9 @@ function CancelledTrade({tradeOrigin}) {
                 const res = await getUserTrades('cancelled')
                 setTradesSent(res.sent_trades)
                 setTradesReceived(res.received_trades)
+                setIsLoading(false)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
-            } finally {
-                setIsLoading(false)
             }
         }
 

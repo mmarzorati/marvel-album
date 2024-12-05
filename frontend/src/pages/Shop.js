@@ -25,11 +25,9 @@ function Shop() {
                 }
                 const response = await getUserInfo();
                 setCoins(response.coins)
+                setIsLoading(false)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
-            }
-            finally {
-                setIsLoading(false)
             }
         }
 

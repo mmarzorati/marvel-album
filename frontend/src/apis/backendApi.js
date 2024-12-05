@@ -11,7 +11,12 @@ export async function createUser(name, username, email, password) {
         });
         return response.data
     } catch (error) {
-        console.error('Create user API error  :', error.response ? error.response.data : error.message);
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Create user API error:', error.response ? error.response.data : error.message);
+        }
         throw error;
     }
 }
@@ -24,7 +29,12 @@ export async function checkUser(email, password) {
         });
         return response.data
     } catch (error) {
-        console.error('Log in API error:', error.response ? error.response.data : error.message);
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Log in API error:', error.response ? error.response.data : error.message);
+        }
         throw error;
     }
 }
@@ -34,7 +44,12 @@ export async function getUserInfo() {
         const response = await axios.get('api/user', {}, {withCredentials: true});
         return response.data
     } catch (error) {
-        console.error('get user info API error:', error.response ? error.response.data : error.message);
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('get user info API error:', error.response ? error.response.data : error.message);        
+        }
         throw error;
     }
 }
@@ -44,7 +59,12 @@ export async function getUserCards() {
         const response = await axios.get('api/users/cards', {withCredentials: true});
         return response.data
     } catch (error) {
-        console.error('Get user card API error:', error.response ? error.response.data : error.message);
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Get user card API error:', error.response ? error.response.data : error.message);
+        }
         throw error;
     }
 }
@@ -54,7 +74,12 @@ export async function getUserCardsById(id) {
         const response = await axios.get(`api/cards/${id}`, { withCredentials: true });
         return response.data
     } catch (error) {
-        console.error('Get user card API error:', error.response ? error.response.data : error.message);
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Get user card API error:', error.response ? error.response.data : error.message);
+        }
         throw error;
     }
 }
@@ -68,7 +93,12 @@ export async function addUserCard( marvelId, name, description, pathImg) {
         );
         return response.data
     } catch (error) {
-        console.error('Add card API error:', error.response ? error.response.data : error.message);
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Add card API error:', error.response ? error.response.data : error.message);
+        }
         throw error;
     }
 }
@@ -85,9 +115,13 @@ export async function buyCoins( amount ) {
             return response.data
         }
     } catch (error) {
-        console.error('Buy coins API error:', error.response ? error.response.data : error.message);
-        throw error;
-    }
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Buy coins API error:', error.response ? error.response.data : error.message);
+        }
+        throw error;    }
 }
 
 export async function removeCoins( amount ) {
@@ -102,9 +136,13 @@ export async function removeCoins( amount ) {
         );
         return response.data
     } catch (error) {
-        console.error('Remove coins API error:', error.response ? error.response.data : error.message);
-        throw error;
-    }
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Remove coins API error:', error.response ? error.response.data : error.message);
+        }
+        throw error;    }
 }
 
 export async function searchUsersAPI( query ) {
@@ -115,9 +153,13 @@ export async function searchUsersAPI( query ) {
         );
         return response.data
     } catch (error) {
-        console.error('Serach users API error:', error.response ? error.response.data : error.message);
-        throw error;
-    }
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Get user card API error:', error.response ? error.response.data : error.message);
+        }
+        throw error;    }
 }
 
 export async function createTrade( receiver_id, rec_cards, sen_cards) {
@@ -129,9 +171,13 @@ export async function createTrade( receiver_id, rec_cards, sen_cards) {
         );
         return response.data
     } catch (error) {
-        console.error('Create trade API error:', error.response ? error.response.data : error.message);
-        throw error;
-    }
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Create trade API error:', error.response ? error.response.data : error.message);
+        }
+        throw error;    }
 }
 
 export async function getUserTrades(status) {
@@ -139,9 +185,13 @@ export async function getUserTrades(status) {
         const response = await axios.get(`api/trades/${status}`, { withCredentials: true });
         return response.data
     } catch (error) {
-        console.error('Get Trade API error:', error.response ? error.response.data : error.message);
-        throw error;
-    }
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Get Trade API error:', error.response ? error.response.data : error.message);
+        }
+        throw error;    }
 }
 
 export async function changeTradeStatus(status, tradeId) {
@@ -153,9 +203,13 @@ export async function changeTradeStatus(status, tradeId) {
         )
         return response.data
     } catch (error) {
-        console.error('Get Trade API error:', error.response ? error.response.data : error.message);
-        throw error;
-    }
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Change Trade status API error:', error.response ? error.response.data : error.message);
+        }
+        throw error;    }
 }
 
 export async function updateUserInfo(fieldType, inputValue) {
@@ -180,7 +234,11 @@ export async function updateUserInfo(fieldType, inputValue) {
         );
         return response.data
     } catch (error) {
-        console.error('Create user API error  :', error.response ? error.response.data : error.message);
-        throw error;
-    }
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Update user info API error  :', error.response ? error.response.data : error.message);
+        }
+        throw error;    }
 }

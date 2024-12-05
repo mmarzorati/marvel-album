@@ -31,10 +31,9 @@ function Profile() {
                 setName(res.name)
                 setEmail(res.email)
                 setCoins(res.coins)
+                setLoading(false); 
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
-            } finally {
-                setLoading(false); 
             }
         };
     

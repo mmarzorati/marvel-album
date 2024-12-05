@@ -51,10 +51,10 @@ function SepThree(props) {
                 const res = await createTrade(props.receiver._id, receiverCards, props.senderCards)
                 props.updateTrades(res)
                 showSnackbar(res.message, 'success');
+                setIsLoading(false)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
             } finally {
-                setIsLoading(false)
                 props.closeModal()
                 props.setPending()
                 // riazzero la selezione carte per i prossimi trade

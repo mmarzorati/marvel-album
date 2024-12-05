@@ -25,11 +25,9 @@ function Album() {
                 if (setTotalCards(cards.total)) {
                     console.error("Error loading total cards")
                 }
+                setIsLoading(false)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
-            }
-            finally {
-                setIsLoading(false)
             }
         }
 

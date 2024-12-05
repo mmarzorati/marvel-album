@@ -21,10 +21,9 @@ function StepTwo(props) {
                 setIsLoading(true)
                 const res = await getUserCards()
                 setCollection(res)
+                setIsLoading(false)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
-            } finally {
-                setIsLoading(false)
             }
         }
 
