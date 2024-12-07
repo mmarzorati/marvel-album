@@ -81,7 +81,7 @@ function Pack(props) {
                         </Modal.Title>
                     </Modal.Header>
                     <Modal.Body >
-                        Are you sure to spend {props.price} coins to buy this pack? You will recive {props.amount} random cards.
+                        Are you sure to spend <span style={{ color: 'red' }}>{props.price}</span>coins to buy this pack? You will recive <span style={{ color: 'red' }}>{props.amount}</span> random cards.
                     </Modal.Body>
                     <Modal.Footer className='border-0'>
                         <Button variant="danger" onClick={closeModal}>

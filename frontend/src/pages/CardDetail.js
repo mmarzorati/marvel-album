@@ -62,7 +62,7 @@ function CardDetail() {
                                 <Col>
                                     <div className='profile-col'>
                                         <label className='details-label' >Urls</label>
-                                        <h6>{printUrls()}</h6>
+                                        <h6>{cardInfo.urls ? printUrls() : 'No data'}</h6>
                                     </div>
                                 </Col>
                             </Row>
@@ -70,13 +70,13 @@ function CardDetail() {
                                 <Col>
                                     <div className='profile-col'>
                                         <label className='details-label' >Series</label>
-                                        <h6 className='details-desc'>{concatObj(cardInfo.series)}</h6>
+                                        <h6 className='details-desc'>{cardInfo.series.available ? concatObj(cardInfo.series) : 'No data'}</h6>
                                     </div>
                                 </Col>
                                 <Col>
                                     <div className='profile-col'>
                                         <label className='details-label' >Comics</label>
-                                        <h6 className='details-desc'>{concatObj(cardInfo.comics)}</h6>
+                                        <h6 className='details-desc'>{cardInfo.comics.available ? concatObj(cardInfo.comics) : 'No data'}</h6>
                                     </div>
                                 </Col>
                             </Row>

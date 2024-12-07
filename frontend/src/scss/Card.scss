@@ -1,6 +1,6 @@
 .card {
     &-container {
-        height: 350px;
+        height: 375px;
         width: 250px;
         background-color: var(--dark-red);
         border-radius: 10px;
@@ -20,6 +20,7 @@
     }
     &-desc {
         color: #eee2a2;
+        height: 67px;
         margin-top: 0px;
         margin-bottom: 5px;
         max-height: 100px;
@@ -30,6 +31,14 @@
         width: 175px;
         min-height: 175px;
         max-height: 175px;
+    }
+    &-icon {
+        cursor: pointer;
+        height: 40px;
+        width: 40px;
+        &:hover {
+            filter: invert(1)
+        }
     }
 }
 
