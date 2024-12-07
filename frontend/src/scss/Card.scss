@@ -19,7 +19,7 @@
         height: 48px;
     }
     &-desc {
-        color: var(--smoke-white);
+        color: #eee2a2;
         margin-top: 0px;
         margin-bottom: 5px;
         max-height: 100px;
@@ -31,4 +31,36 @@
         min-height: 175px;
         max-height: 175px;
     }
+}
+
+.details {
+    &-image {
+        width: 300px;
+        min-height: 300px;
+        max-height: 300px;
+        margin: 30px 0;
+    }
+    &-label {
+        font-weight: 700;
+        color: black;
+        font-size: 20px;
+        margin-top: 30px;
+    }
+    &-desc {
+        font-size: 15px;
+        color: var(--light-grey);
+        margin: 0;
+    }
+    &-link {
+        font-size: 15px;
+        color: var(--dark-red) ; 
+        margin: 0;
+        &:hover {
+            color:var(--smoke-white)
+        }
+    }
+}
+
+.no-underline {
+    text-decoration: none;
 }
