@@ -96,7 +96,8 @@ router.post('/api/users/login', async (req, res) => {
 // endpoint per la restituzione dei dati dell'utente
 router.get('/api/user', authMiddleware, async (req, res) => {
     try {
-        const { username, coins, name, email } = req.user;
+        const user = await User.findById( req.user._id );
+        const { username, coins, name, email } = user;
         res.status(200).json({ username, coins, name, email });
     } catch (error) {
         console.error(error);

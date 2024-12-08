@@ -67,10 +67,12 @@ function Album() {
                                 collection.map((item) => (
                                     <Card 
                                         key={item.cardId._id}
+                                        id={item.cardId._id}
                                         name={item.cardId.name}
                                         pathImg={item.cardId.pathImg}
                                         description={item.cardId.description}
                                         quantity={item.quantity}
+                                        setCollection={setCollection}
                                     />
                                 ))
                             ) : (

@@ -121,7 +121,8 @@ export async function buyCoins( amount ) {
         } else {
             console.error('Buy coins API error:', error.response ? error.response.data : error.message);
         }
-        throw error;    }
+        throw error;    
+    }
 }
 
 export async function removeCoins( amount ) {
@@ -142,7 +143,8 @@ export async function removeCoins( amount ) {
         } else {
             console.error('Remove coins API error:', error.response ? error.response.data : error.message);
         }
-        throw error;    }
+        throw error;    
+    }
 }
 
 export async function searchUsersAPI( query ) {
@@ -157,9 +159,10 @@ export async function searchUsersAPI( query ) {
             console.error('Unauthorized access. Redirecting to login.');
             window.location.replace('/login');
         } else {
-            console.error('Get user card API error:', error.response ? error.response.data : error.message);
+            console.error('Search users API error:', error.response ? error.response.data : error.message);
         }
-        throw error;    }
+        throw error;    
+    }
 }
 
 export async function createTrade( receiver_id, rec_cards, sen_cards) {
@@ -177,7 +180,8 @@ export async function createTrade( receiver_id, rec_cards, sen_cards) {
         } else {
             console.error('Create trade API error:', error.response ? error.response.data : error.message);
         }
-        throw error;    }
+        throw error;    
+    }
 }
 
 export async function getUserTrades(status) {
@@ -191,7 +195,8 @@ export async function getUserTrades(status) {
         } else {
             console.error('Get Trade API error:', error.response ? error.response.data : error.message);
         }
-        throw error;    }
+        throw error;    
+    }
 }
 
 export async function changeTradeStatus(status, tradeId) {
@@ -209,7 +214,8 @@ export async function changeTradeStatus(status, tradeId) {
         } else {
             console.error('Change Trade status API error:', error.response ? error.response.data : error.message);
         }
-        throw error;    }
+        throw error;    
+    }
 }
 
 export async function updateUserInfo(fieldType, inputValue) {
@@ -240,5 +246,21 @@ export async function updateUserInfo(fieldType, inputValue) {
         } else {
             console.error('Update user info API error  :', error.response ? error.response.data : error.message);
         }
-        throw error;    }
+        throw error;    
+    }
+}
+
+export async function sellCard(cardId) {
+    try {
+        const response = await axios.delete(`api/cards/${cardId}`, { withCredentials: true });
+        return response.data
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Sell card API error:', error.response ? error.response.data : error.message);
+        }
+        throw error;    
+    }
 }
