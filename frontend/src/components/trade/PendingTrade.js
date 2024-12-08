@@ -20,6 +20,7 @@ function PendingTrade(props) {
                 setTradesSent(res.sent_trades)
                 setTradesReceived(res.received_trades)
                 setIsLoading(false)
+                console.log(res.sent_trades, res.received_trades)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
             }
@@ -44,8 +45,8 @@ function PendingTrade(props) {
                 </div>
             ) : (
                 props.tradeOrigin === 'sent' ? (
-                    tradesSent && tradesSent.trades.length > 0 ? (
-                    [...tradesSent.trades]
+                    tradesSent && tradesSent.length > 0 ? (
+                    [...tradesSent]
                         .reverse()
                         .map((item) => (
                         <>
@@ -55,6 +56,7 @@ function PendingTrade(props) {
                                 receiver_id={item.receiver_id}
                                 rec_cards={item.rec_cards}
                                 sen_cards={item.sen_cards}
+                                date={item.date}
                                 status='pending'
                             />
                         </>
@@ -66,8 +68,8 @@ function PendingTrade(props) {
                         </div>
                     )
                 ) : (
-                    tradesReceived && tradesReceived.trades.length > 0 ? (
-                    [...tradesReceived.trades]
+                    tradesReceived && tradesReceived.length > 0 ? (
+                    [...tradesReceived]
                         .reverse()
                         .map((item) => (
                         <>
@@ -77,6 +79,7 @@ function PendingTrade(props) {
                                 receiver_id={item.receiver_id}
                                 rec_cards={item.rec_cards}
                                 sen_cards={item.sen_cards}
+                                date={item.date}
                                 status='pending'
                                 tradeOrigin={props.tradeOrigin}
                                 setTradeStatus={props.setTradeStatus}

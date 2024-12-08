@@ -114,6 +114,7 @@ $text-color: #fff;
             align-items: center;
         }
         &-cancelled {
+            margin-top: 20px;
             width: 100px;
             height: 40px;
             border: 1px solid #eee2a2;
@@ -125,6 +126,7 @@ $text-color: #fff;
             align-items: center;
         }
         &-completed {
+            margin-top: 20px;
             width: 100px;
             height: 40px;
             border: 1px solid #eee2a2;

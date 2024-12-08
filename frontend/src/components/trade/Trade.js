@@ -26,6 +26,22 @@ function Trade(props) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 
+    // funzione per convertire la data in un formato user-friendly
+    const dateConverter = (date) => {
+        const dateObj = new Date(date);
+        const formattedDate = dateObj.toLocaleDateString("it-IT", {
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit",
+        });
+        const formattedTime = dateObj.toLocaleTimeString("it-IT", {
+            hour: "2-digit",
+            minute: "2-digit",
+        });
+
+        return `${formattedDate} ${formattedTime}`;
+    }
+
     return (
         <>  
             <div className='trades-row-names'>
@@ -52,6 +68,9 @@ function Trade(props) {
                         />
                     ))}
                 </div>
+            </div>
+            <div className='trades-subtitle'>
+                {dateConverter(props.date)}
             </div>
             <div className={`trades-tag-${props.status}`}>{capitalizeFirstLetter(props.status)}</div>
             {

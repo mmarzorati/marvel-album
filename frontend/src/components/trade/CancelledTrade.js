@@ -41,8 +41,8 @@ function CancelledTrade({tradeOrigin}) {
                 </div>
             ) : (
                 tradeOrigin === 'sent' ? (                            
-                    tradesSent && tradesSent.trades.length > 0 ? (
-                        [...tradesSent.trades]
+                    tradesSent && tradesSent.length > 0 ? (
+                        [...tradesSent]
                         .reverse().map((item) => (
                             <Trade 
                                 id={item._id}
@@ -50,6 +50,7 @@ function CancelledTrade({tradeOrigin}) {
                                 receiver_id={item.receiver_id}
                                 rec_cards={item.rec_cards}
                                 sen_cards={item.sen_cards}
+                                date={item.date}
                                 status='cancelled'
                             />
                         ))
@@ -60,8 +61,8 @@ function CancelledTrade({tradeOrigin}) {
                         </div>
                     )
                 ) : (
-                    tradesReceived && tradesReceived.trades.length > 0 ? (
-                        [...tradesReceived.trades]
+                    tradesReceived && tradesReceived.length > 0 ? (
+                        [...tradesReceived]
                         .reverse().map((item) => (
                             <Trade 
                                 id={item._id}
@@ -69,6 +70,7 @@ function CancelledTrade({tradeOrigin}) {
                                 receiver_id={item.receiver_id}
                                 rec_cards={item.rec_cards}
                                 sen_cards={item.sen_cards}
+                                date={item.date}
                                 status='cancelled'
                             />
                         ))

@@ -115,7 +115,7 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
         }
 
         // trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
-        const sent_trades = await User.findById(userId).select('trades').populate({
+        const sent_trades_data = await User.findById(userId).select('trades').populate({
             path: 'trades',
             match: { status: status, sender_id: userId }, // filtro per status direttamente nella query
             populate: [
@@ -133,7 +133,7 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
             ]
         });
 
-        const received_trades = await User.findById(userId).select('trades').populate({
+        const received_trades_data = await User.findById(userId).select('trades').populate({
             path: 'trades',
             match: { status: status, receiver_id: userId },
             populate: [
@@ -150,6 +150,18 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
                 }
             ]
         });
+
+        // aggiunge il campo `date` ai trade inviati
+        const sent_trades = sent_trades_data.trades.map(trade => ({
+            ...trade.toObject(),
+            date: trade._id.getTimestamp() // estrae la data dall'ObjectId
+        }));
+
+        // aggiunge il campo `date` ai trade ricevuti
+        const received_trades = received_trades_data.trades.map(trade => ({
+            ...trade.toObject(),
+            date: trade._id.getTimestamp()
+        }));
 
         res.status(200).json({ sent_trades, received_trades, message: `Ecco tutti i ${status} trades` });
     } catch (error) {
