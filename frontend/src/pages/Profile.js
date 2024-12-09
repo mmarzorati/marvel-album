@@ -74,6 +74,18 @@ function Profile() {
 
     const updateInfo = async () => {
         if (inputValue) {
+            if (fieldType === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inputValue)) {
+                showSnackbar('Email is not valid', 'error');
+                return;
+            }
+            if (fieldType === "username" && (inputValue !== inputValue.toLowerCase() || /\d/.test(inputValue))) {
+                showSnackbar('Username must be lowercase and cannot contain numbers', 'error');
+                return;
+            }
+            if(fieldType === "name" && !/^[a-zA-Z]*$/.test(name)) {
+                showSnackbar('The name must consist of letters only', 'error');
+                return;
+            }
             try {
                 const res = await updateUserInfo(fieldType, inputValue);
                 setUsername(res.user.username)
@@ -81,6 +93,7 @@ function Profile() {
                 setEmail(res.user.email)
                 closeEditModal();
                 setInputValue('');
+                showSnackbar(res.message, 'success');
             }
             catch (error) {
                 showSnackbar(error.response.data.message, 'error');

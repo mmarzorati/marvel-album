@@ -34,7 +34,7 @@ const SignIn = () => {
             return false;
         }
 
-        if (username !== username.toLowerCase() && /^[a-zA-Z]*$/.test(username)) {
+        if (username !== username.toLowerCase() || !/^[a-zA-Z]*$/.test(username)) {
             showSnackbar('Username must be lowercase', 'error');
             return false;
         }
