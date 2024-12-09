@@ -31,6 +31,7 @@ function PendingTrade(props) {
 
     useEffect(() => {
         if (props.updateTrades) {
+            console.log('updateTrades', props.updateTrades)
             setTradesSent(props.updateTrades.sent_trades)
             setTradesReceived(props.updateTrades.received_trades)
         }

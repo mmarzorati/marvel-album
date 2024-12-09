@@ -45,8 +45,8 @@ function Trade(props) {
     return (
         <>  
             <div className='trades-row-names'>
-                <label className='trades-subtitle'>{props.sender_id.name} - {props.sender_id.username}</label>
-                <label className='trades-subtitle'>{props.receiver_id.name} - {props.receiver_id.username}</label>
+                <label className='trades-subtitle'>{props.sender_id && props.sender_id.name} - {props.sender_id && props.sender_id.username}</label>
+                <label className='trades-subtitle'>{props.receiver_id && props.receiver_id.name} - {props.receiver_id && props.receiver_id.username}</label>
             </div>
             <div className='trades-row me-0 ms-0'>
                 <div className='trades-side-left'>

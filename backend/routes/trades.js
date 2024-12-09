@@ -54,44 +54,57 @@ router.post('/api/trades', authMiddleware, async (req, res) => {
             $push: { trades: savedTrade._id }
         });
 
-        // trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
-        const sent_trades = await User.findById(sender_id).select('trades').populate({
-            path: 'trades',
-            match: { status: 'pending', sender_id: sender_id },
-            populate: [
-                {
-                    path: 'sender_id',
-                    select: 'name username' // seleziona solo name e username
-                },
-                {
-                    path: 'receiver_id',
-                    select: 'name username'
-                },
-                { 
-                    path: 'rec_cards sen_cards'
-                }
-            ]
-        });
+// trova tutti i trade in cui l'utente è presente come sender o receiver con lo stato specificato
+const sent_trades_data = await User.findById(sender_id).select('trades').populate({
+    path: 'trades',
+    match: { status: 'pending', sender_id: sender_id }, // Filtro per stato e sender
+    populate: [
+        {
+            path: 'sender_id',
+            select: 'name username' // Seleziona solo name e username
+        },
+        {
+            path: 'receiver_id',
+            select: 'name username'
+        },
+        { 
+            path: 'rec_cards sen_cards'
+        }
+    ]
+});
 
-        const received_trades = await User.findById(sender_id).select('trades').populate({
-            path: 'trades',
-            match: { status: 'pending', receiver_id: sender_id },
-            populate: [
-                {
-                    path: 'sender_id',
-                    select: 'name username'
-                },
-                {
-                    path: 'receiver_id',
-                    select: 'name username' 
-                },
-                { 
-                    path: 'rec_cards sen_cards' 
-                }
-            ]
-        });
+const received_trades_data = await User.findById(sender_id).select('trades').populate({
+    path: 'trades',
+    match: { status: 'pending', receiver_id: sender_id },
+    populate: [
+        {
+            path: 'sender_id',
+            select: 'name username'
+        },
+        {
+            path: 'receiver_id',
+            select: 'name username'
+        },
+        { 
+            path: 'rec_cards sen_cards'
+        }
+    ]
+});
 
-        res.status(200).json({ sent_trades, received_trades, message: 'The new trade has been successfully created!' });
+// aggiunge il campo `date` ai trade inviati
+const sent_trades = sent_trades_data.trades.map(trade => ({
+    ...trade.toObject(),
+    date: trade._id.getTimestamp() 
+}));
+
+// aggiunge il campo `date` ai trade ricevuti
+const received_trades = received_trades_data.trades.map(trade => ({
+    ...trade.toObject(),
+    date: trade._id.getTimestamp()
+}));
+
+res.status(200).json({ sent_trades, received_trades, message: 'The new trade has been successfully created!' });
+
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }

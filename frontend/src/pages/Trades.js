@@ -43,7 +43,6 @@ function Trades() {
     const handleCreateModalTrades = (trades) => {  
         if (tradeStatus === 'pending') {
             setCreateModalTrades(trades);
-            console.log('trades',trades );
         }
     }
     

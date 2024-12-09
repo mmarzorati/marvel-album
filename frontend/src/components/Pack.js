@@ -70,8 +70,9 @@ function Pack(props) {
                 centered
             >
             {isLoading ? (
-                <div className='pack-spinner'>
-                    <CircularProgress variant="determinate" color="error" size="100px" value={loadingValue}/>
+                <div className='pack-spinner d-flex flex-column'>
+                    The process might take a while
+                    <CircularProgress variant="determinate" className='mt-4' color="error" size="100px" value={loadingValue}/>
                 </div>
             ) : (
                 <>         
