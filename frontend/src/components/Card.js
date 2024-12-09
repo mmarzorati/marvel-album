@@ -100,7 +100,6 @@ function Card(props) {
                         </Modal.Footer>
                     </>
                 )}
-
             </Modal>
         </>
     );

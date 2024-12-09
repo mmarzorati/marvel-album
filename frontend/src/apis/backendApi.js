@@ -264,3 +264,18 @@ export async function sellCard(cardId) {
         throw error;    
     }
 }
+
+export async function deleteUser() {
+    try {
+        const response = await axios.delete(`api/users`, { withCredentials: true });
+        return response.data
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            console.error('Unauthorized access. Redirecting to login.');
+            window.location.replace('/login');
+        } else {
+            console.error('Sell card API error:', error.response ? error.response.data : error.message);
+        }
+        throw error;    
+    }
+}

@@ -54,4 +54,15 @@
     &-mb {
         margin-bottom: 50px;
     }
+    &-delete {
+        height: 60px;
+        width: 60px;
+        filter: brightness(1);
+        padding: 5px;
+        &:hover {
+            filter: brightness(0.7);
+            cursor: pointer;
+            border-radius: 12px;
+        }
+    }
 }

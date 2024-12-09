@@ -145,6 +145,24 @@ router.put('/api/users', authMiddleware, async (req, res) => {
     }
 });
 
+// endpoint perl'eliminazione di un utente
+router.delete('/api/users', authMiddleware, async (req, res) => {
+    try {
+        const userId = req.user._id;
+        // trova ed elimina l'utente
+        const deletedUser = await User.findByIdAndDelete(userId);
+
+        if (!deletedUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).send({ message: 'Internal server error', error: error.message });
+    }
+});
+
 // endpoint per ottenere tutte le carte di un utente
 router.get('/api/users/cards', authMiddleware, async (req, res) => {
     try {
