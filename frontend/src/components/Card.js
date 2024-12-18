@@ -1,4 +1,4 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import '../scss/Card.scss';
 import {Image, Modal, Button} from 'react-bootstrap';
 import { Badge } from '@mui/material';
@@ -9,13 +9,20 @@ import { useSnackbar } from './AlertContext';
 import CircularProgress from '@mui/material/CircularProgress';
 
 
-// veridficare i 112 cartteri
-
 function Card(props) {
 
     const [showModal, setShowModal] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [description, setDescription] = useState(false);
     const { showSnackbar } = useSnackbar();
+
+    useEffect(() => {
+        if (props.description.length > 85) {
+            setDescription(props.description.substring(0, 85) + '...');
+        } else {
+            setDescription(props.description);
+        }
+    }, [props.description]);
 
     const openModal = () => setShowModal(true);
     const closeModal = () => setShowModal(false);
@@ -55,14 +62,14 @@ function Card(props) {
                     >
                         <Image className='card-image' src={props.pathImg} thumbnail />
                         <h5 className='card-name'>{props.name}</h5>
-                        <p className='card-desc'>{props.description ? props.description : 'No description'}</p>
+                        <p className='card-desc'>{description ? description : 'No description'}</p>
                         <img className='card-icon' onClick={(e) => {e.preventDefault(); e.stopPropagation(); openModal()}} src={trashIcon} alt="Trash icon" />
                     </Badge>
                 ) : (
                     <div className='card-container'>
                         <Image className='card-image' src={props.pathImg} thumbnail />
                         <h5 className='card-name'>{props.name}</h5>
-                        <p className='card-desc'>{props.description ? props.description : 'No description'}</p>
+                        <p className='card-desc'>{description ? description : 'No description'}</p>
                         <img className='card-icon' onClick={(e) => {e.preventDefault(); e.stopPropagation(); openModal()}} src={trashIcon} alt="Trash icon" />
                     </div>
                 )

@@ -276,10 +276,10 @@ router.post('/api/users/search', authMiddleware, async (req, res) => {
         });
 
         // filtra per escludere l'utente e restituire solo i campi che servono lato FE
-        // escludiamo l'utente così non può fare scambi con se stesso
+        // esclude l'utente così non può fare scambi con se stesso
 
         const filteredUsers = users
-            .filter(user => user.id !== userId) // Escludi l'utente che chiama l'API
+            .filter(user => user.id !== userId)
             .map(user => ({
                 _id: user._id,
                 name: user.name,

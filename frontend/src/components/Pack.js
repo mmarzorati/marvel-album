@@ -32,7 +32,7 @@ function Pack(props) {
                     res.results[0].thumbnail.path + '.' + res.results[0].thumbnail.extension
                 );
                 // +2 per renderlo più utile per l'utente a livello visivo
-                setLoadingValue(((i+2)*100)/props.amount)  // calcolo lo status in percentuale del processo epr mostrarlo nello spinner
+                setLoadingValue(((i+2)*100)/props.amount)  // calcolo lo status in percentuale del processo per mostrarlo nello spinner
             }
             props.setCoins(user.coins)
             showSnackbar("Cards successfully added", 'success');

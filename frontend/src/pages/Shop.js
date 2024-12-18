@@ -32,7 +32,7 @@ function Shop() {
         }
 
         loadData();
-    }, []);
+    }, [showSnackbar]);
 
     return (
         <>

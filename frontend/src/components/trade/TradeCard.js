@@ -7,8 +7,8 @@ function TradeCard(props) {
     const [name, setName] = useState(props.name);
 
     useEffect(() => {
-        if (props.name.length > 8) {
-            setName(props.name.substring(0, 8) + '...');
+        if (props.name.length > 15) {
+            setName(props.name.substring(0, 15) + '...');
         } else {
             setName(props.name);
         }

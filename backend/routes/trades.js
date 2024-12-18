@@ -188,7 +188,7 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
         const { tradeId, status } = req.body;
         const userId = req.user._id;
 
-        // Verifica se l'ID del trade è valido
+        // verifica se l'ID del trade è valido
         if (!mongoose.Types.ObjectId.isValid(tradeId)) {
             return res.status(400).json({ message: 'Invalid user ID' });
         }
