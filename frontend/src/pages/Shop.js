@@ -58,7 +58,6 @@ function Shop() {
                         <Pack amount="5" desc="random cards"price="5" color="#D3D3D3" totalCards={totalCards} setCoins={setCoins}/>
                     </div>
                     <h2 className='shop-title mt'>Buy Coins</h2>
-                    
                     {/* se nel parametro "desc" viene passato il vlaore coin il compnente pack verrà visualizzato in modo differente */}
                     <div className='shop-row'>
                         <CoinPack amount="100" desc="coin" price="50" color="#FFD700" setCoins={setCoins}/>

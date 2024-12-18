@@ -2,6 +2,7 @@
     &-row {
         display: flex;
         flex-direction: start;
+        flex-wrap: wrap;
         justify-content: center;
         align-items: center;
     }

@@ -60,6 +60,9 @@
         height: 40px;
         width: 200px;
         padding: 5px;
+        @media (min-width: 767px) and (max-width: 993px) {
+            width: 150px;
+        }
     }
     &-line {
         width: 75%;

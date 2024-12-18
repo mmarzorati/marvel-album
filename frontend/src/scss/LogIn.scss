@@ -1,17 +1,17 @@
 .login {
     &-container {
-    height: 100%;
-    width: 100%;
-    display:flex;
-    justify-content: center;
-    overflow-y: auto;
+        height: 100%;
+        width: 100%;
+        display:flex;
+        justify-content: center;
+        overflow-y: auto;
     }
     &-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-    flex-direction: column;
-    height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        flex-direction: column;
+        height: 100%;
     input {
         border: 1px solid var(--dark-red);
         background-color: var(--dark-grey);
@@ -27,8 +27,7 @@
         text-decoration: underline;
         &:hover {
         cursor: pointer;
-        // inserire l'underline
-        color: var(--bs-gray-700);
+        color: black;
         }
     }
     h3 {
@@ -38,22 +37,25 @@
     }
     }
     &-btn {
-    background-color: var(--dark-red);
-    border: none;
-    border-radius: 10px;
-    border: 1px solid var(--dark-grey);
-    height: 50px;
-    width: 150px;
-    color: white;
-    margin: 40px 0;
+        background-color: var(--dark-red);
+        border: none;
+        border-radius: 10px;
+        border: 1px solid var(--dark-grey);
+        height: 50px;
+        width: 150px;
+        color: white;
+        margin: 40px 0;
+        &:hover {
+            background-color: var(--red)
+        }
     }
     &-password {
-    margin-top: 50px;
+        margin-top: 50px;
     }
     &-preferences {
-    max-width: 500px;
-    margin-top: 20px;
-    display: flex;
-    flex-wrap: wrap;
+        max-width: 500px;
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
     }
 }

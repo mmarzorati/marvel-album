@@ -19,6 +19,7 @@ $text-color: #fff;
         display: flex;
         align-items: center;
         white-space: nowrap;
+        flex-wrap: wrap;
     }
     &-row {
         @include row;
@@ -56,6 +57,10 @@ $text-color: #fff;
         width: 100px;
         padding: 0px;
         margin: 0px 20px;
+        @media (max-width: 600px) {
+            height: 75px;
+            width: 75px;
+        }
     }
     &-icon-2 {
         height: 20px;
@@ -272,7 +277,7 @@ $text-color: #fff;
 .button {
     display: inline-block;
     padding: 10px 20px;
-    margin: 0 10px;
+    margin: 5px 10px;
     border-radius: 5px;
     font-size: 16px;
     font-weight: bold;
