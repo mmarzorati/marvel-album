@@ -1,5 +1,4 @@
 const jwt = require('jsonwebtoken');
-const config = require('./config.json');
 
 const authMiddleware = (req, res, next) => {
     if (!req.cookies || !req.cookies.token) {
@@ -8,7 +7,7 @@ const authMiddleware = (req, res, next) => {
     const token = req.cookies.token;
 
     try {
-        const verified = jwt.verify(token, config.JWT_SECRET);
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
         req.user = verified;
         next(); // passo al prossimo middleware o route handler
     } catch (err) {

@@ -1,7 +1,5 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const router = express.Router();
-const config = require('../config.json');
 const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middlewere');
 
@@ -29,7 +27,7 @@ router.post('/api/users', async (req, res) => {
                 name: user.name,
                 coins: user.coins
             },
-            config.JWT_SECRET,               // chiave segreta per firmare il token
+            process.env.JWT_SECRET,               // chiave segreta per firmare il token
             { expiresIn: '1h' }
         );
 
@@ -76,7 +74,7 @@ router.post('/api/users/login', async (req, res) => {
                 name: user.name,
                 coins: user.coins
             },
-            config.JWT_SECRET,               // chiave segreta per firmare il token
+            process.env.JWT_SECRET,               // chiave segreta per firmare il token
             { expiresIn: '1h' }
         );
 
@@ -240,7 +238,7 @@ router.post('/api/users/coins', authMiddleware, async (req, res) => {
                 name: user.name,
                 coins: user.coins
             },
-            config.JWT_SECRET,               // chiave segreta per firmare il token
+            process.env.JWT_SECRET,               // chiave segreta per firmare il token
             { expiresIn: '1h' }
         );
 

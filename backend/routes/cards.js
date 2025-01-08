@@ -1,13 +1,8 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const router = express.Router();
-const config = require('../config.json');
-const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middlewere');
 
 const User = require('../models/User');
-const Card = require('../models/Card');
-const Trade = require('../models/Trade');
 
 // endpoint per ottenere tutte le carte di un utente dato l'id di uno user 
 router.get('/api/cards/:userId', authMiddleware, async (req, res) => {

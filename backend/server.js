@@ -1,18 +1,15 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
-const User = require('./models/User');
-const Card = require('./models/Card');
-const Trade = require('./models/Trade');
-const config = require('./config.json');
 // routes
 const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
 const tradesRoutes = require('./routes/trades');
+require('dotenv').config();
 
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 app.use(express.json());
 
 // Avvio del server
@@ -21,7 +18,7 @@ app.listen(3001, () => {
 })
 
 // Connessione al database locale di mongoDB "mavel-album" - porta di default: 27017
-mongoose.connect(config.mongodbConnect).then(() => console.log('MongoDB connected'))
+mongoose.connect(process.env.DB_CONNECT).then(() => console.log('MongoDB connected'))
 .catch(err => console.log(err));
 
 

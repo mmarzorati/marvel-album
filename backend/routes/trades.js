@@ -1,13 +1,9 @@
 const express = require('express');
-const bcrypt = require('bcryptjs');
 const router = express.Router();
-const config = require('../config.json');
-const jwt = require('jsonwebtoken');
 const authMiddleware = require('../middlewere');
 const mongoose = require('mongoose');
 
 const User = require('../models/User');
-const Card = require('../models/Card');
 const Trade = require('../models/Trade');
 
 const isValidObjectId = (id) => mongoose.Types.ObjectId.isValid(id);
