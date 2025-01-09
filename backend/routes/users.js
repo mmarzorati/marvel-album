@@ -33,6 +33,7 @@ router.post('/api/users', async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
+            sameSite: 'None',
             // secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
             maxAge: 60 * 60 * 1000 // 1 ora
         });
@@ -80,6 +81,7 @@ router.post('/api/users/login', async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
+            sameSite: 'None',
             // secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
             maxAge: 60 * 60 * 1000 // 1 ora
         });
@@ -244,6 +246,7 @@ router.post('/api/users/coins', authMiddleware, async (req, res) => {
 
         res.cookie('token', token, {
             httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
+            sameSite: 'None',
             // secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
             maxAge: 60 * 60 * 1000 // 1 ora
         });
