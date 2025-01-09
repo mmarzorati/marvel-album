@@ -1,5 +1,6 @@
 {
     "marvelUrl" : "http://gateway.marvel.com/v1/public",
+    "backendUrl" : "https://marvel-album.onrender.com/",
     "publicKey":"",
     "hash": ""
 }
