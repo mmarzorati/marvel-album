@@ -35,6 +35,8 @@ router.post('/api/users', async (req, res) => {
             httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
             sameSite: 'None',
             // secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
+            secure: false,
+            domain: 'localhost',
             maxAge: 60 * 60 * 1000 // 1 ora
         });
         res.status(201).send({ message: 'User saved successfully'});
@@ -83,6 +85,8 @@ router.post('/api/users/login', async (req, res) => {
             httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
             sameSite: 'None',
             // secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
+            secure: false,
+            domain: 'localhost',
             maxAge: 60 * 60 * 1000 // 1 ora
         });
         return res.status(200).json({ message: 'Login completed successfully' });
@@ -248,6 +252,8 @@ router.post('/api/users/coins', authMiddleware, async (req, res) => {
             httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
             sameSite: 'None',
             // secure: process.env.NODE_ENV === 'production',      // Solo su HTTPS in produzione
+            secure: false,
+            domain: 'localhost',
             maxAge: 60 * 60 * 1000 // 1 ora
         });
 
