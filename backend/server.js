@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 // routes
 const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
@@ -23,6 +24,11 @@ mongoose.connect(process.env.DB_CONNECT).then(() => console.log('MongoDB connect
 
 
 app.use(cookieParser());
+app.use(cors({    
+    origin: process.env.ORIGIN,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true
+}));
 
 
 app.use(usersRoutes);
