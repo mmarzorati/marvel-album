@@ -41,7 +41,7 @@ export async function checkUser(email, password) {
 
 export async function getUserInfo() {
     try {
-        const response = await axios.get( config.backendUrl + 'api/user', {}, {withCredentials: true});
+        const response = await axios.get( config.backendUrl + 'api/user', {withCredentials: true});
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 401) {
