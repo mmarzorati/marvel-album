@@ -6,6 +6,11 @@ import '../scss/Navbar.scss';
 
 const NavbarComponent = () => {
 
+    const clearStorage = () => {
+        localStorage.clear();
+        window.location.replace('/login')
+    };
+
     return (
         <Navbar bg="dark" data-bs-theme="dark">
             <Container>
@@ -27,7 +32,7 @@ const NavbarComponent = () => {
                     <Nav.Link className='nav-object' href="/profile">
                         Profile
                     </Nav.Link>
-                    <Nav.Link className='nav-object' href="/login">Logout</Nav.Link>
+                    <Nav.Link onClick={clearStorage} className='nav-object' >Logout</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>

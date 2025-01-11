@@ -62,6 +62,7 @@ function Profile() {
             showSnackbar(res.message, 'success');
             setIsDeleteLoading(false)
             setTimeout(() => {
+                localStorage.clear();
                 window.location.replace('/login');
             }, 2000);
         } catch (error) {
