@@ -31,14 +31,7 @@ router.post('/api/users', async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.cookie('token', token, {
-            httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
-            sameSite: 'None',
-            secure: process.env.SECURE_FLAG,
-            domain: process.env.DOMAIN,
-            maxAge: 60 * 60 * 1000 // 1 ora
-        });
-        res.status(201).send({ message: 'User saved successfully'});
+        res.status(201).send({ message: 'User saved successfully', token: token});
 
     } catch (error) {
         if (error.code === 11000) {
@@ -80,14 +73,7 @@ router.post('/api/users/login', async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.cookie('token', token, {
-            httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
-            sameSite: 'None',
-            secure: process.env.SECURE_FLAG,
-            domain: process.env.DOMAIN,
-            maxAge: 60 * 60 * 1000 // 1 ora
-        });
-        return res.status(200).json({ message: 'Login completed successfully' });
+        return res.status(200).json({ message: 'Login completed successfully', token: token });
 
     } catch (error) {
         console.error('Errore nel login:', error);
@@ -246,15 +232,7 @@ router.post('/api/users/coins', authMiddleware, async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.cookie('token', token, {
-            httpOnly: true,         // non accessibile via JavaScript (migliora la sicurezza)
-            sameSite: 'None',
-            secure: process.env.SECURE_FLAG,
-            domain: process.env.DOMAIN,
-            maxAge: 60 * 60 * 1000 // 1 ora
-        });
-
-        res.status(200).send({ message: 'Coins wallet updated', coins: user.coins });
+        res.status(200).send({ message: 'Coins wallet updated', coins: user.coins, token: token });
 
     } catch (error) {
         console.error(error);
