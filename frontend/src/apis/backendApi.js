@@ -3,7 +3,7 @@ import axios from "axios";
 
 export async function createUser(name, username, email, password) {
     try {
-        const response = await axios.post(config.backendUrl + 'api/users', {
+        const response = await axios.post(config.backendUrl + '/api/users', {
             username: username,
             email: email,
             name: name,
@@ -23,7 +23,7 @@ export async function createUser(name, username, email, password) {
 
 export async function checkUser(email, password) {
     try {
-        const response = await axios.post( config.backendUrl + 'api/users/login', {
+        const response = await axios.post( config.backendUrl + '/api/users/login', {
             email: email,
             password: password
         });
@@ -41,7 +41,7 @@ export async function checkUser(email, password) {
 
 export async function getUserInfo() {
     try {
-        const response = await axios.get( config.backendUrl + 'api/user', {withCredentials: true});
+        const response = await axios.get( config.backendUrl + '/api/user', {withCredentials: true});
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -56,7 +56,7 @@ export async function getUserInfo() {
 
 export async function getUserCards() {
     try {
-        const response = await axios.get( config.backendUrl + 'api/users/cards', {withCredentials: true});
+        const response = await axios.get( config.backendUrl + '/api/users/cards', {withCredentials: true});
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -71,7 +71,7 @@ export async function getUserCards() {
 
 export async function getUserCardsById(id) {
     try {
-        const response = await axios.get( config.backendUrl + `api/cards/${id}`, { withCredentials: true });
+        const response = await axios.get( config.backendUrl + `/api/cards/${id}`, { withCredentials: true });
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -87,7 +87,7 @@ export async function getUserCardsById(id) {
 export async function addUserCard( marvelId, name, description, pathImg) {
     try {
         const response = await axios.post(
-             config.backendUrl + 'api/users/add-card',
+             config.backendUrl + '/api/users/add-card',
             { marvelId, name, description, pathImg },
             { withCredentials: true }
         );
@@ -108,7 +108,7 @@ export async function buyCoins( amount ) {
         if (amount > 0 ) {
             amount = +amount; 
             const response = await axios.post(
-                 config.backendUrl + 'api/users/coins',
+                 config.backendUrl + '/api/users/coins',
                 { amount },
                 { withCredentials: true }
             );
@@ -131,7 +131,7 @@ export async function removeCoins( amount ) {
             amount = -amount;   // rendiamo negativa la cifra
         }
         const response = await axios.post(
-             config.backendUrl + 'api/users/coins',
+             config.backendUrl + '/api/users/coins',
             { amount },
             { withCredentials: true }
         );
@@ -150,7 +150,7 @@ export async function removeCoins( amount ) {
 export async function searchUsersAPI( query ) {
     try {
         const response = await axios.post(
-             config.backendUrl + `api/users/search?query=${query}`,
+             config.backendUrl + `/api/users/search?query=${query}`,
             { withCredentials: true }
         );
         return response.data
@@ -168,7 +168,7 @@ export async function searchUsersAPI( query ) {
 export async function createTrade( receiver_id, rec_cards, sen_cards) {
     try {
         const response = await axios.post(
-             config.backendUrl + 'api/trades',
+             config.backendUrl + '/api/trades',
             { receiver_id, rec_cards, sen_cards },
             { withCredentials: true }
         );
@@ -186,7 +186,7 @@ export async function createTrade( receiver_id, rec_cards, sen_cards) {
 
 export async function getUserTrades(status) {
     try {
-        const response = await axios.get( config.backendUrl + `api/trades/${status}`, { withCredentials: true });
+        const response = await axios.get( config.backendUrl + `/api/trades/${status}`, { withCredentials: true });
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -202,7 +202,7 @@ export async function getUserTrades(status) {
 export async function changeTradeStatus(status, tradeId) {
     try {
         const response = await axios.patch(
-             config.backendUrl + `api/trades`,
+             config.backendUrl + `/api/trades`,
             { status, tradeId },
             { withCredentials: true }
         )
@@ -234,7 +234,7 @@ export async function updateUserInfo(fieldType, inputValue) {
 
     try {
         const response = await axios.put(
-             config.backendUrl + 'api/users', 
+             config.backendUrl + '/api/users', 
             payload, 
             { withCredentials: true }
         );
@@ -252,7 +252,7 @@ export async function updateUserInfo(fieldType, inputValue) {
 
 export async function sellCard(cardId) {
     try {
-        const response = await axios.delete( config.backendUrl + `api/cards/${cardId}`, { withCredentials: true });
+        const response = await axios.delete( config.backendUrl + `/api/cards/${cardId}`, { withCredentials: true });
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 401) {
@@ -267,7 +267,7 @@ export async function sellCard(cardId) {
 
 export async function deleteUser() {
     try {
-        const response = await axios.delete( config.backendUrl + `api/users`, { withCredentials: true });
+        const response = await axios.delete( config.backendUrl + `/api/users`, { withCredentials: true });
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 401) {

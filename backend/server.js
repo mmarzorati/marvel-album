@@ -24,11 +24,11 @@ mongoose.connect(process.env.DB_CONNECT).then(() => console.log('MongoDB connect
 
 
 app.use(cookieParser());
-app.use(cors({    
-    origin: process.env.ORIGIN,
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true
-}));
+// app.use(cors({    
+//     origin: process.env.ORIGIN,
+//     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+//     credentials: true
+// }));
 
 
 app.use(usersRoutes);
