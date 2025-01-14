@@ -20,7 +20,6 @@ function PendingTrade(props) {
                 setTradesSent(res.sent_trades)
                 setTradesReceived(res.received_trades)
                 setIsLoading(false)
-                console.log(res.sent_trades, res.received_trades)
             } catch (error) {
                 showSnackbar(error.response.data.message, 'error');
             }
@@ -31,7 +30,6 @@ function PendingTrade(props) {
 
     useEffect(() => {
         if (props.updateTrades) {
-            console.log('updateTrades', props.updateTrades)
             setTradesSent(props.updateTrades.sent_trades)
             setTradesReceived(props.updateTrades.received_trades)
         }

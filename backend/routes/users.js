@@ -82,7 +82,7 @@ router.post('/api/users/login', async (req, res) => {
 });
 
 // endpoint per la restituzione dei dati dell'utente
-router.get('/api/user', authMiddleware, async (req, res) => {
+router.get('/api/users', authMiddleware, async (req, res) => {
     try {
         const user = await User.findById( req.user._id );
         const { username, coins, name, email } = user;
@@ -277,3 +277,347 @@ router.post('/api/users/search', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+
+
+
+/**
+ * @swagger
+ * /api/users:
+ *   post:
+ *     summary: Create a new user
+ *     description: Registers a new user in the system.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: "paologialli"
+ *               name:
+ *                 type: string
+ *                 example: "Paolo Gialli"
+ *               email:
+ *                 type: string
+ *                 example: "paolo@gmail.com"
+ *               password:
+ *                 type: string
+ *                 example: "password123"
+ *     responses:
+ *       201:
+ *         description: User created successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User saved successfully"
+ *                 token:
+ *                   type: string
+ *                   example: "jwt-token"
+ *       400:
+ *         description: Username or email already exists.
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       500:
+ *         description: Internal server error.
+ *   put:
+ *     summary: Update user details
+ *     description: Updates the authenticated user's information.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 example: "paologialli"
+ *               name:
+ *                 type: string
+ *                 example: "Paolo Gialli"
+ *               email:
+ *                 type: string
+ *                 example: "paolo@gmail.com"
+ *     responses:
+ *       200:
+ *         description: User updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User updated successfully"
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     username:
+ *                       type: string
+ *                     coin:
+ *                       type: integer
+ *                     name:
+ *                       type: string
+ *                     email:
+ *                       type: string
+ *       400:
+ *         description: Username or email already exists.
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ *   delete:
+ *     summary: Delete a user
+ *     description: Deletes the authenticated user from the system.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User deleted successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User deleted successfully
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ *   get:
+ *     summary: Get user details
+ *     description: Returns the details of the authenticated user.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: User details retrieved successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 username:
+ *                   type: string
+ *                   example: "paologialli"
+ *                 coins:
+ *                   type: integer
+ *                   example: 100
+ *                 name:
+ *                   type: string
+ *                   example: "Paolo Gialli"
+ *                 email:
+ *                   type: string
+ *                   example: "paolo@gmail.com"
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       500:
+ *         description: Internal server error.
+ * 
+ * 
+ * /api/users/login:
+ *   post:
+ *     summary: Log in a user
+ *     description: Authenticates a user and returns a JWT token.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "paolo@gmail.com"
+ *               password:
+ *                 type: string
+ *                 example: "password123"
+ *     responses:
+ *       200:
+ *         description: Login successful.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Login completed successfully"
+ *                 token:
+ *                   type: string
+ *                   example: "jwt-token"
+ *       400:
+ *         description: Invalid email or password.
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ * /api/users/cards:
+ *   get:
+ *     summary: Get user cards
+ *     description: Retrieves the cards owned by the authenticated user.
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of user cards.
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ * 
+ * 
+ * 
+ * /api/users/add-card:
+ *   post:
+ *     summary: Add a card to the database
+ *     description: Adds a new card to the user's collection. If the card doesn't exist in the database, it will be created.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               marvelId:
+ *                 type: string
+ *                 example: "12345"
+ *               name:
+ *                 type: string
+ *                 example: "Spider-Man"
+ *               description:
+ *                 type: string
+ *                 example: "A hero with spider-like abilities."
+ *               pathImg:
+ *                 type: string
+ *                 example: "https://example.com/spiderman.jpg"
+ *     responses:
+ *       200:
+ *         description: Card added to the user's collection successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Card successfully added"
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ * 
+ * 
+ * 
+ * /api/users/coins:
+ *   post:
+ *     summary: Update user's coin balance
+ *     description: Adds or removes coins from the user's wallet. Ensures the balance does not go negative.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               amount:
+ *                 type: integer
+ *                 example: 100
+ *     responses:
+ *       200:
+ *         description: Coins updated successfully.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Coins wallet updated"
+ *                 coins:
+ *                   type: integer
+ *                   example: 200
+ *                 token:
+ *                   type: string
+ *                   example: "jwt-token"
+ *       400:
+ *         description: Insufficient coins or invalid operation.
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       404:
+ *         description: User not found.
+ *       500:
+ *         description: Internal server error.
+ * 
+ * 
+ * 
+ * /api/users/search:
+ *   post:
+ *     summary: Search for users
+ *     description: Searches for users by name or username, excluding the authenticated user.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Search term for username or name.
+ *     responses:
+ *       200:
+ *         description: List of matching users.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     example: "607c191e810c19729de860ea"
+ *                   name:
+ *                     type: string
+ *                     example: "Paolo Gialli"
+ *                   username:
+ *                     type: string
+ *                     example: "paologialli"
+ *       400:
+ *         description: Search string is missing.
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       500:
+ *         description: Internal server error.
+ */

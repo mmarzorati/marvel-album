@@ -28,10 +28,6 @@ function CancelledTrade({tradeOrigin}) {
 
         loadData()
     }, []);
-
-    useEffect(() => {
-        console.log(tradesSent, tradesReceived, tradeOrigin)
-    }, [tradeOrigin]);
     
     return (
         <>

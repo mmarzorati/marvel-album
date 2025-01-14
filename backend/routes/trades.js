@@ -172,7 +172,7 @@ router.get('/api/trades/:status', authMiddleware, async (req, res) => {
             date: trade._id.getTimestamp()
         }));
 
-        res.status(200).json({ sent_trades, received_trades, message: `Ecco tutti i ${status} trades` });
+        res.status(200).json({ sent_trades, received_trades, message: `Here are all the ${status} trades` });
     } catch (error) {
         res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
@@ -288,3 +288,153 @@ router.patch('/api/trades', authMiddleware, async (req, res) => {
 });
 
 module.exports = router;
+
+/**
+ * @swagger
+ * /api/trades:
+ *   post:
+ *     summary: Create a new trade
+ *     description: Creates a new trade between two users.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               receiver_id:
+ *                 type: string
+ *                 description: ID of the receiver user.
+ *                 example: "677ab2bf5210a64cff138ae9"
+ *               rec_cards:
+ *                 type: array
+ *                 description: List of card IDs the receiver will give.
+ *                 items:
+ *                   type: string
+ *                   example: "675186bd0632228092858b8a"
+ *               sen_cards:
+ *                 type: array
+ *                 description: List of card IDs the sender will give.
+ *                 items:
+ *                   type: string
+ *                   example: "675186bb0632228092858b79"
+ *             required:
+ *               - receiver_id
+ *               - rec_cards
+ *               - sen_cards
+ *     responses:
+ *       200:
+ *         description: The new trade has been successfully created.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sent_trades:
+ *                   type: array
+ *                   description: List of sent trades.
+ *                   items:
+ *                     $ref: '#/components/schemas/Trade'
+ *                 received_trades:
+ *                   type: array
+ *                   description: List of received trades.
+ *                   items:
+ *                     $ref: '#/components/schemas/Trade'
+ *                 message:
+ *                   type: string
+ *                   example: "The new trade has been successfully created!"
+ *       400:
+ *         description: Bad Request. Invalid parameters or data.
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       500:
+ *         description: Internal Server Error.
+ * 
+ * 
+ *   patch:
+ *     summary: Update the status of a trade
+ *     description: Updates the status of a trade to "completed" or "cancelled". Handles card exchanges between users if the trade is completed.
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               tradeId:
+ *                 type: string
+ *                 example: "60f1b8e8f8f8b8f8b8f8b8f8"
+ *               status:
+ *                 type: string
+ *                 enum:
+ *                   - completed
+ *                   - cancelled
+ *                 example: "completed"
+ *     responses:
+ *       200:
+ *         description: The trade has been updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "The trade has been accepted"
+ *       400:
+ *         description: Bad request due to invalid trade ID, status, or card availability
+ *       404:
+ *         description: Trade or user not found, or access denied
+ *       500:
+ *         description: Internal server error
+ * 
+ * 
+ * 
+ *
+ * /api/trades/{status}:
+ *   get:
+ *     summary: Get trades by status
+ *     description: Retrieves all trades of a specific status where the user is involved.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: status
+ *         required: true
+ *         schema:
+ *           type: string
+ *           enum: [pending, completed, cancelled]
+ *         description: Status of the trades to retrieve.
+ *     responses:
+ *       200:
+ *         description: A list of trades matching the status.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 sent_trades:
+ *                   type: array
+ *                   description: List of sent trades matching the status.
+ *                   items:
+ *                     $ref: '#/components/schemas/Trade'
+ *                 received_trades:
+ *                   type: array
+ *                   description: List of received trades matching the status.
+ *                   items:
+ *                     $ref: '#/components/schemas/Trade'
+ *                 message:
+ *                   type: string
+ *                   example: "Here are all the pending trades"
+ *       400:
+ *         description: Bad Request. Invalid parameters or data.
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       500:
+ *         description: Internal Server Error.
+ * 
+ */

@@ -3,7 +3,7 @@ import { useSnackbar } from './../components/AlertContext';
 import React, { useEffect, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import { getCardDetail } from './../apis/marvelApi';
-import { Container, Row, Col, Image, Button, Form } from 'react-bootstrap';
+import { Container, Row, Col, Image } from 'react-bootstrap';
 
 function CardDetail() {
     
@@ -17,7 +17,6 @@ function CardDetail() {
             try {
                 setIsLoading(true)
                 const res = await getCardDetail(cardName)
-                console.log(res.results[0])
                 setCardInfo(res.results[0])
                 setIsLoading(false)
             } catch (error) {
@@ -55,7 +54,7 @@ function CardDetail() {
                                 <Col>
                                     <div className='profile-col'>
                                         <label className='details-label' >Description</label>
-                                        <h6 className='details-desc'>{cardInfo.desc ? cardInfo.desc : 'No description'}</h6>
+                                        <h6 className='details-desc'>{cardInfo.description ? cardInfo.description : 'No description'}</h6>
                                     </div>
                                 </Col>
                                 

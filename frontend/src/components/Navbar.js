@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
@@ -17,13 +17,6 @@ const NavbarComponent = () => {
                 <Nav className="me-auto">
                     <Nav.Link className='nav-object' href="/album">
                         Album
-                        {/* <img
-                            alt=""
-                            src="/img/logo.svg"
-                            width="30"
-                            height="30"
-                            className="d-inline-block align-top"
-                        /> */}
                     </Nav.Link>
                     <Nav.Link className='nav-object' href="/shop">Shop</Nav.Link>
                     <Nav.Link className='nav-object' href="/trades">Trades</Nav.Link>

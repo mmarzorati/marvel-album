@@ -6,6 +6,7 @@ const cors = require('cors');
 const usersRoutes = require('./routes/users');
 const cardsRoutes = require('./routes/cards');
 const tradesRoutes = require('./routes/trades');
+const swaggerDocs = require('./swagger');
 require('dotenv').config();
 
 
@@ -16,6 +17,7 @@ app.use(express.json());
 // Avvio del server
 app.listen(3001, () => {
     console.log(`Application is running on port ${PORT}`);
+    swaggerDocs(app, PORT);
 })
 
 // Connessione al database locale di mongoDB "mavel-album" - porta di default: 27017

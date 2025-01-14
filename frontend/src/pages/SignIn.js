@@ -16,8 +16,8 @@ const SignIn = () => {
 
     const checkFields = () => {
         // controlo che il nome sia formato da sole lettere e rendo solo la prima maiuscola
-        if(!/^[a-zA-Z]*$/.test(name)) {
-            showSnackbar('The name must consist of letters only', 'error');
+        if(!/^[a-zA-Z ]*$/.test(name)) {
+            showSnackbar('The name must consist of letters and spaces only', 'error');
             return false;
         }
 
@@ -42,7 +42,6 @@ const SignIn = () => {
         return true;
     }
     const EnrollUser = async () => {
-        console.log('in')
         if (email !== '' && name !== '' && username !== '' && password !== '' && confirmPassword !== '') {
         if (checkFields()){
             try {

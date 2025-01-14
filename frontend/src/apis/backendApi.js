@@ -58,7 +58,7 @@ export async function getUserInfo() {
             window.location.replace('/login');
             return;
         }
-        const response = await axios.get( config.backendUrl + '/api/user',  {headers: {Authorization: `Bearer ${token}`}});
+        const response = await axios.get( config.backendUrl + '/api/users',  {headers: {Authorization: `Bearer ${token}`}});
         return response.data
     } catch (error) {
         if (error.response && error.response.status === 401) {

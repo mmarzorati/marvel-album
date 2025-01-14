@@ -4,6 +4,35 @@ const authMiddleware = require('../middlewere');
 
 const User = require('../models/User');
 
+/**
+ * @openapi
+ * /api/cards/{userId}:
+ *   get:
+ *     summary: Get all cards for a user
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the user
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of user cards
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Card'
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+
 // endpoint per ottenere tutte le carte di un utente dato l'id di uno user 
 router.get('/api/cards/:userId', authMiddleware, async (req, res) => {
     try {
@@ -21,6 +50,41 @@ router.get('/api/cards/:userId', authMiddleware, async (req, res) => {
     }
 });
 
+/**
+ * @swagger
+ * /api/cards/{cardId}:
+ *   delete:
+ *     summary: Remove a card from the user's collection
+ *     parameters:
+ *       - in: path
+ *         name: cardId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the card
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Card removed successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 collec:
+ *                   type: array
+ *                   items:
+ *                     $ref: '#/components/schemas/Card'
+ *       401:
+ *         description: "Access denied: token missing or malformed"
+ *       404:
+ *         description: Card not found in the user's collection or user not found
+ *       500:
+ *         description: Internal server error
+ */
 // endpoint per la rimozione di una carta
 router.delete('/api/cards/:cardId', authMiddleware, async (req, res) => {
     const { cardId } = req.params;

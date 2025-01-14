@@ -83,8 +83,8 @@ function Profile() {
                 showSnackbar('Username must be lowercase and cannot contain numbers', 'error');
                 return;
             }
-            if(fieldType === "name" && !/^[a-zA-Z]*$/.test(name)) {
-                showSnackbar('The name must consist of letters only', 'error');
+            if(fieldType === "name" && !/^[a-zA-Z ]*$/.test(inputValue)) {
+                showSnackbar('The name must consist of letters and spaces only', 'error');
                 return;
             }
             try {
